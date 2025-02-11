@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('centro_id')->constrained('centros');  // Relación con centros
             $table->foreignId('ciclo_id')->constrained('ciclos');    // Relación con ciclos
-            $table->integer('curso');  // El campo curso es un entero
+            $table->integer('curso')->nullable()->change();  // El campo curso es un entero
             $table->foreignId('usuarioIdCreacion')->constrained('usuarios');  // Relación con usuarios
             $table->timestamp('fechaCreacion');
             $table->foreignId('usuarioIdActualizacion')->constrained('usuarios');  // Relación con usuarios
