@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Donacion extends Model
 {
+    protected $table = 'donaciones';
     protected $fillable = [
-        'id',
         'ong_id',
         'kilos',
         'importe',
@@ -16,4 +16,21 @@ class Donacion extends Model
         'usuarioIdActualizacion',
         'fechaActualizacion'
     ];
+     // Relación con Ong
+    public function ong()
+    {
+        return $this->belongsTo(Ong::class, 'ong_id');
+    }
+
+    // Relación con Usuario para el creador
+    public function usuarioCreacion()
+    {
+        return $this->belongsTo(User::class, 'usuarioIdCreacion');
+    }
+
+    // Relación con Usuario para el actualizador
+    public function usuarioActualizacion()
+    {
+        return $this->belongsTo(User::class, 'usuarioIdActualizacion');
+    }
 }

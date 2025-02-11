@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Publicacion extends Model
 {
+    protected $table = 'publicaciones';
     protected $fillable = [
-        'id',
         'titulo',
         'texto',
         'portada',

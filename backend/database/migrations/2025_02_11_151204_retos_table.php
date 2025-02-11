@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('retos', function (Blueprint $table) {
             $table->id();
+            $table->string('titulo', 100);
+            $table->text('texto');
+            $table->foreignId('estudio_id')->constrained('estudios'); // Relación con estudios
+            $table->foreignId('usuarioIdCreacion')->constrained('usuarios'); // Relación con usuarios
+            $table->timestamp('fechaCreacion');
+            $table->foreignId('usuarioIdActualizacion')->constrained('usuarios'); // Relación con usuarios
+            $table->timestamp('fechaActualizacion');
             $table->timestamps();
         });
     }
