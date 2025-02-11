@@ -1,11 +1,21 @@
-import React from 'react';
 
-function LogIn() {
-    return (
-        <>
-            <h1>login</h1>
-        </>
-    );
-}
+import React, { useState } from 'react';
+import Login from '../../components/LogIncomp';
 
-export default LogIn;
+const LogIn = () => {
+  const [userData, setUserData] = useState(null);
+
+  const handleLogin = (data) => {
+    setUserData(data);
+    alert(`Bienvenido ${data.username}, Rol: ${data.role}`);
+  };
+
+  return (
+    <div>
+      <Login onLogin={handleLogin} />
+      {userData && <p>Bienvenido, {userData.username}!</p>}
+    </div>
+  );
+};
+
+export default LogIn ;

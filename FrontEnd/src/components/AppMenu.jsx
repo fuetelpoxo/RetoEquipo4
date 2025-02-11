@@ -4,7 +4,7 @@ import './AppMenu.css';
 
 function AppMenu() {
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
             <div className="container-fluid">
                 <ul className="navbar-nav mx-auto">
                     <li className="nav-item">
