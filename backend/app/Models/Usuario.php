@@ -4,10 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Patrocinador extends Model
+class Usuario extends Model
 {
+
+    //Inlcuimos las propiedades para poder llenarlas masivamente luego
     protected $fillable = [
         'nombre',
+        'email',
+        'activo',
+        'perfil',
         'usuarioIdCreacion',
         'fechaCreacion',
         'usuarioIdActualizacion',

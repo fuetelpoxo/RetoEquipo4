@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Imagen extends Model
 {
+    //Inlcuimos las propiedades para poder llenarlas masivamente luego
+
     protected $fillable = [
-        'id',
         'url',
         'nombre',
         'equipo_id',
@@ -23,4 +24,56 @@ class Imagen extends Model
         'usuarioIdActualizacion',
         'fechaActualizacion'
     ];
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->usuarioIdCreacion = auth()->id();
+            $model->fechaCreacion = now();
+        });
+
+        static::updating(function ($model) {
+            $model->usuarioIdActualizacion = auth()->id();
+            $model->fechaActualizacion = now();
+        });
+    }
+    public function equipo()
+    {
+        return $this->belongsTo(Equipo::class);
+    }
+    public function jugador()
+    {
+        return $this->belongsTo(Jugador::class);
+    }
+
+    public function partido()
+    {
+        return $this->belongsTo(Partido::class);
+    }
+
+    public function patrocinador()
+    {
+        return $this->belongsTo(Patrocinador::class);
+    }
+
+
+    public function reto()
+    {
+        return $this->belongsTo(Reto::class);
+    }
+
+    public function ong()
+    {
+        return $this->belongsTo(Ong::class);
+    }
+
+    public function publicacion()
+    {
+        return $this->belongsTo(Publicacion::class);
+    }
+    public function pabellon()
+    {
+        return $this->belongsTo(Pabellon::class);
+    }
 }

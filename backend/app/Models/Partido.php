@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Partido extends Model
 {
     protected $fillable = [
-        'id',
         'equipoL_id',
         'equipoV_id',
         'fecha',

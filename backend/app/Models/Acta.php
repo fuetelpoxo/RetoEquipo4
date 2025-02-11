@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Acta extends Model
 {
     protected $fillable = [
-        'id',
         'partido_id',
         'jugador_id',
         'incidencia',
