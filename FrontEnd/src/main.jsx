@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import AppEnrutador from "./routers/AppEnrutadorPublic.jsx";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
+import "./main.css";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

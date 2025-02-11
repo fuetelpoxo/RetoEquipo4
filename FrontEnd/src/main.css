@@ -1,0 +1,9 @@
+/* Garantiza que las imágenes del carrusel cubran toda la pantalla sin deformarse */
+.carousel-item img {
+    object-fit: cover;
+}
+
+/* Asegura que la presentación no sea demasiado ancha en pantallas grandes */
+.presentation {
+    max-width: 600px;
+}
