@@ -16,9 +16,9 @@ return new class extends Migration
             $table->foreignId('centro_id')->constrained('centros'); // Relación con centros
             $table->string('nombre', 100);
             $table->string('grupo', 50);
-            $table->foreignId('usuarioIdCreacion')->constrained('usuarios'); // Relación con usuarios
+            $table->foreignId('usuarioIdCreacion')->constrained('users'); // Relación con usuarios
             $table->timestamp('fechaCreacion');
-            $table->foreignId('usuarioIdActualizacion')->constrained('usuarios'); // Relación con usuarios
+            $table->foreignId('usuarioIdActualizacion')->constrained('users'); // Relación con usuarios
             $table->timestamp('fechaActualizacion');
             $table->timestamps();
         });

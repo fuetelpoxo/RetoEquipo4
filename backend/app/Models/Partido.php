@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Facades\Auth;
 class Partido extends Model
 {
     protected $table = 'partidos';
@@ -54,5 +54,20 @@ class Partido extends Model
     public function pabellon()
     {
         return $this->belongsTo(Pabellon::class, 'pabellon_id');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->usuarioIdCreacion = Auth::id();
+            $model->fechaCreacion = now();
+        });
+
+        static::updating(function ($model) {
+            $model->usuarioIdActualizacion = Auth::id();
+            $model->fechaActualizacion = now();
+        });
     }
 }

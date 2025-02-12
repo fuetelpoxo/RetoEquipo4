@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Facades\Auth;
 class Publicacion extends Model
 {
     protected $table = 'publicaciones';
@@ -63,6 +63,21 @@ class Publicacion extends Model
     public function pabellon()
     {
         return $this->belongsTo(Pabellon::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->usuarioIdCreacion = Auth::id();
+            $model->fechaCreacion = now();
+        });
+
+        static::updating(function ($model) {
+            $model->usuarioIdActualizacion = Auth::id();
+            $model->fechaActualizacion = now();
+        });
     }
 
 }

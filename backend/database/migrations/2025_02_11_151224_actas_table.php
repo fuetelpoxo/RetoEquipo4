@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('incidencia');
             $table->time('hora');
             $table->text('comentario');
-            $table->foreignId('usuarioIdCreacion')->constrained('usuarios'); // Si hay tabla de usuarios
+            $table->foreignId('usuarioIdCreacion')->constrained('users'); // Si hay tabla de usuarios
             $table->timestamp('fechaCreacion');
-            $table->foreignId('usuarioIdActualizacion')->constrained('usuarios'); // Si hay tabla de usuarios
+            $table->foreignId('usuarioIdActualizacion')->constrained('users'); // Si hay tabla de usuarios
             $table->timestamp('fechaActualizacion');
             $table->timestamps();
         });

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Facades\Auth;
 class Inscripcion extends Model
 {
     protected $table = 'inscripciones';
@@ -20,5 +20,20 @@ class Inscripcion extends Model
     public function equipo()
     {
         return $this->belongsTo(Equipo::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->usuarioIdCreacion = Auth::id();
+            $model->fechaCreacion = now();
+        });
+
+        static::updating(function ($model) {
+            $model->usuarioIdActualizacion = Auth::id();
+            $model->fechaActualizacion = now();
+        });
     }
 }

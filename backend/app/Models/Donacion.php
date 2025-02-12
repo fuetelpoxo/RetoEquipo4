@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Donacion extends Model
@@ -22,15 +22,19 @@ class Donacion extends Model
         return $this->belongsTo(Ong::class, 'ong_id');
     }
 
-    // Relación con Usuario para el creador
-    public function usuarioCreacion()
+  
+    protected static function boot()
     {
-        return $this->belongsTo(Usuario::class, 'usuarioIdCreacion');
-    }
+        parent::boot();
 
-    // Relación con Usuario para el actualizador
-    public function usuarioActualizacion()
-    {
-        return $this->belongsTo(Usuario::class, 'usuarioIdActualizacion');
+        static::creating(function ($model) {
+            $model->usuarioIdCreacion = Auth::id();
+            $model->fechaCreacion = now();
+        });
+
+        static::updating(function ($model) {
+            $model->usuarioIdActualizacion = Auth::id();
+            $model->fechaActualizacion = now();
+        });
     }
 }

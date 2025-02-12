@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Acta extends Model
 {
     protected $table = 'actas';
+
     protected $fillable = [
         'partido_id',
         'jugador_id',
@@ -29,5 +31,20 @@ class Acta extends Model
     public function jugador()
     {
         return $this->belongsTo(Jugador::class, 'jugador_id');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->usuarioIdCreacion = Auth::id();
+            $model->fechaCreacion = now();
+        });
+
+        static::updating(function ($model) {
+            $model->usuarioIdActualizacion = Auth::id();
+            $model->fechaActualizacion = now();
+        });
     }
 }

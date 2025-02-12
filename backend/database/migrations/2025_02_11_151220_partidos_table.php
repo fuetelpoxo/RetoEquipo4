@@ -20,9 +20,9 @@ return new class extends Migration
             $table->integer('golesL')->default(0); // Goles equipo local
             $table->integer('golesV')->default(0); // Goles equipo visitante
             $table->foreignId('pabellon_id')->constrained('pabellones'); // Relación con pabellones
-            $table->foreignId('usuarioIdCreacion')->constrained('usuarios'); // Relación con usuarios
+            $table->foreignId('usuarioIdCreacion')->constrained('users'); // Relación con usuarios
             $table->timestamp('fechaCreacion');
-            $table->foreignId('usuarioIdActualizacion')->constrained('usuarios'); // Relación con usuarios
+            $table->foreignId('usuarioIdActualizacion')->constrained('users'); // Relación con usuarios
             $table->timestamp('fechaActualizacion');
             $table->timestamps();
         });

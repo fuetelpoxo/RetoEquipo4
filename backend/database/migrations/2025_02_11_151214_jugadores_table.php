@@ -22,9 +22,9 @@ return new class extends Migration
             $table->string('dni');
             $table->string('email');
             $table->string('telefono');
-            $table->foreignId('usuarioIdCreacion')->constrained('usuarios'); // Si tienes tabla de usuarios
+            $table->foreignId('usuarioIdCreacion')->constrained('users'); // Si tienes tabla de usuarios
             $table->timestamp('fechaCreacion');
-            $table->foreignId('usuarioIdActualizacion')->constrained('usuarios'); // Si tienes tabla de usuarios
+            $table->foreignId('usuarioIdActualizacion')->constrained('users'); // Si tienes tabla de usuarios
             $table->timestamp('fechaActualizacion');
             $table->timestamps();
         });

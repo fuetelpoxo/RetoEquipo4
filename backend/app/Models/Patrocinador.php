@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Facades\Auth;
 class Patrocinador extends Model
 {
     protected $table = 'patrocinadores';
@@ -15,16 +15,7 @@ class Patrocinador extends Model
         'fechaActualizacion'
     ];
     // Relación con Usuario (Creador)
-    public function usuarioCreacion()
-    {
-        return $this->belongsTo(Usuario::class, 'usuarioIdCreacion');
-    }
 
-    // Relación con Usuario (Actualizador)
-    public function usuarioActualizacion()
-    {
-        return $this->belongsTo(Usuario::class, 'usuarioIdActualizacion');
-    }
 
     // Relación con Publicaciones (Un patrocinador puede tener muchas publicaciones)
     public function publicaciones()
@@ -42,5 +33,20 @@ class Patrocinador extends Model
     public function equipos()
     {
         return $this->belongsToMany(Equipo::class, 'patrocinadores_equipo', 'patrocinador_id', 'equipo_id');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->usuarioIdCreacion = Auth::id();
+            $model->fechaCreacion = now();
+        });
+
+        static::updating(function ($model) {
+            $model->usuarioIdActualizacion = Auth::id();
+            $model->fechaActualizacion = now();
+        });
     }
 }
