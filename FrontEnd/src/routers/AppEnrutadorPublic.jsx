@@ -17,6 +17,11 @@ import DirectorTorneo from '../pages/Director/DirectorTorneo.jsx';
 import Entrenador from '../pages/Entrenador/Entrenador.jsx';
 import Periodista from '../pages/Periodista/Periodista.jsx';
 import { useAuth } from '../context/UserContext';
+import Patrocinadores from '../pages/Publicas/Patrocinadores.jsx';
+import Objetivos from '../pages/Publicas/Objetivos.jsx';
+import Horarios from '../pages/Publicas/Horarios.jsx';
+import FaseFinal from '../pages/Publicas/FaseFinal.jsx';
+import Clasificacion from '../pages/Publicas/Clasificacion.jsx';
 
 function AppEnrutador() {
     const { loggedInUser } = useAuth();
@@ -45,16 +50,21 @@ function AppEnrutador() {
             <Routes>
                 {/* Rutas públicas con layout y menú */}
                 <Route path="/" element={<AppLayout />}>
-                    <Route index element={<Inicio />} />
-                    <Route path="torneo" element={<Torneo />} />
-                    <Route path="retos" element={<RetosPublic />} />
-                    <Route path="inforetos" element={<RetosInfo />} />
-                    <Route path="equipos" element={<EquiposPublic />} />
-                    <Route path="reglamento" element={<Reglamento />} />
-                    <Route path="infoequipos" element={<InfoEquipos />} />
-                    <Route path="inscripcion" element={<Inscripcion />} />
-                    <Route path="torneosolidario" element={<TorneoSolidario />} />
-                    <Route path="configuracion" element={<Configuracion />} />
+                    <Route index element={< Inicio />} />
+                    <Route path="login" element={< LogIn />} />
+                    <Route path="torneo" element={< Torneo />} />
+                    <Route path="retos" element={< RetosPublic />} />
+                    <Route path="retos/inforetos" element={< RetosInfo />} />
+                    <Route path="solidario" element={< TorneoSolidario />} />
+                    <Route path="solidario/patrocinadores" element={< Patrocinadores />} />
+                    <Route path="solidario/objetivos" element={< Objetivos />} />
+                    <Route path="equipos" element={< EquiposPublic />} />
+                    <Route path="equipos/infoequipos" element={< InfoEquipos />} />
+                    <Route path="equipos/inscripcion" element={< Inscripcion />} />
+                    <Route path="torneo/horario" element={< Horarios />} />
+                    <Route path="torneo/fase-final" element={< FaseFinal />} />
+                    <Route path="torneo/reglamento" element={< Reglamento />} />
+                    <Route path="torneo/clasificacion" element={< Clasificacion />} />
                 </Route>
 
                 {/* Ruta de login sin menú */}
