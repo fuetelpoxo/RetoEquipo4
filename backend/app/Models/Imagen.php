@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class Imagen extends Model
 {
     protected $table = 'imagenes';
@@ -38,6 +39,7 @@ class Imagen extends Model
     //         $model->fechaActualizacion = now();
     //     });
     // }
+
     public function equipo()
     {
         return $this->belongsTo(Equipo::class);
