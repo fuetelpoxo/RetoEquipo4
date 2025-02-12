@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom"; // Importa useNavigate
 import { useAuth } from '../context/UserContext';
 import { useState } from "react";
 import 'font-awesome/css/font-awesome.min.css';
@@ -8,6 +8,32 @@ function AppMenu() {
     const { loggedInUser } = useAuth();
     const [isTorneoOpen, setIsTorneoOpen] = useState(false);
     const [isSolidarioOpen, setIsSolidarioOpen] = useState(false);
+    const navigate = useNavigate(); // Usamos useNavigate para la redirección programática
+
+    // Función de redirección para el ícono de configuración
+    const handleConfiguracionClick = () => {
+        if (!loggedInUser) {
+            navigate("/login"); // Si no hay usuario, redirige al login
+        } else {
+            switch (loggedInUser.role) {
+                case 'admin':
+                    navigate("/administrador");
+                    break;
+                case 'director':
+                    navigate("/director");
+                    break;
+                case 'entrenador':
+                    navigate("/entrenador");
+                    break;
+                case 'periodista':
+                    navigate("/periodista");
+                    break;
+                default:
+                    navigate("/");  // Si no hay un rol válido, redirige al inicio
+                    break;
+            }
+        }
+    };
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -57,9 +83,13 @@ function AppMenu() {
                     </li>
                     {loggedInUser && (
                         <li className="nav-item ms-auto">
-                            <Link className="nav-link text-white icon-container" to="/configuracion">
+                            <span
+                                className="nav-link text-white icon-container"
+                                style={{ cursor: 'pointer' }}
+                                onClick={handleConfiguracionClick}  // Llamamos a la función de redirección
+                            >
                                 <i className="fa fa-cog"></i>
-                            </Link>
+                            </span>
                         </li>
                     )}
                 </ul>
