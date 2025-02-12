@@ -11,4 +11,9 @@ class Ong extends Model
         'nombre',
         'landingPage'
     ];
+
+    public function donaciones()
+    {
+        return $this->hasMany(Donacion::class);
+    }
 }

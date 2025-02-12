@@ -16,4 +16,9 @@ class Inscripcion extends Model
         'usuarioIdActualizacion',
         'fechaActualizacion'
     ];
+
+    public function equipo()
+    {
+        return $this->belongsTo(Equipo::class);
+    }
 }

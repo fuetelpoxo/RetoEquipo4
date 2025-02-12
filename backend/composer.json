@@ -13,5 +13,9 @@
         }
     ],
     "minimum-stability": "stable",
-    "require": {}
+    "require": {
+        "laravel/framework": "^11.42",
+        "pecee/simple-router": "^5.4",
+        "laravel/sanctum": "^4.0"
+    }
 }

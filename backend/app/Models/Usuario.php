@@ -13,4 +13,7 @@ class Usuario extends Model
         'activo',
         'perfil'
     ];
+
+
+
 }
