@@ -17,13 +17,13 @@ class Patrocinador extends Model
     // Relación con Usuario (Creador)
     public function usuarioCreacion()
     {
-        return $this->belongsTo(User::class, 'usuarioIdCreacion');
+        return $this->belongsTo(Usuario::class, 'usuarioIdCreacion');
     }
 
     // Relación con Usuario (Actualizador)
     public function usuarioActualizacion()
     {
-        return $this->belongsTo(User::class, 'usuarioIdActualizacion');
+        return $this->belongsTo(Usuario::class, 'usuarioIdActualizacion');
     }
 
     // Relación con Publicaciones (Un patrocinador puede tener muchas publicaciones)

@@ -25,4 +25,5 @@ class Publicacion extends Model
         'usuarioIdActualizacion',
         'fechaActualizacion'
     ];
+
 }
