@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('inscripciones', function (Blueprint $table) {
             $table->id();
             //Campos de auditoría /
-            $table->unsignedBigInteger('usuarioIdCreacion');
-            $table->unsignedBigInteger('usuarioIdActualizacion')->nullable();
+            $table->foreignId('usuarioIdCreacion')->constrained('usuarios'); // Relación con la tabla de usuarios
             $table->timestamp('fechaCreacion')->useCurrent();
-            $table->timestamp('fechaActualizacion')->nullable()->useCurrentOnUpdate();
+            $table->foreignId('usuarioIdActualizacion')->nullable()->constrained('usuarios'); // Relación con la tabla de usuarios
+            $table->timestamp('fechaActualizacion')->nullable()->useCurrent();
             $table->timestamps();
             //Campos de la tabla/
             $table->longText('comentarios');

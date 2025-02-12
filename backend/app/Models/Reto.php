@@ -10,11 +10,7 @@ class Reto extends Model
     protected $fillable = [
         'titulo',
         'texto',
-        'estudio_id',
-        'usuarioIdCreacion',
-        'fechaCreacion',
-        'usuarioIdActualizacion',
-        'fechaActualizacion'
+        'estudio_id'
     ];
     // Relación con Estudio (un reto pertenece a un estudio)
     public function estudio()

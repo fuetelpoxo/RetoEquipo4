@@ -25,12 +25,12 @@ class Donacion extends Model
     // Relación con Usuario para el creador
     public function usuarioCreacion()
     {
-        return $this->belongsTo(User::class, 'usuarioIdCreacion');
+        return $this->belongsTo(Usuario::class, 'usuarioIdCreacion');
     }
 
     // Relación con Usuario para el actualizador
     public function usuarioActualizacion()
     {
-        return $this->belongsTo(User::class, 'usuarioIdActualizacion');
+        return $this->belongsTo(Usuario::class, 'usuarioIdActualizacion');
     }
 }
