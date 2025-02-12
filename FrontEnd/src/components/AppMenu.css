@@ -32,4 +32,5 @@
     .custom-hover:hover::after {
         width: 100%; /* La línea roja se extiende al 100% al hacer hover */
     }
+   
     

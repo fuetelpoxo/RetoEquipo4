@@ -1,21 +1,28 @@
-// src/components/Login.jsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { verifyUser } from '../core/loginUsers';
+import { useAuth } from '../context/UserContext';
 
-
-const Login = ({ onLogin }) => {
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (username && password && role) {
-      onLogin({ username, password, role });
+    const user = verifyUser(username, password);
+
+    if (user) {
+      login(user);
+      navigate('/'); // Redirigimos al inicio
     } else {
-      alert("Por favor, completa todos los campos.");
+      setError("Usuario o contraseña incorrectos.");
     }
   };
 
-   return (
+  return (
     <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh', backgroundColor: '#fff' }}>
       <div className="card p-4 shadow-lg" style={{ width: '400px', backgroundColor: '#121212' }}>
         <h2 className="text-center mb-4 text-white fw-bold">Iniciar Sesión</h2>
@@ -25,7 +32,7 @@ const Login = ({ onLogin }) => {
             <input
               type="text"
               id="username"
-              className="form-control bg-dark  text-white"
+              className="form-control bg-dark text-white"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Introduce tu usuario"
@@ -34,7 +41,7 @@ const Login = ({ onLogin }) => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="password" className="form-label text-white ">Contraseña</label>
+            <label htmlFor="password" className="form-label text-white">Contraseña</label>
             <input
               type="password"
               id="password"
@@ -48,9 +55,11 @@ const Login = ({ onLogin }) => {
 
           <button type="submit" className="btn btn-danger w-100 fw-bold">Iniciar Sesión</button>
         </form>
+
+        {error && <div className="text-danger mt-3">{error}</div>}
       </div>
-      
     </div>
   );
 };
+
 export default Login;
