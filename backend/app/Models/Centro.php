@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -8,7 +10,7 @@ class Centro extends Model
 {
     protected $table = 'centros';
     protected $fillable = [
-        'nombre'
+        'nombre',
     ];
 
     // Relación con Equipos (un centro tiene muchos equipos)

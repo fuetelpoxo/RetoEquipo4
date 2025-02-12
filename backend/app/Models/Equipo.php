@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +16,7 @@ class Equipo extends Model
         'usuarioIdCreacion',
         'fechaCreacion',
         'usuarioIdActualizacion',
-        'fechaActualizacion'
+        'fechaActualizacion',
     ];
 
     // Relación con Centro (un equipo pertenece a un centro)

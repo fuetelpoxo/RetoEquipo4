@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -10,8 +12,9 @@ class Reto extends Model
     protected $fillable = [
         'titulo',
         'texto',
-        'estudio_id'
+        'estudio_id',
     ];
+
     // Relación con Estudio (un reto pertenece a un estudio)
     public function estudio()
     {

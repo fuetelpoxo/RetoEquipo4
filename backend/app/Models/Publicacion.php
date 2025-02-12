@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -23,7 +25,6 @@ class Publicacion extends Model
         'usuarioIdCreacion',
         'fechaCreacion',
         'usuarioIdActualizacion',
-        'fechaActualizacion'
+        'fechaActualizacion',
     ];
-
 }

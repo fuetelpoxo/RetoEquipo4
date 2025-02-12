@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Imagen extends Model
 {
@@ -21,7 +24,7 @@ class Imagen extends Model
         'usuarioIdCreacion',
         'fechaCreacion',
         'usuarioIdActualizacion',
-        'fechaActualizacion'
+        'fechaActualizacion',
     ];
 
     // protected static function boot()
@@ -38,10 +41,12 @@ class Imagen extends Model
     //         $model->fechaActualizacion = now();
     //     });
     // }
+
     public function equipo()
     {
         return $this->belongsTo(Equipo::class);
     }
+
     public function jugador()
     {
         return $this->belongsTo(Jugador::class);
@@ -57,7 +62,6 @@ class Imagen extends Model
         return $this->belongsTo(Patrocinador::class);
     }
 
-
     public function reto()
     {
         return $this->belongsTo(Reto::class);
@@ -72,6 +76,7 @@ class Imagen extends Model
     {
         return $this->belongsTo(Publicacion::class);
     }
+
     public function pabellon()
     {
         return $this->belongsTo(Pabellon::class);

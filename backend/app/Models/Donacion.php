@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -14,9 +16,10 @@ class Donacion extends Model
         'usuarioIdCreacion',
         'fechaCreacion',
         'usuarioIdActualizacion',
-        'fechaActualizacion'
+        'fechaActualizacion',
     ];
-     // Relación con Ong
+
+    // Relación con Ong
     public function ong()
     {
         return $this->belongsTo(Ong::class, 'ong_id');

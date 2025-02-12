@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +16,7 @@ class Estudio extends Model
         'usuarioIdCreacion',
         'fechaCreacion',
         'usuarioIdActualizacion',
-        'fechaActualizacion'
+        'fechaActualizacion',
     ];
 
     // Relación con Ciclo (un estudio pertenece a un ciclo)

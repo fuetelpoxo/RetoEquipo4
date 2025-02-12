@@ -3,7 +3,8 @@
     "description": "reto",
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "App\\": "src/",
+            "Database\\Seeders\\": "database/seeders/"
         }
     },
     "authors": [
@@ -16,6 +17,11 @@
     "require": {
         "laravel/framework": "^11.42",
         "pecee/simple-router": "^5.4",
-        "laravel/sanctum": "^4.0"
+        "laravel/sanctum": "^4.0",
+        "laravel/tinker": "^2.10"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^2.1",
+        "friendsofphp/php-cs-fixer": "^3.68"
     }
 }

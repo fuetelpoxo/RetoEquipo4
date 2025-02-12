@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -20,8 +22,9 @@ class Jugador extends Model
         'usuarioIdCreacion',
         'fechaCreacion',
         'usuarioIdActualizacion',
-        'fechaActualizacion'
+        'fechaActualizacion',
     ];
+
     // Relación con Actas (un jugador puede tener muchas actas)
     public function actas()
     {
@@ -51,5 +54,4 @@ class Jugador extends Model
     {
         return $this->belongsTo(Estudio::class, 'estudio_id');
     }
-    
 }
