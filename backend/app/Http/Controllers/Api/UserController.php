@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use App\Http\Requests\UserRequests\StoreUserRequest;
+use App\Http\Requests\UserRequests\UpdateUserRequest;
+
 /**
  * @OA\Info(
  *      title="API de Gestión de Usuarios",
@@ -112,11 +114,14 @@ class UserController extends Controller
      *     @OA\Response(response=200, description="Usuario actualizado")
      * )
      */
-    public function update(Request $request, User $user)
-    {
-        $user->update($request->only('name', 'perfil'));
-        return new UserResource($user);
-    }
+    public function update(UpdateUserRequest $request, User $user)
+{
+    // Solo se actualizan los campos validados
+    $user->update($request->validated());
+
+    // Retornar el usuario actualizado
+    return new UserResource($user);
+}
 
     /**
      * @OA\Delete(
