@@ -44,15 +44,47 @@ Los grupos de seguridad en AWS actúan como un firewall para controlar que tráf
 
 ## *Máquina Virtual EC2*
 
+Vamos a crear una máquina virtual en AWS (EC2) que actuará como servidor web con las siguientes características:
+
+- Como nombre le daremos "ServidorWebEquipo4RETO" y el Sistema operativo que utilizaremos es "Ubuntu Server 22.04" la versión LTS (Long Term Support) ya que es una versión estable y optimizada de Ubuntu para servidores. Como vemos AWS nos ofrece imágenes preconfiguradas AMI(Amazon Machine Images) para diversos Sistemas Operativos.
+
 ![alt text](img/image-15.png)
+
+- EL tipo de instancia que vamoa a elegir es "T2.medium", la cual consta de 2 vCPUs (procesadores virtuales) y de 4GB de RAM. En el caso de que la aplicación fuese muy grande o si en un futuro crece demasiado habría que cambiar a una instancia más grande, es decir, que tenga mas capacidad.
+
+- Además elegiremos la opción de crear un par de claves vockey (pública y privada) que se usan para acceder por SSH a la instancia.
 
 ![alt text](img/image-9.png)
 
+- Dentro de la configuración de red de la Máquina Virtual, le asignamos la vpc creada al principio y la subred pública "Equipo4RETO-subnet-public1-us-east-1a". La instancia creará esta subred dentro de la VPC y al ser pública  permitirá el acceso a internet.
+
+- Habilitaremos la IP pública que se asignará a la instancia, lo que permitirá el acceso desde fuera de AWS (necesario para el servidor web y SSH).
+
+- Usaremos el grupo se seguridad "grupo-seguridad-web-Equipo4RETO" que nos permite el acceso por HTTP y SSH.
+
 ![alt text](img/image-10.png)
+
+- Optaremos por 20GB SSD de almacenamiento que es suficiente para un servidor web básico y en el caso de necesitar más sólo tendríamos que aumentarlo.
 
 ![alt text](img/image-11.png)
 
+- Aquí vemos que se ha creado correctamente.
+
 ![alt text](img/image-12.png)
+
+### *Resumen de configuración de la MV EC2*
+
+| Configuración        | Valor |
+|---------------------|---------------------------|
+| **Nombre** | `ServidorWebEquipo4RETO` |
+| **SO** | Ubuntu Server 22.04 |
+| **Tipo de Instancia** | T2.medium (2 vCPU, 4GB RAM) |
+| **Clave SSH** | `vockey.pem` |
+| **Red** | Subred pública (`Equipo4RETO-subnet-public1-us-east-1a`) |
+| **IP Pública** | Activada |
+| **Grupo de Seguridad** | `grupo-seguridad-web-Equipo4RETO` (HTTP y SSH abiertos) |
+| **Almacenamiento** | 20GB SSD |
+
 
 ## Conexión desde la terminal
 
