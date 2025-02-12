@@ -1,13 +1,17 @@
 <?php
-declare(strict_types=1);
+
 use Illuminate\Http\Request;
 
-use Pecee\SimpleRouter\SimpleRouter as Router;
-//cargamos las librerias y el fichero de rutas
+define('LARAVEL_START', microtime(true));
+
+// Determine if the application is in maintenance mode...
+if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
+    require $maintenance;
+}
+
+// Register the Composer autoloader...
 require __DIR__.'/../vendor/autoload.php';
-require __DIR__.'/../routes/api.php';
-// cargamos el fichero .env con la configuración
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv->load();
-// cargamos el router
-Router::start();
+
+// Bootstrap Laravel and handle the request...
+(require_once __DIR__.'/../bootstrap/app.php')
+    ->handleRequest(Request::capture());
