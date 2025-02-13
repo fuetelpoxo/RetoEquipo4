@@ -57,35 +57,63 @@ Hemos optado por unos colores oscuros para que la pagina sea minimalista, con un
 ### Vistas 
 
 - Vista de Inicio
+  
 ![alt text](img/image-2.png)
+
 La vista de inicio es la pantalla principal de la aplicación web. Su propósito es proporcionar una introducción al usuario sobre el sistema y ofrecer opciones de navegación.
 Contiene un texto introductorio que explica el propósito de la aplicación.
+
 - Vista de Torneo de deportivo
+  
 ![alt text](img/image-3.png)
+
 Esta vista permite gestionar la información sobre torneos deportivos, incluyendo horarios, equipos y clasificaciones.
-- Vista de reglamento 
+
+- Vista de reglamento
+  
 ![alt text](img/image-4.png)
+
 En esta vista se presentan las normas y regulaciones del torneo o del sistema en general
+
 - Vista de equipos
+  
 ![alt text](img/image-5.png)
 Esta vista proporciona información detallada sobre un equipo en particular, incluyendo su entrenador y patrocinador.
+
 - Vista Informacion para los equipos
+  
 ![alt text](img/image-6.png)
+
 En esta vista se muestra el entrenador y los jugadores de cada equipo 
-- Vista para el login 
+
+- Vista para el login
+  
 ![alt text](img/image-7.png)
+
 Esta vista permite a los usuarios autenticarse en el sistema proporcionando sus credenciales.
-- Vista para la inscripcion 
+
+- Vista para la inscripcion
+  
 ![alt text](img/image-8.png)
+
 En esta vista  permite seleccionar el entrenador, el capitan y los jugadores 
-- Vista para el torneo solidario 
+
+- Vista para el torneo solidario
+  
 ![alt text](img/image-9.png)
+
 Esta vista presenta la información sobre un torneo solidario, incluyendo sus objetivos, recaudación y patrocinadores
-- Vista para retos 
+
+- Vista para retos
+  
 ![alt text](img/image-10.png)
+
 Esta vista muestra diferentes desafíos o retos en los que los usuarios pueden participar.
-- Vista para cada rama profesional 
+
+- Vista para cada rama profesional
+  
 ![alt text](img/image-11.png)
+
 Esta vista proporciona información detallada sobre una categoría profesional específica dentro de los retos.
 
 ### Iconos 
