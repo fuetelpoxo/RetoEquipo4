@@ -28,12 +28,12 @@ class Donacion extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->usuarioIdCreacion = Auth::id();
+            $model->usuarioIdCreacion = Auth::id() ?? 1;
             $model->fechaCreacion = now();
         });
 
         static::updating(function ($model) {
-            $model->usuarioIdActualizacion = Auth::id();
+            $model->usuarioIdActualizacion = Auth::id() ?? 1;
             $model->fechaActualizacion = now();
         });
     }
