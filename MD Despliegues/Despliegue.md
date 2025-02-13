@@ -5,7 +5,7 @@ A lo largo de esta guía de despliegue vamos a explicar como montar un servidor 
 ---
 
 ## *Creación de una VPC*
-El primer paso que vamos a llevar a cabo es el de crear una VPC (Virtual private Cloud), esto es una red privada dentro de AWS donde podremos desplegar nuestras instancias y recurso la cual también nos permitirá definir subredes, grupos de seguridad y configuraciones de red personalizadas. A continuación mostraremos la creación de la VPc con las especificaciones necesarias:
+El primer paso que vamos a llevar a cabo es el de crear una VPC (Virtual private Cloud), esto es una red privada dentro de AWS donde podremos desplegar nuestras instancias y recursos, la cual también nos permitirá definir subredes, grupos de seguridad y configuraciones de red personalizadas. A continuación, mostraremos la creación de la VPC con las especificaciones necesarias:
 
 - La VPC lleva el nombre "Equipo4RETO" que hace referencia al proyecto que llevamos a cabo. Por otra parte le asignamos un Bloque de CIDR (Classless Inter-Domain Routing) IPv4 que nos permitirá asignar rangos en direcciones IP. En nuestro caso le asignamos "10.0.0.0/16" lo que significa que la VPC tendrá las direcciones disponibles desde "10.0.0.0 hasta 10.0.255.255".
 
@@ -22,7 +22,7 @@ El primer paso que vamos a llevar a cabo es el de crear una VPC (Virtual private
 
 ![Configuracion-VPC](img/image-14.png)
 
-- Este es el mensaje que nos indica se ha creado correctamente. En la imagen podemos ver todo lo que se ha creado en la confección de la VPC y que no ha dado ningún fallo.
+- Este es el mensaje que nos indica que se ha creado correctamente. En la imagen podemos ver todo lo que se ha creado en la confección de la VPC sin tener ningún fallo.
 
 ![Configuracion-VPC](img/image-4.png)
 
@@ -88,27 +88,27 @@ Vamos a crear una máquina virtual en AWS (EC2) que actuará como servidor web c
 
 ## Conexión a la MV
 
-La primera forma que tenemos de conectarnos a nuestra instancia es mediante el apartado de Conexión de la instancia EC2, el cual nos conectará directamente con la MV que hemos creado.
+- La primera forma que tenemos de conectarnos a nuestra instancia es mediante el apartado de Conexión de la instancia EC2, el cual nos conectará directamente con la MV que hemos creado.
 
 ![Conexion](img/image-48.png)
 
-Como vemos, ya estamos conectados a la MV y podemos empezar a trabajar con ella.
+- Como vemos, ya estamos conectados a la MV y podemos empezar a trabajar con ella.
 
 ![Conexion](img/image-49.png)
 
-La segunda forma de conectarnos a la MV es a través de la cmd del ordenador a través del cliente SSH. Lo primero que tenemos que hacer es descargarnos el PEM(Privacy-Enhanced Mail) que utilizamos comúnmenete para almacenar claves privadas y certificados. Este archivo lo guardaremos en un carpeta en la siguiente ruta:
+- La segunda forma de conectarnos a la MV es a través de la cmd del ordenador a través del cliente SSH. Lo primero que tenemos que hacer es descargarnos el PEM(Privacy-Enhanced Mail) que utilizamos comúnmenete para almacenar claves privadas y certificados. Este archivo lo guardaremos en un carpeta en la siguiente ruta:
 
 ![Conexion](img/image-51.png)
 
-El siguiente paso es irnos al apartado de Cliente SSH y copiar el siguiente comando:
+- El siguiente paso es irnos al apartado de Cliente SSH y copiar el siguiente comando:
 
 ![Conexion](img/image-52.png)
 
-Dentro del cmd nos situamos dentro de la carpeta mostrada antes y copiamos el comando cambiando el nombre de "vockey.pem" por "labsuser.pem" que es el nombre del archivo pem que nos hemos descargado.
+- Dentro del cmd nos situamos dentro de la carpeta mostrada antes y copiamos el comando cambiando el nombre de "vockey.pem" por "labsuser.pem" que es el nombre del archivo pem que nos hemos descargado.
 
 ![Conexion](img/image-53.png)
 
-Como vemos ya estaríamos conectados ya ya podríamos empezar a configurarla.
+- Como vemos ya estaríamos conectados ya ya podríamos empezar a configurarla.
 
 ![Conexion](img/image-54.png)
 
@@ -118,15 +118,15 @@ Como vemos ya estaríamos conectados ya ya podríamos empezar a configurarla.
 
 En este apartado vamos a mostrar como preparar el servidor para poder alojar nuestro proyecto.
 
-- Lo primero que realizamos es "sudo apt update" para actualizar todos los paquetes existentes y que descargue todo lo necesario para la configuración que vamos a realizar.
+- Lo primero que realizamos es `sudo apt update` para actualizar todos los paquetes existentes y que descargue todo lo necesario para la configuración que vamos a realizar.
 
 ![Configuracion-Servidor](img/image-16.png)
 
-- Instalamos el servidor de apache a través del comando "sudo apt install apache2".
+- Instalamos el servidor de apache a través del comando `sudo apt install apache2`.
 
 ![Configuracion-Servidor](img/image-17.png)
 
--  Comprobamos que el servidor este funcionando correctamente utilizando "sudo systemctl status apache2", que nos muestra el estado actual del servidor.
+-  Comprobamos que el servidor este funcionando correctamente utilizando `sudo systemctl status apache2`, que nos muestra el estado actual del servidor.
 
 ![Configuracion-Servidor](img/image-18.png)
 
@@ -146,11 +146,11 @@ En este apartado vamos a mostrar como preparar el servidor para poder alojar nue
 
 ![Configuracion-Servidor](img/image-22.png)
 
-- Cambiamos los permisos de propiedad del directorio y nos aseguramos de que se ha realizado correctamente utilizando el segundo comando "ls -ld /var/www/Equipo4", que nos muestra los permisos y propiedades del directorio sin listar us contenido.
+- Cambiamos los permisos de propiedad del directorio y nos aseguramos de que se ha realizado correctamente utilizando el segundo comando `ls -ld /var/www/Equipo4`, que nos muestra los permisos y propiedades del directorio sin listar us contenido.
 
 ![Configuracion-Servidor](img/image-23.png)
 
-- Utilizamos el comando "sudo a2ensite Equipo4.conf" para habilitar nuestro sitio web. Y luego reiniciamos el servidor para que los cambios realizados se guarden.
+- Utilizamos el comando `sudo a2ensite Equipo4.conf` para habilitar nuestro sitio web. Y luego reiniciamos el servidor para que los cambios realizados se guarden.
 
 ![Configuración-Servidor](img/image-24.png)
 
@@ -158,7 +158,7 @@ En este apartado vamos a mostrar como preparar el servidor para poder alojar nue
 
 ![Configuracion-Servidor](img/image-25.png)
 
-- En la ruta indicada en la imagen removemos el archivo index.html que hay por defecto y creamos el nuestro propio, para hacer pruebas y ver que funciona y se muestra nuestra web.
+- En la ruta indicada en la imagen removemos el archivo `index.html` que hay por defecto y creamos el nuestro propio, para hacer pruebas y ver que funciona y se muestra nuestra web.
 
 ![Configuracion-Servidor](img/image-30.png)
 
@@ -178,7 +178,7 @@ En este apartado vamos a mostrar como preparar el servidor para poder alojar nue
 
 ![Configuraucion-Servidor](img/image-32.png)
 
-- En las dos siguientes imágenes mostramos los comandos "sudo ufw allow apache" y "sudo ufw allow OpenSSH" con los que vamos a permitir el tráfico de red para el servidor web Apache a través del firewall UFW, y por otro lado, permitiremos también el tráfico de red en el puerto por defecto de OpenSSH (puerto 22) a través del firewall UFW.
+- En las dos siguientes imágenes mostramos los comandos `sudo ufw allow apache` y `sudo ufw allow OpenSSH` con los que vamos a permitir el tráfico de red para el servidor web Apache a través del firewall UFW, y por otro lado, permitiremos también el tráfico de red en el puerto por defecto de OpenSSH (puerto 22) a través del firewall UFW.
 
 ![Configuracion-Servidor](img/image-36.png)
 
@@ -188,7 +188,7 @@ En este apartado vamos a mostrar como preparar el servidor para poder alojar nue
 
 ![Configuracion-Servidor](img/image-55.png)
 
-- Utilizamos otra vez "sudo apt update" para asegurarnos que nuestro sistema tenga la información más reciente sobre los paquetes y versiones disponibles para instalar o actualizar.
+- Utilizamos otra vez `sudo apt update` para asegurarnos que nuestro sistema tenga la información más reciente sobre los paquetes y versiones disponibles para instalar o actualizar.
 
 ![Configuracion-Servidor](img/image-35.png)
 
