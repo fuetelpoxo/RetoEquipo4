@@ -1,4 +1,21 @@
+## Índice
+
+1. [Guía de despliegue](#guía-de-despliegue)
+2. [Creación de una VPC](#creación-de-una-vpc)
+3. [Grupos de seguridad](#grupos-de-seguridad)
+4. [Máquina Virtual EC2](#máquina-virtual-ec2)
+    - [Resumen de configuración de la MV EC2](#resumen-de-configuración-de-la-mv-ec2)
+5. [Conexión a la MV](#conexión-a-la-mv)
+6. [Instalación y preparación del servidor en la MV de AWS](#instalación-y-preparación-del-servidor-en-la-mv-de-aws)
+7. [Grupo de seguridad para la Base de Datos](#grupo-de-seguridad-para-la-base-de-datos)
+8. [Creación de subred pública y de la subred privada](#creación-de-subred-pública-y-de-la-subred-privada)
+9. [Creación de grupo de subredes de base de datos](#creación-de-grupo-de-subredes-de-base-de-datos)
+
+
+
+
 # Guía de despliegue
+
 
 A lo largo de esta guía de despliegue vamos a explicar como montar un servidor en AWS para poder subir nuestra página web, siguiendo todos los pasos y explicándolos para que se vea de forma correcta el proceso que hemos seguido para poder lanzar nuestra aplicaión en AWS.
 
@@ -86,7 +103,7 @@ Vamos a crear una máquina virtual en AWS (EC2) que actuará como servidor web c
 | **Almacenamiento** | 20GB SSD |
 
 
-## Conexión a la MV
+## *Conexión a la MV*
 
 - La primera forma que tenemos de conectarnos a nuestra instancia es mediante el apartado de Conexión de la instancia EC2, el cual nos conectará directamente con la MV que hemos creado.
 
@@ -114,7 +131,7 @@ Vamos a crear una máquina virtual en AWS (EC2) que actuará como servidor web c
 
 
 
-## Instalación y preparación del servidor en la MV de AWS
+## *Instalación y preparación del servidor en la MV de AWS*
 
 En este apartado vamos a mostrar como preparar el servidor para poder alojar nuestro proyecto.
 
@@ -192,7 +209,7 @@ En este apartado vamos a mostrar como preparar el servidor para poder alojar nue
 
 ![Configuracion-Servidor](img/image-35.png)
 
-## Grupo de seguridad para la Base de Datos
+## *Grupo de seguridad para la Base de Datos*
 
 ![alt text](img/image-37.png)
 
@@ -200,7 +217,7 @@ En este apartado vamos a mostrar como preparar el servidor para poder alojar nue
 
 ![alt text](img/image-39.png)
 
-## Creación de subred pública y de la subred privada
+## *Creación de subred pública y de la subred privada*
 
 ![alt text](img/image-40.png)
 
@@ -211,7 +228,7 @@ En este apartado vamos a mostrar como preparar el servidor para poder alojar nue
 ![alt text](img/image-43.png)
 
 
-## Creación de grupo de subredes de base de datos
+## *Creación de grupo de subredes de base de datos*
 
 ![alt text](img/image-44.png)
 
