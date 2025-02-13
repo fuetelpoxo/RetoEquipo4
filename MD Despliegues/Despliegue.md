@@ -86,11 +86,31 @@ Vamos a crear una máquina virtual en AWS (EC2) que actuará como servidor web c
 | **Almacenamiento** | 20GB SSD |
 
 
-## Conexión desde la terminal
+## Conexión a la MV
 
-Mostrar las dos formas de conectarnos.
+La primera forma que tenemos de conectarnos a nuestra instancia es mediante el apartado de Conexión de la instancia EC2, el cual nos conectará directamente con la MV que hemos creado.
 
-![alt text](img/image-13.png)
+![alt text](img/image-48.png)
+
+Como vemos, ya estamos conectados a la MV y podemos empezar a trabajar con ella.
+
+![alt text](img/image-49.png)
+
+La segunda forma de conectarnos a la MV es a través de la cmd del ordenador a través del cliente SSH. Lo primero que tenemos que hacer es descargarnos el PEM(Privacy-Enhanced Mail) que utilizamos comúnmenete para almacenar claves privadas y certificados. Este archivo lo guardaremos en un carpeta en la siguiente ruta:
+
+![alt text](img/image-51.png)
+
+El siguiente paso es irnos al apartado de Cliente SSH y copiar el siguiente comando:
+
+![alt text](img/image-52.png)
+
+Dentro del cmd nos situamos dentro de la carpeta mostrada antes y copiamos el comando cambiando el nombre de "vockey.pem" por "labsuser.pem" que es el nombre del archivo pem que nos hemos descargado.
+
+![alt text](img/image-53.png)
+
+Como vemos ya estaríamos conectados ya ya podríamos empezar a configurarla.
+![alt text](img/image-54.png)
+
 
 
 ## Instalación y preparación del servidor en la MV de AWS
