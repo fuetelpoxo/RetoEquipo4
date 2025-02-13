@@ -16,7 +16,7 @@ import AdministradorInicio from '../pages/Administrador/AdminInicio.jsx';
 import DirectorTorneo from '../pages/Director/DirectorTorneo.jsx';
 import Entrenador from '../pages/Entrenador/Entrenador.jsx';
 import Periodista from '../pages/Periodista/Periodista.jsx';
-import { useAuth } from '../context/UserContext';
+import { useAuth } from '../context/UserContext.jsx';
 import Patrocinadores from '../pages/Publicas/Patrocinadores.jsx';
 import Objetivos from '../pages/Publicas/Objetivos.jsx';
 import Horarios from '../pages/Publicas/Horarios.jsx';
