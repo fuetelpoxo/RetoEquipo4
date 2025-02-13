@@ -10,11 +10,7 @@ class Estudio extends Model
     protected $fillable = [
         'centro_id',
         'ciclo_id',
-        'curso',
-        'usuarioIdCreacion',
-        'fechaCreacion',
-        'usuarioIdActualizacion',
-        'fechaActualizacion'
+        'curso'
     ];
 
     // Relación con Ciclo (un estudio pertenece a un ciclo)
@@ -40,18 +36,5 @@ class Estudio extends Model
     {
         return $this->hasMany(Jugador::class, 'estudio_id');
     }
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->usuarioIdCreacion = Auth::id();
-            $model->fechaCreacion = now();
-        });
-
-        static::updating(function ($model) {
-            $model->usuarioIdActualizacion = Auth::id();
-            $model->fechaActualizacion = now();
-        });
-    }
+    
 }

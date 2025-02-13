@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PabellonSeeder::class);
         $this->call(CicloSeeder::class);
         $this->call(RetoSeeder::class);
+        $this->call(EstudioSeeder::class);
 
     }
 }

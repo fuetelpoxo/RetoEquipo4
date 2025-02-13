@@ -13,23 +13,24 @@ class CicloSeeder extends Seeder
      */
     public function run(): void
     {
-        $familias = DB::table('familias')->pluck('id', 'nombre'); // Obtiene los IDs de las familias por nombre
         
-        DB::table("ciclos")->insert([
-            ['nombre' => 'CFGS Estética Integral y Bienestar', 'familia_id' => $familias['Imagen Personal']],
-            ['nombre' => 'CFGS Sonido para audiovisuales y espectáculos', 'familia_id' => $familias['Imagen y Sonido']],
-            ['nombre' => 'CFGM video DJ y sonido', 'familia_id' => $familias['Imagen y Sonido']],
-            ['nombre' => 'CFGS Mantenimiento Electrónico', 'familia_id' => $familias['Electricidad y Electronica']],
-            ['nombre' => 'CFGS Automatización y Robótica Industrial', 'familia_id' => $familias['Informatica y Comunicaciones']],
-            ['nombre' => 'CFGS Administración de Sistemas informáticos en RED', 'familia_id' => $familias['Informatica y Comunicaciones']],
-            ['nombre' => 'CFGM Sistemas Microinformáticos y Redes', 'familia_id' => $familias['Informatica y Comunicaciones']],
-            ['nombre' => 'CFGS Desarrollo de Aplicaciones Web', 'familia_id' => $familias['Informatica y Comunicaciones']],
-            ['nombre' => 'CFGM Gestión Administrativa', 'familia_id' => $familias['Comercio y Marketing']],
-            ['nombre' => 'CFGM de Carrocería', 'familia_id' => $familias['Transporte y Mantenimiento de Vehiculos']],
-            ['nombre' => 'CFGB de Tapicería y Cortinaje', 'familia_id' => $familias['Textil, Confeccion y Piel']],
-            ['nombre' => 'GM servicios de restauración y PFB Cocina y restauración', 'familia_id' => $familias['Hosteleria y Turismo']],
-            ['nombre' => 'CFGM Comercialización de productos alimentarios', 'familia_id' => $familias['Hosteleria y Turismo']],
-            ['nombre' => 'CGSFP Integración Social', 'familia_id' => $familias['Servicios Socioculturales a la comunidad']],
+        
+        DB::table('ciclos')->insert([
+            ['nombre' => 'Estética Integral y Bienestar', 'familia_id' => 1],
+            ['nombre' => 'Sonido para audiovisuales y espectáculos', 'familia_id' => 2],
+            ['nombre' => 'Video DJ y Sonido', 'familia_id' => 2],
+            ['nombre' => 'Mantenimiento Electrónivo', 'familia_id' => 3],
+            ['nombre' => 'Automatización y Robótica Industrial', 'familia_id' => 3],
+            ['nombre' => 'Administración de Sistemas Informáticos en Red', 'familia_id' => 4],
+            ['nombre' => 'Sistemas microinformáticos y Redes', 'familia_id' => 4],
+            ['nombre' => 'Desarrollo de Aplicaciones Web', 'familia_id' => 4],
+            ['nombre' => 'Gestión Administrativa', 'familia_id' => 4],
+            ['nombre' => 'Carrocería', 'familia_id' => 5],
+            ['nombre' => 'Tapicería y Cortinaje', 'familia_id' => 6],
+            ['nombre' => 'Servicios de restauración', 'familia_id' => 7],
+            ['nombre' => 'Cocina y Restauración', 'familia_id' => 7],
+            ['nombre' => 'Comercialización de productos alimentarios', 'familia_id' => 8],
+            ['nombre' => 'Integración Social', 'familia_id' => 9],
         ]);
     }
 }
