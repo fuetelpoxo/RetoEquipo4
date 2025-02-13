@@ -78,6 +78,7 @@ En esta vista se presentan las normas y regulaciones del torneo o del sistema en
 - Vista de equipos
   
 ![alt text](img/image-5.png)
+
 Esta vista proporciona información detallada sobre un equipo en particular, incluyendo su entrenador y patrocinador.
 
 - Vista Informacion para los equipos
@@ -118,7 +119,7 @@ Esta vista proporciona información detallada sobre una categoría profesional e
 
 ### Iconos 
 ![alt text](img/iconoUser.png)
-![alt text](img/iconoUser.png)
+
 ## Uso de la aplicacion 
 
 ### Cuentas de acceso ✔️
