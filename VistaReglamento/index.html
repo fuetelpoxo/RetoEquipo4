@@ -4,59 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reglamento Torneo de Fútbol</title>
-    <!-- Enlazamos Bootstrap -->
-     
-    <link rel="stylesheet" src="style.css">
+    <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
-     <!-- Enlazamos el script de Bootstrap -->
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-        .nav-link {
-        color: rgba(12, 1, 1, 0.836) !important;
-         font-size: 17px;
-         padding: 5px;
-         margin: 5px;
-         transition: transform 0.4s ease, color 0.4s ease !important; /* Animación suave */
-         border: 1px solid black;
-         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.726);
-        }
-    .nav-link:hover{
-        color:rgb(253, 253, 253) !important;
-        transform: scale(0.9) !important;
-        background-color: rgb(2, 0, 0);
-    } 
-    .card-header{
-        background-color: rgb(0, 0, 0); /* Mayor transparencia */
-        color: white !important;
-    }
-    .card{
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.726);
-    }
-    /*titulo central*/
-     /* Definimos la animación */
-     .fade-in {
-        animation: fadeIn 2s ease-in-out;
-    }
-    /* Definimos los fotogramas de la animación */
-    @keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-        100% {
-            opacity: 1;
-        }
-    }
-    </style>
-   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
 </head>
 <body>
     <div class="container-fluid my-5 ">
         <div class="row">
             <!-- Sidebar de navegación -->
-            <div class="col-md-3">
+            <div class="col-md-3" style="position: sticky; top:0; height: 100vh;" >
             <h5 class="ms-2" style="font-size: 25px;">Ménu</h5> <!-- Mover h5 a la derecha -->
                 <aside >
-                    <ul class="nav flex-column">
+                    <ul class="nav flex-column" >
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="#reglas-juego">Reglas de juego</a>
                         </li>
@@ -98,10 +58,10 @@
             </div>
             <!-- Contenido principal -->
             <div class="col-md-9" >
-                <h1 class="text-center mb-4 fade-in">Reglamento del torneo </h1>
+                <h1 class="text-center mb-4 fade-in">Reglamento del Torneo </h1>
                     <!--Poner imagen al centro-->
                     <div class="text-center"> 
-                    <img src="imagenes/futbol.jpg" class="card-img my-4 py-3" style="max-width: 35%; border-radius: 10px" alt="...">
+                    <img src="imagenes/futbol.jpg" class="card-img my-4 py-3" style="max-width: 40%; border-radius: 10px" alt="...">
                     </div>
                 <!-- Reglas de juego -->
                 <div id="reglas-juego" class="card mb-4" style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.726);">
@@ -131,10 +91,8 @@
                             <li class="list-group-item">1 tiempo de 10 minutos a tiempo corrido.</li>
                         </ul>
                     </div>
-
                     <div class="card-body">
                         <h5>2ªFase (Eliminatorias y final)</h5>
-    
                         <ul class="list-group">
                             <li class="list-group-item">Eliminatoria 1: El primer clasificado del Grupo A se enfrentará al segundo clasificado del Grupo B.</li>
                             <li class="list-group-item"> Eliminatoria 2: El primer clasificado del Grupo B se enfrentará al segundo clasificado del Grupo A.</li>
@@ -169,7 +127,6 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- Número de Jugadores y Suplentes -->
                 <div id="jugadores-suplentes" class="card mb-4">
                     <div class="card-header">
@@ -179,7 +136,6 @@
                         <p>Cada equipo podrá inscribir hasta 10 jugadores. Las sustituciones se realizarán en cualquier momento, con los jugadores saliendo e ingresando en la zona de sustituciones.</p>
                     </div>
                 </div>
-
                 <!-- Número de técnicos -->
                 <div id="tecnicos" class="card mb-4">
                     <div class="card-header">
@@ -189,18 +145,15 @@
                         <p>Cada equipo tendrá un máximo de 2 entrenadores. El primer entrenador debe ser un profesor del IES Miguel Herrero , y todos los técnicos deberán portar su acreditación visible.</p>
                     </div>
                 </div>
-
                 <!-- Equipaciones-->
                 <div id="equipaciones" class="card mb-4">
                     <div class="card-header">
                         <h3>Equipaciones</h3>
                     </div>
-
                     <div class="card-body">
                         <p>Es obligatorio que todos los miembros de cada equipo tengan en todo momento la camiseta y el pantalón oficial del Torneo</p>
                     </div>
                 </div>
-
                 <!--Terreno de juego -->
                 <div id="terreno-juego" class="card mb-4">
                     <div class="card-header">
@@ -211,7 +164,6 @@
                         <p>Todos los partidos se disputarán en el pabellón de La Habana Vieja </p>
                     </div>
                 </div>
-
                 <!-- Puntualidad-->
                 <div id="puntualidad" class="card mb-4">
                     <div class="card-header">
@@ -222,7 +174,6 @@
                         <p>Si, cuando vaya a comenzar un partido uno de los dos equipos no se hubiera presentado y la organización entendiera que no hay una causa que justificara dicha incomparecencia, el partido podrá darse por perdido al equipo infractor por un resultado de 3-0. La decisión siempre recaerá sobre el Comité de Competición. </p>
                     </div>
                 </div>
-
                 <!-- Salida de juego-->
                 <div id="salida-juego" class="card mb-4">
                     <div class="card-header">
@@ -233,18 +184,13 @@
                     </div>
                 </div>
 
-
-
-
                 <div id="sanciones" class="card mb-4">
                     <div class="card-header">
                         <h3>Sanciones</h3>
                     </div>
-
                     <div class="card-body">
                         <h5>Amonestaciones</h5>
                         <p>El jugador que a lo largo del torneo acumule dos tarjetas amarillas, será suspendido para el siguiente encuentro. Estas tarjetas son acumulables durante todo el torneo y no se anularán en la siguiente fase, excepto para la final. Únicamente llegando a la final, no tiene en cuenta la acumulación de tarjetas amarillas. </p>
-
                         <h5>Expulsiones</h5>
                         <ul class="list-group">
                             <li class="list-group-item">1 punto a cada tarjeta amarilla</li>
@@ -261,7 +207,6 @@
                         <p>Si durante la disputa del partido, un equipo se quedase de forma permanente (sin contar las exclusiones temporales) con menos de 5 jugadores, se dará el partido por finalizado con el resultado de 3-0 a favor del equipo adversario</p>
                     </div>
                 </div>
-
                 <div id="arbitros" class="card mb-4">
                     <div class="card-header">
                         <h3>Árbitros</h3>
@@ -270,7 +215,6 @@
                         <p>Todos los partidos serán dirigidos por los árbitros colegiados. El árbitro y el "Coordinador del Torneo Deportivo", serán la máxima autoridad en el terreno de juego. Ambos tendrán la potestad de detener o suspender un partido en caso de ver actitudes antideportivas en uno o los dos equipos, o comportamientos inadecuados en el público que puedan interferir en el buen desarrollo del partido y del torneo. Tanto el resultado final del encuentro, como la resolución disciplinaria de los hechos será labor del Comité de Competición.</p>
                     </div>
                 </div>
-
                 <div id="balones" class="card mb-4">
                     <div class="card-header">
                         <h3>Balones</h3>
@@ -285,7 +229,6 @@
                             No se permite calentar con balones en la zona de pabellón, debiendo hacerlo en el exterior del mismo. </p>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
