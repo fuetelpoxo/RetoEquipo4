@@ -29,7 +29,7 @@ function AppMenu() {
                     navigate("/periodista");
                     break;
                 default:
-                    navigate("/");  // Si no hay un rol válido, redirige al inicio
+                    navigate("/");  
                     break;
             }
         }
