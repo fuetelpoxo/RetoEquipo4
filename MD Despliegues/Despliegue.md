@@ -8,6 +8,7 @@
 5. [Conexión a la MV](#conexión-a-la-mv)
 6. [Instalación y preparación del servidor en la MV de AWS](#instalación-y-preparación-del-servidor-en-la-mv-de-aws)
 7. [Grupo de seguridad para la Base de Datos](#grupo-de-seguridad-para-la-base-de-datos)
+    - [Resumen Grupo Seguridad Base de Datos](#resumen-grupo-seguridad-base-de-datos)
 8. [Creación de subred pública y de la subred privada](#creación-de-subred-pública-y-de-la-subred-privada)
 9. [Creación de grupo de subredes de base de datos](#creación-de-grupo-de-subredes-de-base-de-datos)
 
@@ -211,11 +212,32 @@ En este apartado vamos a mostrar como preparar el servidor para poder alojar nue
 
 ## *Grupo de seguridad para la Base de Datos*
 
-![alt text](img/image-37.png)
+En este apartado, configuraremos un grupo de seguridad para controlar el acceso entre un servidor web y una base de datos que se encuentra en Amazon RDS.
 
-![alt text](img/image-38.png)
+- EL nombre que le otorgamos al grupo de seguridad es "grupoSeguridadBDEquipo4". Este lo vamos a utilizar para permitir el acceso a la base de datos y le asignamos la VPC con la que llevamos trabajando desde el principio de la guía.
 
-![alt text](img/image-39.png)
+![Configuracion-GrupoSeguridadBD](img/image-37.png)
+
+- Agregamos una regla de entrada de tipo MYSQL/Aurora porque el puerto 3306 es el que utilizan las bases de datos MySQL y Aurora (de Amazon). Esto ons indica que el grupo de seguridad permitirá conexiones a través de ese puerto. En el "Origen" hemos marcado el grupo de seguridad que creamos al principio, esto nos asegurará que el tráfico de entrada en el puerto 3306 solo sea aceptado desde las instancias que estén asociadas a este grupo de seguridad web, y no desde otras instancias o direcciones IP externas.
+
+![Configuracion-GrupoSeguridadBD](img/image-38.png)
+
+- Vemos que se ha creado correctamente y toda la información que hace referencia a la configuración realizada.
+
+![Configuracion-GrupoSeguridadBD](img/image-39.png)
+
+
+### *Resumen Grupo Seguridad Base de Datos*
+
+| Configuración              | Valor                                                                                          |
+|----------------------------|------------------------------------------------------------------------------------------------|
+| **Nombre del Grupo de Seguridad** | `grupoSeguridadDBEquipo4`                                                                             |
+| **Descripción**            | `Permite el acceso a la BD`                                                                    |
+| **VPC**                    | `Equipo4RETO-`                                                                            |
+| **Tipo de Puerto**         | `MySQL/Aurora (3306)`                                                                           |
+| **Origen (Regla de Entrada)** | `Grupo de seguridad web` (Permite acceso solo desde las instancias asociadas a este grupo)     |
+| **Acceso Permitido**       | Acceso al puerto 3306 solo desde las instancias asociadas al `grupo-seguridad-web-Equipo4RETO`         |
+
 
 ## *Creación de subred pública y de la subred privada*
 
