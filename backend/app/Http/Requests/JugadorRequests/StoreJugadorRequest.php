@@ -22,15 +22,15 @@ class StoreJugadorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'equipo_id' => 'required|exists:equipos,id',
-            'nombre' => 'required|string|max:255',
-            'apellido1' => 'required|string|max:255',
-            'apellido2' => 'nullable|string|max:255',
-            'tipo' => 'required|string|max:255',
-            'estudio_id' => 'required|exists:estudios,id',
-            'dni' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:jugadores,email',
-            'telefono' => 'required|string|max:255',
+            'equipo_id' => 'required',
+            'nombre' => 'required',
+            'apellido1' => 'required',
+            'apellido2' => 'nullable',
+            'tipo' => 'required',
+            'estudio_id' => 'required',
+            'dni' => 'required',
+            'email' => 'required',
+            'telefono' => 'required',
         ];
     }
 }
