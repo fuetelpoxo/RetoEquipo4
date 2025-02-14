@@ -11,8 +11,9 @@
 6. [Instalación y preparación del servidor en la MV de AWS](#instalación-y-preparación-del-servidor-en-la-mv-de-aws)
 7. [Grupo de seguridad para la Base de Datos](#grupo-de-seguridad-para-la-base-de-datos)
     - [Resumen Grupo Seguridad Base de Datos](#resumen-grupo-seguridad-base-de-datos)
-8. [Creación de subred pública y de la subred privada](#creación-de-subred-pública-y-de-la-subred-privada)
+8. [Creación de nueva zona de disponibilidad](#creación-de-nueva-zona-de-disponibilidad)
 9. [Creación de grupo de subredes de base de datos](#creación-de-grupo-de-subredes-de-base-de-datos)
+    - [Resumen de creación de un grupo de subredes de base de datos en Amazon RDS](#resumen-de-creación-de-un-grupo-de-subredes-de-base-de-datos-en-amazon-rds)
 
 
 
@@ -266,33 +267,33 @@ En este apartado, configuraremos un grupo de seguridad para controlar el acceso 
 | **Acceso Permitido**       | Acceso al puerto 3306 solo desde las instancias asociadas al `grupo-seguridad-web-Equipo4RETO`         |
 
 
-## *Creación de subred pública y de la subred privada*
+## *Creación de nueva zona de disponibilidad*
 
 Vamos a agregar una nueva zona de disponibilidad en AWS, dentro de la cual vamos a crear dos subredes (una pública y una privada).
 
 - Primero la vamos a asociar con la VPC que llevamos trabajando durante todo el proceso de creación del servidor.
 
-![Configuracion-Subred](img/image-40.png)
+![Configuracion-Subred-ZonaDisponibilidad](img/image-40.png)
 
 - El nombre que le hemos dado a la subred pública es "lab-subnet-public2-us-east-1b" y como su nombre indica elegiremos la zona de disponibilidad "us-east-1b". El bloque de CIDR de VPC IPv4 que utilizaremos es "10.0.2.0/24" lo que significa que la subred que estamos creando tendrá 256 direcciones IP disponibles.
 
-![Cofiguracion-Subred](img/image-41.png)
+![Cofiguracion-Subred-ZonaDisponibilidad](img/image-41.png)
 
 - En el caso de la subred privada, le otorgamos el nombre de "lab-subnet-private2-us-east-1b", para la cual elegiremos la misma zona de disponibilidad que la subred pública. El bloque de CIDR de VPC IPv4 que utilizaremos es "10.0.3.0/24".
 
-![alt text](img/image-42.png)
+![Configuracion-Subred-ZonaDisponibilidad](img/image-42.png)
 
 - Se ha creado correctamente.
 
-![alt text](img/image-43.png)
+![Configuracion-Subred-ZonaDisponibilidad](img/image-43.png)
 
-### Resumen creación subredes
 
-### 🏗️ **Creación de subredes en la zona de disponibilidad `us-east-1b`**  
+
+###  Resumen de creación de subredes en la zona de disponibilidad  
 
 | **Recurso** | **Configuración** |
 |------------|------------------|
-| **VPC** | VPC de laboratorio |
+| **VPC** | `Equipo4RETO` |
 | **Zona de disponibilidad** | `us-east-1b` |
 | **CIDR de la VPC** | `10.0.0.0/16` |
 
@@ -312,26 +313,55 @@ Vamos a agregar una nueva zona de disponibilidad en AWS, dentro de la cual vamos
 
 ## *Creación de grupo de subredes de base de datos*
 
-![alt text](img/image-44.png)
+En este apartado, vamos a crear más subredes, pero en este caso serán para la base de datos.
 
-![alt text](img/image-46.png)
+-  Como podemos ver le asignamos a la VPC "Equipo4RETO" como siempre, ya que es la única de la que disponemos y con la que estamos trabajando.
 
-![alt text](img/image-47.png)
+![Configuracion-SubredBD](img/image-44.png)
+
+- En el apartado de zonas de disponibilidad elegimos las 2 primeras que nos aparecen que son "us-east-1a" y "us-east-1b". Las subredes que utilizaremos son las dos privadas con las que contamos que utilizan los rangos  de CIDR "10.0.1.0/24" y "10.0.3.0/24".
+
+![Configuracion-SubredBD](img/image-46.png)
+
+- Por último, le damos a crear subred y vemos que se han creado correctamente-
+
+![ConfiguracionSubredBD](img/image-47.png)
+
+### Resumen de creación de un grupo de subredes de base de datos en Amazon RDS 
+
+
+| **Parámetro** | **Valor** |
+|--------------|----------|
+| **Nombre** | `grupo de subredes de base de datos Equipo4` |
+| **Descripción** | `Grupo de subredes de base de datos` |
+| **VPC** | `Equipo4RETO` |
+| **Zonas de disponibilidad** | `us-east-1a`, `us-east-1b` |
+| **Subredes** | `10.0.1.0/24` (privada en us-east-1a) <br> `10.0.3.0/24` (privada en us-east-1b) |
 
 
 ## *Creación de base de datos*
 
-Contraseña db: Equipo4RETO
+Vamos a proceder con la creación de la base de datos con la que trabajaremos a la hora de utilizar nuestro proyecto.
 
-![alt text](img/image-56.png)
+- Elegimos la creación estándar y el tipo de base de datos que vamos a utilizar es MySQL.
 
-![alt text](img/image-57.png)
+![Creacion-BD](img/image-56.png)
 
-![alt text](img/image-58.png)
+- La plantilla que utilizaremos es la de "producción".
 
-![alt text](img/image-59.png)
+![Creacion-BD](img/image-57.png)
 
-![alt text](img/image-60.png)
+- En el apartado de "Disponibiliad y durabilidad"  marcamos la opción "Instancia de base de datos Multi-AZ, que como se nos indica en la imagen, esto nos cera una instancia de base de datos primaria y una instancia de base de datos en espera en una zona de disponibilidad diferente. Nos proporciona también una alta disponibilidad y redundancia de datos, pero la instancia de base de datos en espera no admite conexiones para cargas de trabajo de lectura.
+
+![Creacion-BD](img/image-58.png)
+
+- Dentro de la configuración utilizamos "equipo4reto" como identificador de instancias de bases de datos, el nombre del usuario maestro será "admin" y será "autoadministrado". 
+
+![Creacion-BD](img/image-59.png)
+
+- En la configuración de la instancia elegimos "clases ampliables" y "db.t3.micro" que será la capacidad de nuestra base de datos.
+
+![Creacion-BD](img/image-60.png)
 
 ![alt text](img/image-61.png)
 
