@@ -22,15 +22,15 @@ class StoreJugadorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'equipo_id' => 'required|integer|exists:equipo,id', // Verifica que el equipo exista en la tabla 'equipo'
+            'equipo_id' => 'required|integer|exists:equipos,id', // Verifica que el equipo exista en la tabla equipos
             'nombre' => 'required|string|max:255',
             'apellido1' => 'required|string|max:255',
             'apellido2' => 'nullable|string|max:255',
-            'tipo' => 'required|string|in:futbolista,entrenador',
+            'tipo' => 'required|string|in:jugador,entrenador,capitan',
             'estudio_id' => 'required|integer|exists:estudios,id', // Verifica que el estudio exista en la tabla 'estudios'
             'dni' => 'required|string|max:9',
             'email' => 'required|email|max:255|unique:jugadores,email', // Verifica que el email no esté duplicado en la tabla 'jugadores'
-            'telefono' => 'required|regex:/^[0-9]{9}$/',
+            'telefono' => 'required',
         ];
     }
 }

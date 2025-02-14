@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Auth;
 class Jugador extends Model
 {
     protected $table = 'jugadores';
+    
+    protected const TIPOS = ['jugador', 'entrenador', 'capitan'];
+
     protected $fillable = [
         'equipo_id',
         'nombre',
@@ -17,11 +20,8 @@ class Jugador extends Model
         'dni',
         'email',
         'telefono',
-        'usuarioIdCreacion',
-        'fechaCreacion',
-        'usuarioIdActualizacion',
-        'fechaActualizacion'
     ];
+    
     // Relación con Actas (un jugador puede tener muchas actas)
     public function actas()
     {

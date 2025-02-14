@@ -27,6 +27,7 @@ class JugadorController extends Controller
     public function store(StoreJugadorRequest $request)
     {
         $jugador = Jugador::create($request->validated());
+        $jugador->load('equipo', 'estudio', 'actas', 'imagenes', 'publicaciones');
         return new JugadorResource($jugador);
     }
 

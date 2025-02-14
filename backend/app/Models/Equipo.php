@@ -9,6 +9,14 @@ class Equipo extends Model
     protected $table = 'equipos';
     protected $fillable = [
         'nombre',
+        'apellido1',
+        'apellido2',
+        'tipo',
+        'dni',
+        'email',
+        'equipo_id',
+        'estudio_id',
+        'telefono',
         'centro_id',
         'grupo',
         'usuarioIdCreacion',
