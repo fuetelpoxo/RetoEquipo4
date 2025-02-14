@@ -13,12 +13,6 @@ class Estudio extends Model
         'curso'
     ];
 
-    // Relación con Ciclo (un estudio pertenece a un ciclo)
-    public function ciclo()
-    {
-        return $this->belongsTo(Ciclo::class, 'ciclo_id');
-    }
-
     // Relación con Retos (un estudio tiene muchos retos)
     public function retos()
     {

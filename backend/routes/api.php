@@ -1,11 +1,11 @@
 <?php
 
-
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\DonacionController;
 use App\Http\Controllers\Api\EquipoController;
 use App\Http\Controllers\Api\JugadorController;
+use App\Http\Controllers\Api\InscripcionController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -20,3 +20,5 @@ Route::apiResource('donaciones', DonacionController::class);
 Route::apiResource('equipos', EquipoController::class);
 
 Route::apiResource('jugadores', JugadorController::class);
+
+Route::apiResource('inscripciones', InscripcionController::class);

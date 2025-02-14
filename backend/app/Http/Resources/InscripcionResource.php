@@ -14,6 +14,11 @@ class InscripcionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            "id"=> $this->id,
+            "comentarios"=> $this->comentarios,
+            "estado"=> $this->estado,
+            "equipo_id"=>new EquipoResource($this->whenLoaded('equipo'))
+        ];
     }
 }

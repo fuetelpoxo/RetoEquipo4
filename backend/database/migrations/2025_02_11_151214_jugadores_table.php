@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('apellido1');
             $table->string('apellido2');
-            $table->string('tipo');
-            $table->foreignId('estudio_id')->constrained('estudios');
+            $table->enum('tipo', ['jugador', 'entrenador', 'capitan']);
+            $table->foreignId('estudio_id')->constrained('estudios')->onDelete('cascade');
             $table->string('dni');
             $table->string('email');
             $table->string('telefono');

@@ -10,15 +10,20 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('estudios', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('centro_id')->constrained('centros');  // Relación con centros
-            $table->foreignId('ciclo_id')->constrained('ciclos');    // Relación con ciclos
-            $table->integer('curso')->nullable();  // El campo curso es un entero
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('estudios', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('centro_id')->constrained('centros');
+        $table->foreignId('ciclo_id')->constrained('ciclos');
+        $table->integer('curso')->nullable();
+        $table->timestamps();
+    });
+
+    Schema::table('estudios', function (Blueprint $table) {
+        $table->unique(['centro_id', 'ciclo_id', 'curso']);
+    });
+}
+
 
     /**
      * Reverse the migrations.

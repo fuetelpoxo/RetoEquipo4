@@ -11,7 +11,7 @@ class StoreJugadorRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,7 +26,7 @@ class StoreJugadorRequest extends FormRequest
             'nombre' => 'required|string|max:255',
             'apellido1' => 'required|string|max:255',
             'apellido2' => 'required|string|max:255',
-            'tipo' => 'required|string|max:255',
+            'tipo' => 'required|string|in:jugador,entrenador,capitan',
             'estudio_id' => 'required|exists:estudios,id',
             'dni' => 'required|string|max:255',
             'email' => 'required|string|max:255',

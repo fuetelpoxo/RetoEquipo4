@@ -11,7 +11,7 @@ class UpdateInscripcionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class UpdateInscripcionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'comentarios'=>'nullable|string|max:255',
+            'estado'=>'nullable|string|in:pendiente,aceptada,rechazada',
+            'equipo_id'=>'nullable|exists:equipos,id'
         ];
     }
 }

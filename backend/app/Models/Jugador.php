@@ -7,6 +7,12 @@ use Illuminate\Support\Facades\Auth;
 class Jugador extends Model
 {
     protected $table = 'jugadores';
+
+    public const TIPOS = [
+        'JUGADOR' => 'jugador',
+        'ENTRENADOR' => 'entrenador',
+        'CAPITAN' => 'capitan',
+    ];
     protected $fillable = [
         'equipo_id',
         'nombre',

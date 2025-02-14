@@ -11,7 +11,7 @@ class UpdateJugadorRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,7 +26,7 @@ class UpdateJugadorRequest extends FormRequest
                 'nombre' => 'nullable|string|max:255',
                 'apellido1' => 'nullable|string|max:255',
                 'apellido2' => 'nullable|string|max:255',
-                'tipo' => 'nullable|string|max:255',
+                'tipo' => 'nullable|string|in:jugador,entrenador,capitan',
                 'estudio_id' => 'nullable|exists:estudios,id',
                 'dni' => 'nullable|string|max:255',
                 'email' => 'nullable|string|max:255',

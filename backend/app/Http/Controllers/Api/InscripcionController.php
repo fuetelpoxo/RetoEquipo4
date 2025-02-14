@@ -1,12 +1,13 @@
 <?php
-//ANTES QUE INSCRIPCIONES VA EQUIPOS
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Inscripcion;
 use Illuminate\Http\Request;
 use App\Http\Resources\InscripcionResource;
-
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\InscripcionRequests\StoreInscripcionRequest;
+use App\Http\Requests\InscripcionRequests\UpdateInscripcionRequest;
 class InscripcionController extends Controller
 {
     /**
@@ -14,54 +15,60 @@ class InscripcionController extends Controller
      */
     public function index()
     {
-      //
+      $inscripcion = Inscripcion::all();
+        return InscripcionResource::collection($inscripcion);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreInscripcionRequest $request)
     {
-        //
+        $inscripcion = Inscripcion::create([
+            'comentario' => $request->comentario,
+            'estado' => $request->estado,
+            'equipo_id' => $request->equipo_id,
+            'usuarioIdCreacion' => Auth::id() ?? 1,
+            'fechaCreacion' => now(),
+            'usuarioIdActualizacion' => Auth::id() ?? 1,
+            'fechaActualizacion' => now()
+        ]);
+        return response()->json([
+            'message' => 'Inscripción creada con éxito',
+            'inscripcion' => $inscripcion
+        ], 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Inscripcion $inscripcion)
+    public function show(Inscripcion $id)
     {
-        //
+        $inscripcion=Inscripcion::find($id);
+        return new InscripcionResource($inscripcion);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Inscripcion $inscripcion)
-    {
-        //
-    }
-
+    
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Inscripcion $inscripcion)
+    public function update(UpdateInscripcionRequest $request, $id)
     {
-        //
+        $inscripcion = Inscripcion::findOrfail($id);
+        $inscripcion->update($request->validated());
+        return new InscripcionResource($inscripcion);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Inscripcion $inscripcion)
+    public function destroy(Inscripcion $id)
     {
-        //
+        $inscripcion = Inscripcion::find($id);
+        $inscripcion->delete();
+        return response()->json([
+            'message' => 'Inscripción eliminada con éxito'
+        ]);
     }
 }

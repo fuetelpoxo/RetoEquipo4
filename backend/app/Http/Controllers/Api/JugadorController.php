@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\JugadorRequests\StoreJugadorRequest;
 use App\Http\Requests\JugadorRequests\UpdateJugadorRequest;
 use App\Http\Resources\JugadorResource;
+use Illuminate\Support\Facades\Auth;
 
 class JugadorController extends Controller
 {
@@ -24,8 +25,25 @@ class JugadorController extends Controller
      */
     public function store(StoreJugadorRequest $request)
     {
-        $jugador = Jugador::create($request->validated());
-        return new JugadorResource($jugador);
+        $jugador = Jugador::create([
+            'equipo_id' => $request->equipo_id,
+            'nombre' => $request->nombre,
+            'apellido1' => $request->apellido1,
+            'apellido2' => $request->apellido2,
+            'tipo' => $request->tipo,
+            'estudio_id' => $request->estudio_id,
+            'dni' => $request->dni,
+            'email' => $request->email,
+            'telefono' => $request->telefono,
+            'usuarioIdCreacion' => Auth::id() ?? 1,
+            'fechaCreacion' => now(),
+            'usuarioIdActualizacion' => Auth::id() ?? 1,
+            'fechaActualizacion' => now()
+        ]);
+        return response()->json([
+            'message' => 'Jugador creado con éxito',
+            'jugador' => $jugador
+        ], 201);
     }
 
     /**

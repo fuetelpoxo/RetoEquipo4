@@ -23,7 +23,7 @@ class StoreInscripcionRequest extends FormRequest
     {
         return [
             'comentario' => 'required|string',
-            'estado' => 'required|string',
+            'estado' => 'required|string|in:pendiente,aceptada,rechazada',
             'equipo_id' => 'required|exists:equipos,id',
         ];
     }
