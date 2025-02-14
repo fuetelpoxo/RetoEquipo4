@@ -103,15 +103,15 @@ function Reglamento() {
                                 <h6>En caso de empate a puntos entre equipos:</h6>
                                 <ul className="list-group">
                                     <li className="list-group-item">1. Resultado particular del enfrentamiento.</li>
-                                    <li className="list-group-item">2. Golaverage general (diferencia de goles).</li>
+                                    <li className="list-group-item">2. Diferencia de goles general.</li>
                                     <li className="list-group-item">3. Fair play (menor coeficiente en sanciones).</li>
                                     <li className="list-group-item">4. Mayor número de goles a favor.</li>
                                 </ul>
                                 <h6>Empate a puntos entre más de 2 equipos:</h6>
                                 <ul className="list-group">
                                     <li className="list-group-item">1. Puntos obtenidos en enfrentamientos particulares.</li>
-                                    <li className="list-group-item">2. Golaverage particular.</li>
-                                    <li className="list-group-item">3. Golaverage general.</li>
+                                    <li className="list-group-item">2. Diferencia de goles particular.</li>
+                                    <li className="list-group-item">3. Diferencia de goles general.</li>
                                     <li className="list-group-item">4. Fair play.</li>
                                     <li className="list-group-item">5. Mayor número de goles a favor.</li>
                                 </ul>

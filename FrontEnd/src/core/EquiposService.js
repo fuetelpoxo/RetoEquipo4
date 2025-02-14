@@ -5,7 +5,7 @@ class EquiposService {
             tabla1: [
                 { id: 1, nombre: "Equipo A", puntos: 25, golesFavor: 30, golesContra: 20, diferenciaGoles: 30 - 20, tarjetasAmarillas: 5, tarjetasRojas: 1 },
                 { id: 2, nombre: "Equipo B", puntos: 27, golesFavor: 35, golesContra: 25, diferenciaGoles: 35 - 25, tarjetasAmarillas: 4, tarjetasRojas: 0 },
-                { id: 3, nombre: "Equipo C", puntos: 20, golesFavor: 22, golesContra: 30, diferenciaGoles: 22 - 30, tarjetasAmarillas: 3, tarjetasRojas: 1 },
+                { id: 3, nombre: "Equipo C", puntos: 25, golesFavor: 40, golesContra: 30, diferenciaGoles: 40 - 30, tarjetasAmarillas: 5, tarjetasRojas: 1 },
                 { id: 4, nombre: "Equipo D", puntos: 18, golesFavor: 18, golesContra: 28, diferenciaGoles: 18 - 28, tarjetasAmarillas: 6, tarjetasRojas: 2 },
                 { id: 5, nombre: "Equipo E", puntos: 15, golesFavor: 20, golesContra: 35, diferenciaGoles: 20 - 35, tarjetasAmarillas: 2, tarjetasRojas: 1 }
             ],

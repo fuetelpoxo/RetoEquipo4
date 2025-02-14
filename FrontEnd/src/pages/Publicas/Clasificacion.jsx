@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import EquiposService from '../../core/EquiposService';
 
-const Clasificacion = () => {
+function Clasificacion() {
     const [equipos, setEquipos] = useState({ tabla1: [], tabla2: [] });
     const [equiposSeleccionados, setEquiposSeleccionados] = useState(null);
     const [cargando, setCargando] = useState(true); // Estado para controlar si estamos cargando
@@ -22,21 +22,34 @@ const Clasificacion = () => {
             const equipo3 = data.tabla2[0] || null;
             const equipo4 = data.tabla2[1] || null;
 
-            setEquiposSeleccionados({
-                equipo1,
-                equipo2,
-                equipo3,
-                equipo4
-            });
+            const seleccionados = { equipo1, equipo2, equipo3, equipo4 };
 
-            setCargando(false); // Cambiar el estado a 'false' cuando termine de cargar los equipos
+            setEquiposSeleccionados(seleccionados);
+            setCargando(false);
         };
 
         obtenerEquipos();
     }, []);
 
     const ordenarEquipos = (equipos) => {
-        return equipos.sort((a, b) => b.puntos - a.puntos); // Ordenar por puntos de mayor a menor
+        return equipos.sort((a, b) => {
+            // Ordenar por puntos (de mayor a menor)
+            if (b.puntos !== a.puntos) {
+                return b.puntos - a.puntos;
+            }
+            // Si hay empate, ordenar por diferencia de goles (de mayor a menor)
+            const diferenciaGolesA = a.golesFavor - a.golesContra;
+            const diferenciaGolesB = b.golesFavor - b.golesContra;
+            if (diferenciaGolesB !== diferenciaGolesA) {
+                return diferenciaGolesB - diferenciaGolesA;
+            }
+            // Si sigue el empate, ordenar por menor número de tarjetas amarillas (de menor a mayor)
+            if (a.tarjetasAmarillas !== b.tarjetasAmarillas) {
+                return a.tarjetasAmarillas - b.tarjetasAmarillas;
+            }
+            // Si aún sigue el empate, ordenar por mayor número de goles a favor (de mayor a menor)
+            return b.golesFavor - a.golesFavor;
+        });
     };
 
     return (
@@ -46,7 +59,7 @@ const Clasificacion = () => {
             <div className="row">
                 {/* Contenedor Tabla 1 */}
                 <div className="col-md-12 mb-5">
-                    <div className="border rounded-3 p-3">
+                    <div className="border">
                         <h2 className="text-center text-danger mb-0 bg-dark text-white p-3">Tabla 1</h2>
                         <div className="table-responsive" style={{ overflowX: 'hidden' }}>
                             {/* Cabecera de los campos */}
@@ -97,7 +110,7 @@ const Clasificacion = () => {
 
                 {/* Contenedor Tabla 2 */}
                 <div className="col-md-12 mb-5">
-                    <div className="border rounded-3 p-3">
+                    <div className="border">
                         <h2 className="text-center text-danger mb-0 bg-dark text-white p-3">Tabla 2</h2>
                         <div className="table-responsive" style={{ overflowX: 'hidden' }}>
                             {/* Cabecera de los campos */}
