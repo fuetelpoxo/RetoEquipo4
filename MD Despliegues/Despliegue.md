@@ -2,15 +2,18 @@
 
 1. [Guía de despliegue](#guía-de-despliegue)
 2. [Creación de una VPC](#creación-de-una-vpc)
+    - [Resumen creación VPC](#resumen-creación-vpc)
 3. [Grupos de seguridad](#grupos-de-seguridad)
+    - [Resumen grupo de seguridad](#resumen-grupo-seguridad)
 4. [Máquina Virtual EC2](#máquina-virtual-ec2)
     - [Resumen de configuración de la MV EC2](#resumen-de-configuración-de-la-mv-ec2)
 5. [Conexión a la MV](#conexión-a-la-mv)
 6. [Instalación y preparación del servidor en la MV de AWS](#instalación-y-preparación-del-servidor-en-la-mv-de-aws)
 7. [Grupo de seguridad para la Base de Datos](#grupo-de-seguridad-para-la-base-de-datos)
     - [Resumen Grupo Seguridad Base de Datos](#resumen-grupo-seguridad-base-de-datos)
-8. [Creación de subred pública y de la subred privada](#creación-de-subred-pública-y-de-la-subred-privada)
+8. [Creación de nueva zona de disponibilidad](#creación-de-nueva-zona-de-disponibilidad)
 9. [Creación de grupo de subredes de base de datos](#creación-de-grupo-de-subredes-de-base-de-datos)
+    - [Resumen de creación de un grupo de subredes de base de datos en Amazon RDS](#resumen-de-creación-de-un-grupo-de-subredes-de-base-de-datos-en-amazon-rds)
 
 
 
@@ -20,7 +23,7 @@
 
 A lo largo de esta guía de despliegue vamos a explicar como montar un servidor en AWS para poder subir nuestra página web, siguiendo todos los pasos y explicándolos para que se vea de forma correcta el proceso que hemos seguido para poder lanzar nuestra aplicaión en AWS.
 
----
+
 
 ## *Creación de una VPC*
 El primer paso que vamos a llevar a cabo es el de crear una VPC (Virtual private Cloud), esto es una red privada dentro de AWS donde podremos desplegar nuestras instancias y recursos, la cual también nos permitirá definir subredes, grupos de seguridad y configuraciones de red personalizadas. A continuación, mostraremos la creación de la VPC con las especificaciones necesarias:
@@ -44,6 +47,20 @@ El primer paso que vamos a llevar a cabo es el de crear una VPC (Virtual private
 
 ![Configuracion-VPC](img/image-4.png)
 
+### Resumen creación VPC
+
+| Configuración          | Valor                                   |
+|------------------------|-----------------------------------------|
+| **Nombre de la VPC**  | `Equipo4RETO`                       |
+| **CIDR de la VPC**    | `10.0.0.0/16`                           |
+| **Zona de Disponibilidad** | `us-east-1a`                     |
+| **Red Pública**       | `10.0.0.0/24`                           |
+| **Rango de IPs Públicas** | `10.0.0.1 - 10.0.0.254`            |
+| **Subred Privada**    | `10.0.1.0/24`                           |
+| **Rango de IPs Privadas** | `10.0.1.1 - 10.0.1.254`            |
+| **Gateway NAT**       | `No configurado`                        |
+
+
 ## *Grupos de seguridad*
 
 Los grupos de seguridad en AWS actúan como un firewall para controlar que tráfico puede entrar o salir de una instancia EC2.
@@ -59,6 +76,17 @@ Los grupos de seguridad en AWS actúan como un firewall para controlar que tráf
 - Este panel nos muestra que el grupo de seguridad se ha creado correctamente además de sus especificaciones.
 
 ![Configuracion-grupoSeguridad](img/image-7.png)
+
+### Resumen grupo seguridad
+
+| Configuración               | Valor                                      |
+|-----------------------------|--------------------------------------------|
+| **Nombre del Grupo de Seguridad** | `grupo-seguridad-web-Equipo4RETO`             |
+| **Descripción**             | `Habilitar los puertos de web`             |
+| **VPC Asociada**            | `Equipo4RETO`                          |
+| **Reglas de Entrada**       | `Puerto 80 (HTTP) - Acceso Público`        |
+|                             | `Puerto 22 (SSH) - Acceso Restringido`     |
+
 
 ## *Máquina Virtual EC2*
 
@@ -239,23 +267,120 @@ En este apartado, configuraremos un grupo de seguridad para controlar el acceso 
 | **Acceso Permitido**       | Acceso al puerto 3306 solo desde las instancias asociadas al `grupo-seguridad-web-Equipo4RETO`         |
 
 
-## *Creación de subred pública y de la subred privada*
+## *Creación de nueva zona de disponibilidad*
 
-![alt text](img/image-40.png)
+Vamos a agregar una nueva zona de disponibilidad en AWS, dentro de la cual vamos a crear dos subredes (una pública y una privada).
 
-![alt text](img/image-41.png)
+- Primero la vamos a asociar con la VPC que llevamos trabajando durante todo el proceso de creación del servidor.
 
-![alt text](img/image-42.png)
+![Configuracion-Subred-ZonaDisponibilidad](img/image-40.png)
 
-![alt text](img/image-43.png)
+- El nombre que le hemos dado a la subred pública es "lab-subnet-public2-us-east-1b" y como su nombre indica elegiremos la zona de disponibilidad "us-east-1b". El bloque de CIDR de VPC IPv4 que utilizaremos es "10.0.2.0/24" lo que significa que la subred que estamos creando tendrá 256 direcciones IP disponibles.
 
+![Cofiguracion-Subred-ZonaDisponibilidad](img/image-41.png)
+
+- En el caso de la subred privada, le otorgamos el nombre de "lab-subnet-private2-us-east-1b", para la cual elegiremos la misma zona de disponibilidad que la subred pública. El bloque de CIDR de VPC IPv4 que utilizaremos es "10.0.3.0/24".
+
+![Configuracion-Subred-ZonaDisponibilidad](img/image-42.png)
+
+- Se ha creado correctamente.
+
+![Configuracion-Subred-ZonaDisponibilidad](img/image-43.png)
+
+
+
+###  Resumen de creación de subredes en la zona de disponibilidad  
+
+| **Recurso** | **Configuración** |
+|------------|------------------|
+| **VPC** | `Equipo4RETO` |
+| **Zona de disponibilidad** | `us-east-1b` |
+| **CIDR de la VPC** | `10.0.0.0/16` |
+
+#### **Subred Pública**  
+| **Parámetro** | **Valor** |
+|--------------|----------|
+| **Nombre** | `lab-subnet-public2-us-east-1b` |
+| **CIDR Block** | `10.0.2.0/24` |
+
+#### **Subred Privada**  
+| **Parámetro** | **Valor** |
+|--------------|----------|
+| **Nombre** | `lab-subnet-private2-us-east-1b` |
+| **CIDR Block** | `10.0.3.0/24` |
+
+ 
 
 ## *Creación de grupo de subredes de base de datos*
 
-![alt text](img/image-44.png)
+En este apartado, vamos a crear más subredes, pero en este caso serán para la base de datos.
 
-![alt text](img/image-46.png)
+-  Como podemos ver le asignamos a la VPC "Equipo4RETO" como siempre, ya que es la única de la que disponemos y con la que estamos trabajando.
 
-![alt text](img/image-47.png)
+![Configuracion-SubredBD](img/image-44.png)
+
+- En el apartado de zonas de disponibilidad elegimos las 2 primeras que nos aparecen que son "us-east-1a" y "us-east-1b". Las subredes que utilizaremos son las dos privadas con las que contamos que utilizan los rangos  de CIDR "10.0.1.0/24" y "10.0.3.0/24".
+
+![Configuracion-SubredBD](img/image-46.png)
+
+- Por último, le damos a crear subred y vemos que se han creado correctamente-
+
+![ConfiguracionSubredBD](img/image-47.png)
+
+### Resumen de creación de un grupo de subredes de base de datos en Amazon RDS 
+
+
+| **Parámetro** | **Valor** |
+|--------------|----------|
+| **Nombre** | `grupo de subredes de base de datos Equipo4` |
+| **Descripción** | `Grupo de subredes de base de datos` |
+| **VPC** | `Equipo4RETO` |
+| **Zonas de disponibilidad** | `us-east-1a`, `us-east-1b` |
+| **Subredes** | `10.0.1.0/24` (privada en us-east-1a) <br> `10.0.3.0/24` (privada en us-east-1b) |
+
+
+## *Creación de base de datos*
+
+Vamos a proceder con la creación de la base de datos con la que trabajaremos a la hora de utilizar nuestro proyecto.
+
+- Elegimos la creación estándar y el tipo de base de datos que vamos a utilizar es MySQL.
+
+![Creacion-BD](img/image-56.png)
+
+- La plantilla que utilizaremos es la de "producción".
+
+![Creacion-BD](img/image-57.png)
+
+- En el apartado de "Disponibiliad y durabilidad"  marcamos la opción "Instancia de base de datos Multi-AZ, que como se nos indica en la imagen, esto nos cera una instancia de base de datos primaria y una instancia de base de datos en espera en una zona de disponibilidad diferente. Nos proporciona también una alta disponibilidad y redundancia de datos, pero la instancia de base de datos en espera no admite conexiones para cargas de trabajo de lectura.
+
+![Creacion-BD](img/image-58.png)
+
+- Dentro de la configuración utilizamos "equipo4reto" como identificador de instancias de bases de datos, el nombre del usuario maestro será "admin" y será "autoadministrado". 
+
+![Creacion-BD](img/image-59.png)
+
+- En la configuración de la instancia elegimos "clases ampliables" y "db.t3.micro" que será la capacidad de nuestra base de datos.
+
+![Creacion-BD](img/image-60.png)
+
+![alt text](img/image-61.png)
+
+![alt text](img/image-62.png)
+
+![alt text](img/image-63.png)
+
+![alt text](img/image-64.png)
+
+![alt text](img/image-65.png)
+
+FALLOS PARA PREGUNTAR A MANU
+
+![alt text](image.png)
+
+![alt text](image-1.png)
+
+CREADA CORRECTAMENTE
+
+![alt text](image-3.png)
 
 
