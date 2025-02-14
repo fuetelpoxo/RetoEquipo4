@@ -36,9 +36,15 @@ class Equipo extends Model
     }
 
     // Relación con Partidos (un equipo tiene muchos partidos)
-    public function partidos()
+    public function partidosLocal()
     {
-        return $this->hasMany(Partido::class, 'equipoL_id')->orWhere('equipoV_id', $this->id);
+    return $this->hasMany(Partido::class, 'equipoL_id');
+    }
+
+    // Partidos en los que el equipo es visitante
+    public function partidosVisitante()
+    {
+    return $this->hasMany(Partido::class, 'equipoV_id');
     }
 
     // Relación con Patrocinadores-Equipos (un equipo tiene muchos patrocinadores)

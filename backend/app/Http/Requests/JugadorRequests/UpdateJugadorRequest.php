@@ -22,7 +22,15 @@ class UpdateJugadorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+                'equipo_id' => 'nullable|exists:equipos,id',
+                'nombre' => 'nullable|string|max:255',
+                'apellido1' => 'nullable|string|max:255',
+                'apellido2' => 'nullable|string|max:255',
+                'tipo' => 'nullable|string|max:255',
+                'estudio_id' => 'nullable|exists:estudios,id',
+                'dni' => 'nullable|string|max:255',
+                'email' => 'nullable|string|max:255',
+                'telefono' => 'nullable|string|max:255'
         ];
     }
 }
