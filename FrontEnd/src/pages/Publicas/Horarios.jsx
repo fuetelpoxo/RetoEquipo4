@@ -28,6 +28,7 @@ function Horarios() {
                     <div className="row bg-danger text-white py-2" style={{ gap: '10px' }}>
                         <div className="col text-center">Partido</div>
                         <div className="col text-center">Fecha</div>
+                        <div className="col text-center">Hora</div> {/* Nueva columna para la hora */}
                         <div className="col text-center">Equipo 1</div>
                         <div className="col text-center">Equipo 2</div>
                     </div>
@@ -44,6 +45,9 @@ function Horarios() {
                                 </div>
                                 <div className="col text-center d-flex flex-column align-items-center">
                                     <span>{partido.fecha}</span>
+                                </div>
+                                <div className="col text-center d-flex flex-column align-items-center">
+                                    <span>{partido.hora}</span> {/* Mostrar la hora */}
                                 </div>
                                 <div className="col text-center d-flex flex-column align-items-center">
                                     <span>{partido.equipo1}</span>
