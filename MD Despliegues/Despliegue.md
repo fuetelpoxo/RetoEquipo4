@@ -2,7 +2,9 @@
 
 1. [Guía de despliegue](#guía-de-despliegue)
 2. [Creación de una VPC](#creación-de-una-vpc)
+    - [Resumen creación VPC](#resumen-creación-vpc)
 3. [Grupos de seguridad](#grupos-de-seguridad)
+    - [Resumen grupo de seguridad](#resumen-grupo-seguridad)
 4. [Máquina Virtual EC2](#máquina-virtual-ec2)
     - [Resumen de configuración de la MV EC2](#resumen-de-configuración-de-la-mv-ec2)
 5. [Conexión a la MV](#conexión-a-la-mv)
@@ -20,7 +22,7 @@
 
 A lo largo de esta guía de despliegue vamos a explicar como montar un servidor en AWS para poder subir nuestra página web, siguiendo todos los pasos y explicándolos para que se vea de forma correcta el proceso que hemos seguido para poder lanzar nuestra aplicaión en AWS.
 
----
+
 
 ## *Creación de una VPC*
 El primer paso que vamos a llevar a cabo es el de crear una VPC (Virtual private Cloud), esto es una red privada dentro de AWS donde podremos desplegar nuestras instancias y recursos, la cual también nos permitirá definir subredes, grupos de seguridad y configuraciones de red personalizadas. A continuación, mostraremos la creación de la VPC con las especificaciones necesarias:
@@ -44,6 +46,20 @@ El primer paso que vamos a llevar a cabo es el de crear una VPC (Virtual private
 
 ![Configuracion-VPC](img/image-4.png)
 
+### Resumen creación VPC
+
+| Configuración          | Valor                                   |
+|------------------------|-----------------------------------------|
+| **Nombre de la VPC**  | `Equipo4RETO`                       |
+| **CIDR de la VPC**    | `10.0.0.0/16`                           |
+| **Zona de Disponibilidad** | `us-east-1a`                     |
+| **Red Pública**       | `10.0.0.0/24`                           |
+| **Rango de IPs Públicas** | `10.0.0.1 - 10.0.0.254`            |
+| **Subred Privada**    | `10.0.1.0/24`                           |
+| **Rango de IPs Privadas** | `10.0.1.1 - 10.0.1.254`            |
+| **Gateway NAT**       | `No configurado`                        |
+
+
 ## *Grupos de seguridad*
 
 Los grupos de seguridad en AWS actúan como un firewall para controlar que tráfico puede entrar o salir de una instancia EC2.
@@ -59,6 +75,17 @@ Los grupos de seguridad en AWS actúan como un firewall para controlar que tráf
 - Este panel nos muestra que el grupo de seguridad se ha creado correctamente además de sus especificaciones.
 
 ![Configuracion-grupoSeguridad](img/image-7.png)
+
+### Resumen grupo seguridad
+
+| Configuración               | Valor                                      |
+|-----------------------------|--------------------------------------------|
+| **Nombre del Grupo de Seguridad** | `grupo-seguridad-web-Equipo4RETO`             |
+| **Descripción**             | `Habilitar los puertos de web`             |
+| **VPC Asociada**            | `Equipo4RETO`                          |
+| **Reglas de Entrada**       | `Puerto 80 (HTTP) - Acceso Público`        |
+|                             | `Puerto 22 (SSH) - Acceso Restringido`     |
+
 
 ## *Máquina Virtual EC2*
 
@@ -241,14 +268,47 @@ En este apartado, configuraremos un grupo de seguridad para controlar el acceso 
 
 ## *Creación de subred pública y de la subred privada*
 
-![alt text](img/image-40.png)
+Vamos a agregar una nueva zona de disponibilidad en AWS, dentro de la cual vamos a crear dos subredes (una pública y una privada).
 
-![alt text](img/image-41.png)
+- Primero la vamos a asociar con la VPC que llevamos trabajando durante todo el proceso de creación del servidor.
+
+![Configuracion-Subred](img/image-40.png)
+
+- El nombre que le hemos dado a la subred pública es "lab-subnet-public2-us-east-1b" y como su nombre indica elegiremos la zona de disponibilidad "us-east-1b". El bloque de CIDR de VPC IPv4 que utilizaremos es "10.0.2.0/24" lo que significa que la subred que estamos creando tendrá 256 direcciones IP disponibles.
+
+![Cofiguracion-Subred](img/image-41.png)
+
+- En el caso de la subred privada, le otorgamos el nombre de "lab-subnet-private2-us-east-1b", para la cual elegiremos la misma zona de disponibilidad que la subred pública. El bloque de CIDR de VPC IPv4 que utilizaremos es "10.0.3.0/24".
 
 ![alt text](img/image-42.png)
 
+- Se ha creado correctamente.
+
 ![alt text](img/image-43.png)
 
+### Resumen creación subredes
+
+### 🏗️ **Creación de subredes en la zona de disponibilidad `us-east-1b`**  
+
+| **Recurso** | **Configuración** |
+|------------|------------------|
+| **VPC** | VPC de laboratorio |
+| **Zona de disponibilidad** | `us-east-1b` |
+| **CIDR de la VPC** | `10.0.0.0/16` |
+
+#### **Subred Pública**  
+| **Parámetro** | **Valor** |
+|--------------|----------|
+| **Nombre** | `lab-subnet-public2-us-east-1b` |
+| **CIDR Block** | `10.0.2.0/24` |
+
+#### **Subred Privada**  
+| **Parámetro** | **Valor** |
+|--------------|----------|
+| **Nombre** | `lab-subnet-private2-us-east-1b` |
+| **CIDR Block** | `10.0.3.0/24` |
+
+ 
 
 ## *Creación de grupo de subredes de base de datos*
 
@@ -257,5 +317,40 @@ En este apartado, configuraremos un grupo de seguridad para controlar el acceso 
 ![alt text](img/image-46.png)
 
 ![alt text](img/image-47.png)
+
+
+## *Creación de base de datos*
+
+Contraseña db: Equipo4RETO
+
+![alt text](img/image-56.png)
+
+![alt text](img/image-57.png)
+
+![alt text](img/image-58.png)
+
+![alt text](img/image-59.png)
+
+![alt text](img/image-60.png)
+
+![alt text](img/image-61.png)
+
+![alt text](img/image-62.png)
+
+![alt text](img/image-63.png)
+
+![alt text](img/image-64.png)
+
+![alt text](img/image-65.png)
+
+FALLOS PARA PREGUNTAR A MANU
+
+![alt text](image.png)
+
+![alt text](image-1.png)
+
+CREADA CORRECTAMENTE
+
+![alt text](image-3.png)
 
 
