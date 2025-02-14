@@ -66,5 +66,5 @@ class Jugador extends Model
             $model->fechaActualizacion = now();
         });
     }
-    
+
 }

@@ -22,7 +22,7 @@ class Donacion extends Model
         return $this->belongsTo(Ong::class, 'ong_id');
     }
 
-  
+
     protected static function boot()
     {
         parent::boot();

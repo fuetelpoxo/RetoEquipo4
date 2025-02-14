@@ -8,6 +8,7 @@ use App\Http\Requests\JugadorRequests\StoreJugadorRequest;
 use App\Http\Requests\JugadorRequests\UpdateJugadorRequest;
 use App\Http\Resources\JugadorResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class JugadorController extends Controller
 {
@@ -17,7 +18,7 @@ class JugadorController extends Controller
     public function index()
     {
         return JugadorResource::collection(Jugador::all());
-   
+
     }
 
     /**
@@ -37,7 +38,7 @@ class JugadorController extends Controller
         return new JugadorResource($jugador);
     }
 
-   
+
     /**
      * Update the specified resource in storage.
      */
