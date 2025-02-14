@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { useUsers } from "../../models/UserViewModel"; // Hook que maneja la API
-import Loading from "../../components/loading";
+import { useUsers } from "../../models/UseUsers"; // Hook que maneja la API
+import Loading from "../../components/Loading";
 
+// Componente principal de gestión de usuarios
 function Usuarios() {
-  const { users, loading, error, deleteUser, addUser, updateUser } = useUsers(); 
+  const { users, loading, error, handleDeleteUser, handleAddUser, handleUpdateUser } = useUsers();
   const [vista, setVista] = useState("listado"); // Estado para controlar la vista
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null); // Estado para editar/ver detalles
 
@@ -45,28 +46,30 @@ function Usuarios() {
           </button>
 
           <div className="row bg-dark text-white">
-            <div className="col">ID</div>
             <div className="col">Nombre</div>
             <div className="col">Email</div>
             <div className="col">Perfil</div>
+            <div className="col">Estado</div>
             <div className="col">Acciones</div>
           </div>
+          
 
-          {users.map((user) => (
-            <div className="row border-bottom py-2" key={user.id}>
-              <div className="col">{user.id}</div>
+      
+          { users.map((user) => (
+            <div className="row border-bottom py-2" key={user.id}> {/* Usa email o id para clave */}
               <div className="col">{user.name}</div>
               <div className="col">{user.email}</div>
               <div className="col">{user.perfil}</div>
+              <div className="col">{user.activo ? "Activo" : "Inactivo"}</div>
 
               <div className="col">
-                <button onClick={() => handleDetalles(user)} className="btn btn-info btn-sm me-2">
+                <button onClick={() => handleDetalles(user)} className="btn btn-black btn-sm me-2">
                   <i className="fa fa-eye"></i>
                 </button>
-                <button onClick={() => handleEditar(user)} className="btn btn-warning btn-sm me-2">
+                <button onClick={() => handleEditar(user)} className="btn btn-black btn-sm me-2">
                   <i className="fa fa-edit"></i>
                 </button>
-                <button className="btn btn-danger btn-sm" onClick={() => deleteUser(user.id)}>
+                <button className="btn btn-black btn-sm" onClick={() => handleDeleteUser(user.id)}>
                   <i className="fa fa-trash"></i>
                 </button>
               </div>
@@ -75,11 +78,13 @@ function Usuarios() {
         </>
       )}
 
-      {vista === "añadir" && <FormularioUsuario onSubmit={addUser} onCancel={handleVolver} />}
+      {vista === "añadir" && (
+        <FormularioUsuario onSubmit={handleAddUser} onCancel={handleVolver} />
+      )}
       {vista === "editar" && usuarioSeleccionado && (
         <FormularioUsuario
           user={usuarioSeleccionado}
-          onSubmit={updateUser}
+          onSubmit={(userData) => handleUpdateUser(usuarioSeleccionado.id, userData)}
           onCancel={handleVolver}
         />
       )}
@@ -92,7 +97,7 @@ function Usuarios() {
 
 // Componente para añadir y editar usuario
 const FormularioUsuario = ({ user, onSubmit, onCancel }) => {
-  const [form, setForm] = useState(user || { name: "", email: "", perfil: "" });
+  const [form, setForm] = useState(user || { name: "", email: "", password: "", perfil: "", activo: true });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -101,16 +106,74 @@ const FormularioUsuario = ({ user, onSubmit, onCancel }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(form);
-    onCancel(); // Vuelve al listado después de enviar
+    onCancel();
   };
 
   return (
     <div>
       <h2>{user ? "Editar Usuario" : "Añadir Usuario"}</h2>
       <form onSubmit={handleSubmit}>
-        <input name="name" value={form.name} onChange={handleChange} placeholder="Nombre" />
-        <input name="email" value={form.email} onChange={handleChange} placeholder="Email" />
-        <input name="perfil" value={form.perfil} onChange={handleChange} placeholder="Perfil" />
+        <div className="mb-3">
+          <label className="form-label">Nombre</label>
+          <input
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            className="form-control"
+            placeholder="Nombre"
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Email</label>
+          <input
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+            className="form-control"
+            placeholder="Email"
+            type="email"
+            required
+          />
+        </div>
+        {!user && (
+          <div className="mb-3">
+            <label className="form-label">Contraseña</label>
+            <input
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              className="form-control"
+              placeholder="Contraseña"
+              type="password"
+              required
+            />
+          </div>
+        )}
+        <div className="mb-3">
+          <label className="form-label">Perfil</label>
+          <input
+            name="perfil"
+            value={form.perfil}
+            onChange={handleChange}
+            className="form-control"
+            placeholder="Perfil"
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Estado (Activo)</label>
+          <select
+            name="activo"
+            value={form.activo}
+            onChange={handleChange}
+            className="form-control"
+            required
+          >
+            <option value={true}>Activo</option>
+            <option value={false}>Inactivo</option>
+          </select>
+        </div>
         <button type="submit" className="btn btn-primary">Guardar</button>
         <button type="button" className="btn btn-secondary" onClick={onCancel}>Cancelar</button>
       </form>
@@ -125,6 +188,7 @@ const DetallesUsuario = ({ user, onCancel }) => {
       <h2>Detalles de {user.name}</h2>
       <p><strong>Email:</strong> {user.email}</p>
       <p><strong>Perfil:</strong> {user.perfil}</p>
+      <p><strong>Estado:</strong> {user.activo ? "Activo" : "Inactivo"}</p>
       <button className="btn btn-secondary" onClick={onCancel}>Volver</button>
     </div>
   );

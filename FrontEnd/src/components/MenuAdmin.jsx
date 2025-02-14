@@ -7,7 +7,7 @@ function AdminMenu() {
     return (
         <div className="d-flex">
             <Link to="/" className="btn btn-danger mx-2">
-                <i className="fa fa-home"></i> Inicio
+                Inicio
             </Link>
             <Link to="/administrador/usuarios" className="btn btn-danger mx-2">
                 Usuarios
