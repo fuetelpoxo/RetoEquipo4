@@ -16,8 +16,8 @@ class PatrocinadorEquipoResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'equipo' => new EquipoResource($this->equipo),
-            'patrocinador' => new PatrocinadorResource($this->patrocinador),
+            'equipo' => new EquipoResource($this->whenLoaded('equipo')),
+            'patrocinador' => new PatrocinadorResource($this->whenLoaded('patrocinador')),
             'usuarioIdCreacion' => $this->usuarioIdCreacion,
             'fechaCreacion' => $this->fechaCreacion,
             'usuarioIdActualizacion' => $this->usuarioIdActualizacion,

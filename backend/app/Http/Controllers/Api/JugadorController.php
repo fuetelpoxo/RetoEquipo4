@@ -9,6 +9,7 @@ use App\Http\Requests\JugadorRequests\UpdateJugadorRequest;
 use App\Http\Resources\JugadorResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class JugadorController extends Controller
 {
@@ -45,7 +46,12 @@ class JugadorController extends Controller
      */
     public function update(UpdateJugadorRequest $request, Jugador $jugador)
     {
+        Log::info('Datos recibidos para actualizar:', $request->validated()); // 🚀 Esto registra los datos en storage/logs/laravel.log
+
         $jugador->update($request->validated());
+
+        Log::info('Datos actualizados en la BD:', $jugador->toArray()); // 🚀 Verifica si el modelo realmente se actualizó
+
         return new JugadorResource($jugador);
     }
 

@@ -18,9 +18,9 @@ class RetoResource extends JsonResource
             'id' => $this->id,
             'titulo' => $this->titulo,
             'texto' => $this->texto,
-            'estudio' => new EstudioResource($this->estudio), // Relación con estudio
-            'imagenes' => ImagenResource::collection($this->imagenes), // Relación con imágenes
-            'publicaciones' => PublicacionResource::collection($this->publicaciones), // Relación con publicaciones
+            'estudio' => new EstudioResource($this->whenLoaded('estudio')), // Relación con estudio
+            'imagenes' => ImagenResource::collection($this->whenLoaded('imagenes')), // Relación con imágenes
+            'publicaciones' => PublicacionResource::collection($this->whenLoaded('publicaciones')), // Relación con publicaciones
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

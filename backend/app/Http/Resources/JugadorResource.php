@@ -54,11 +54,11 @@ class JugadorResource extends JsonResource
             'fechaCreacion' => $this->fechaCreacion,  // Fecha de creación del jugador
             'usuarioIdActualizacion' => $this->usuarioIdActualizacion,  // Usuario que actualizó el registro
             'fechaActualizacion' => $this->fechaActualizacion,  // Fecha de última actualización
-            // 'equipo' => new EquipoResource($this->whenLoaded('equipo')),  // Relación con el equipo (devuelve solo un objeto)
-            // 'estudio' => new EstudioResource($this->whenLoaded('estudio')),  // Relación con el estudio
-            // 'actas' => ActaResource::collection($this->whenLoaded('actas')),  // Relación con las actas
-            // 'imagenes' => ImagenResource::collection($this->whenLoaded('imagenes')),  // Relación con las imágenes
-            // 'publicaciones' => PublicacionResource::collection($this->whenLoaded('publicaciones')),  // Relación con las publicaciones
+            'equipo' => new EquipoResource($this->whenLoaded('equipo')),  // Relación con el equipo (devuelve solo un objeto)
+            'estudio' => new EstudioResource($this->whenLoaded('estudio')),  // Relación con el estudio
+            'actas' => ActaResource::collection($this->whenLoaded('actas')),  // Relación con las actas
+            'imagenes' => ImagenResource::collection($this->whenLoaded('imagenes')),  // Relación con las imágenes
+            'publicaciones' => PublicacionResource::collection($this->whenLoaded('publicaciones')),  // Relación con las publicaciones
         ];
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 class Jugador extends Model
 {
     protected $table = 'jugadores';
-    
+
     protected const TIPOS = ['jugador', 'entrenador', 'capitan'];
 
     protected $fillable = [
@@ -20,8 +20,12 @@ class Jugador extends Model
         'dni',
         'email',
         'telefono',
+        'usuarioIdCreacion', // 🔥 Añadido
+        'fechaCreacion', // 🔥 Añadido
+        'usuarioIdActualizacion',
+        'fechaActualizacion',
     ];
-    
+
     // Relación con Actas (un jugador puede tener muchas actas)
     public function actas()
     {
@@ -61,10 +65,10 @@ class Jugador extends Model
             $model->fechaCreacion = now();
         });
 
-        static::updating(function ($model) {
-            $model->usuarioIdActualizacion = Auth::id() ?? 1;
-            $model->fechaActualizacion = now();
-        });
+        // static::updating(function ($model) {
+        //     $model->usuarioIdActualizacion = Auth::id() ?? 1;
+        //     $model->fechaActualizacion = now();
+        // });
     }
 
 }

@@ -17,10 +17,10 @@ class EstudioResource extends JsonResource
         return [
             'id' => $this->id,
             'curso' => $this->curso,
-            'centro' => new CentroResource($this->centro), // Centro al que pertenece el estudio
-            'ciclo' => new CicloResource($this->ciclo), // Ciclo al que pertenece el estudio
-            'retos' => RetoResource::collection($this->retos), // Lista de retos asociados
-            'jugadores' => JugadorResource::collection($this->jugadores), // Lista de jugadores en este estudio
+            'centro' => new CentroResource($this->whenLoaded('centro')), // Centro al que pertenece el estudio
+            'ciclo' => new CicloResource($this->whenLoaded('ciclo')), // Ciclo al que pertenece el estudio
+            'retos' => RetoResource::collection($this->whenLoaded('retos')), // Lista de retos asociados
+            'jugadores' => JugadorResource::collection($this->whenLoaded('jugadores')), // Lista de jugadores en este estudio
             'usuarioIdCreacion' => $this->usuarioIdCreacion,
             'fechaCreacion' => $this->fechaCreacion,
             'usuarioIdActualizacion' => $this->usuarioIdActualizacion,

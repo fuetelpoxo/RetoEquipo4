@@ -17,8 +17,8 @@ class CentroResource extends JsonResource
         return [
             'id' => $this->id,
             'nombre' => $this->nombre,
-            'equipos' => EquipoResource::collection($this->equipos),
-            'estudios' => EstudioResource::collection($this->estudios),
+            'equipos' => EquipoResource::collection($this->whenLoaded('equipos')),
+            'estudios' => EstudioResource::collection($this->whenLoaded('estudios')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

@@ -16,13 +16,13 @@ class PartidoResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'equipo_local' => new EquipoResource($this->equipoLocal),
-            'equipo_visitante' => new EquipoResource($this->equipoVisitante),
+            'equipo_local' => new EquipoResource($this->whenLoaded('equipoLocal')),
+            'equipo_visitante' => new EquipoResource($this->whenLoaded('equipoVisitante')),
             'fecha' => $this->fecha,
             'hora' => $this->hora,
             'goles_local' => $this->golesL,
             'goles_visitante' => $this->golesV,
-            'pabellon' => new PabellonResource($this->pabellon),
+            'pabellon' => new PabellonResource($this->whenLoaded('pabellon')),
             'actas' => ActaResource::collection($this->whenLoaded('actas')),
             'publicaciones' => PublicacionResource::collection($this->whenLoaded('publicaciones')),
             'imagenes' => ImagenResource::collection($this->whenLoaded('imagenes')),

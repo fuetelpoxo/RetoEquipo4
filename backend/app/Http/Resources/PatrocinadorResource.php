@@ -21,9 +21,9 @@ class PatrocinadorResource extends JsonResource
             'fechaCreacion' => $this->fechaCreacion,
             'usuarioIdActualizacion' => $this->usuarioIdActualizacion,
             'fechaActualizacion' => $this->fechaActualizacion,
-            'equipos' => EquipoResource::collection($this->equipos),  // Relación con equipos
-            'publicaciones' => PublicacionResource::collection($this->publicaciones), // Relación con publicaciones
-            'imagenes' => ImagenResource::collection($this->imagenes), // Relación con imágenes
+            'equipos' => EquipoResource::collection($this->whenLoaded('equipos')),  // Relación con equipos
+            'publicaciones' => PublicacionResource::collection($this->whenLoaded('publicaciones')), // Relación con publicaciones
+            'imagenes' => ImagenResource::collection($this->whenLoaded('imagenes')), // Relación con imágenes
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
