@@ -26,7 +26,7 @@ class InscripcionController extends Controller
     public function store(StoreInscripcionRequest $request)
     {
         $inscripcion = Inscripcion::create([
-            'comentario' => $request->comentario,
+            'comentarios' => $request->comentarios,
             'estado' => $request->estado,
             'equipo_id' => $request->equipo_id,
             'usuarioIdCreacion' => Auth::id() ?? 1,
@@ -43,7 +43,7 @@ class InscripcionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Inscripcion $id)
+    public function show( $id)
     {
         $inscripcion=Inscripcion::find($id);
         return new InscripcionResource($inscripcion);
@@ -63,7 +63,7 @@ class InscripcionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Inscripcion $id)
+    public function destroy($id)
     {
         $inscripcion = Inscripcion::find($id);
         $inscripcion->delete();

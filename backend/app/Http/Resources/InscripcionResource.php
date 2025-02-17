@@ -18,6 +18,10 @@ class InscripcionResource extends JsonResource
             "id"=> $this->id,
             "comentarios"=> $this->comentarios,
             "estado"=> $this->estado,
+            'usuarioIdCreacion' => $this->usuarioIdCreacion,
+            'fechaCreacion' => $this->fechaCreacion,
+            'usuarioIdActualizacion' => $this->usuarioIdActualizacion,
+            'fechaActualizacion' => $this->fechaActualizacion,
             "equipo_id"=>new EquipoResource($this->whenLoaded('equipo'))
         ];
     }

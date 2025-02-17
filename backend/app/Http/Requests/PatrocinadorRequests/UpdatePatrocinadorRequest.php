@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\InscripcionRequests;
+namespace App\Http\Requests\PatrocinadorRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreInscripcionRequest extends FormRequest
+class UpdatePatrocinadorRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,7 @@ class StoreInscripcionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'comentarios' => 'required|string',
-            'estado' => 'required|string|in:pendiente,aprobada,rechazada',
-            'equipo_id' => 'required|exists:equipos,id',
+            'nombre' => 'required|string|max:255'
         ];
     }
 }

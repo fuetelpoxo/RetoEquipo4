@@ -6,6 +6,9 @@ use App\Http\Controllers\Api\DonacionController;
 use App\Http\Controllers\Api\EquipoController;
 use App\Http\Controllers\Api\JugadorController;
 use App\Http\Controllers\Api\InscripcionController;
+use App\Http\Controllers\Api\PatrocinadorController;
+use App\Http\Controllers\Api\PartidoController;
+use App\Http\Controllers\Api\ActaController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -22,3 +25,9 @@ Route::apiResource('equipos', EquipoController::class);
 Route::apiResource('jugadores', JugadorController::class);
 
 Route::apiResource('inscripciones', InscripcionController::class);
+
+Route::apiResource('patrocinadores', PatrocinadorController::class);
+
+Route::apiResource('partidos', PartidoController::class);
+
+Route::apiResource('actas', ActaController::class);

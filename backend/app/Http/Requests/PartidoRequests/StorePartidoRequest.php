@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\InscripcionRequests;
+namespace App\Http\Requests\PartidoRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreInscripcionRequest extends FormRequest
+class StorePartidoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,13 @@ class StoreInscripcionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'comentarios' => 'required|string',
-            'estado' => 'required|string|in:pendiente,aprobada,rechazada',
-            'equipo_id' => 'required|exists:equipos,id',
+            'equipoL_id' => 'required|exists:equipos,id',
+            'equipoV_id' => 'required|exists:equipos,id',
+            'fecha' => 'required|date',
+            'hora' => 'required|date_format:H:i',
+            'golesL' => 'required|integer',
+            'golesV' => 'required|integer',
+            'pabellon_id' => 'required|exists:pabellones,id'
         ];
     }
 }

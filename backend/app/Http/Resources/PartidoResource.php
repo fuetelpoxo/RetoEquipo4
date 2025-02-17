@@ -14,6 +14,20 @@ class PartidoResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'equipoL' => new EquipoResource($this->whenLoaded('equipoL')), // Representación del equipo local
+            'equipoV' => new EquipoResource($this->whenLoaded('equipoV')), // Representación del equipo visitante
+            'fecha'=> $this->fecha,
+            'hora'=> $this->hora,
+            'golesL'=> $this->golesL,
+            'golesV'=> $this->golesV,
+            'pabellon'=> new PabellonResource($this->whenLoaded('pabellon')), // Incluir la relación con el pabellón
+            'usuarioIdCreacion'=> $this->usuarioIdCreacion,
+            'fechaCreacion'=> $this->fechaCreacion,
+            'usuarioIdActualizacion'=> $this->usuarioIdActualizacion,
+            'fechaActualizacion'=> $this->fechaActualizacion,
+            'actas'=> ActaResource::collection($this->whenLoaded('actas')), // Incluir la relación con las actas
+        ];
     }
 }

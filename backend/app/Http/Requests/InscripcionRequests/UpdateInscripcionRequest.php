@@ -23,7 +23,7 @@ class UpdateInscripcionRequest extends FormRequest
     {
         return [
             'comentarios'=>'nullable|string|max:255',
-            'estado'=>'nullable|string|in:pendiente,aceptada,rechazada',
+            'estado'=>'nullable|string|in:pendiente,aprobada,rechazada',
             'equipo_id'=>'nullable|exists:equipos,id'
         ];
     }
