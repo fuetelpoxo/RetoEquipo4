@@ -18,12 +18,12 @@
     - Iconos
 5. [Uso de la aplicacion](#aplicacion) 
     - Cuentas de acceso
-    
-6. Bibliografia y webgrafia 
+6. [Software desarrollado](#software) 
 7. Mejoras del producto y lo que falta 
 8. Tutorial del uso de aplicacion 
 9. [Manual de usuario]()  
-10. Herramientas utilizadas
+10. Bibliografia y webgrafia 
+11. Herramientas utilizadas
 
 ## Nombre del reto <a name="reto"></a> 📌
 Liga solidaria 
@@ -57,69 +57,62 @@ Hemos optado por unos colores oscuros para que la pagina sea minimalista, con un
 ### Vistas 
 
 - Vista de Inicio
-  
 ![alt text](img/image-2.png)
-
 La vista de inicio es la pantalla principal de la aplicación web. Su propósito es proporcionar una introducción al usuario sobre el sistema y ofrecer opciones de navegación.
 Contiene un texto introductorio que explica el propósito de la aplicación.
 
 - Vista de Torneo de deportivo
-  
 ![alt text](img/image-3.png)
 
 Esta vista permite gestionar la información sobre torneos deportivos, incluyendo horarios, equipos y clasificaciones.
+A la derecha se muestran los equipos para las clasificatorias, en la izquierda se mostrara un horario con las finales, los grupos A y grupos B que seran los que se van a afrentar en los proximos partidos  
 
-- Vista de reglamento
-  
+- Vista de reglamento 
 ![alt text](img/image-4.png)
 
 En esta vista se presentan las normas y regulaciones del torneo o del sistema en general
 
 - Vista de equipos
-  
 ![alt text](img/image-5.png)
 
 Esta vista proporciona información detallada sobre un equipo en particular, incluyendo su entrenador y patrocinador.
 
 - Vista Informacion para los equipos
-  
 ![alt text](img/image-6.png)
 
-En esta vista se muestra el entrenador y los jugadores de cada equipo 
+En esta vista se muestra el entrenador y los jugadores de ese mismo equipo y a su vez su patrocinio  
 
-- Vista para el login
-  
+- Vista para el login 
 ![alt text](img/image-7.png)
 
-Esta vista permite a los usuarios autenticarse en el sistema proporcionando sus credenciales.
+Esta vista permite a los usuarios autenticarse en el sistema proporcionando sus credenciales 
 
-- Vista para la inscripcion
-  
+
+- Vista para la inscripcion 
 ![alt text](img/image-8.png)
 
-En esta vista  permite seleccionar el entrenador, el capitan y los jugadores 
+En esta vista permite seleccionar el entrenador, el capitan y los jugadores 
 
-- Vista para el torneo solidario
-  
+- Vista para el torneo solidario 
 ![alt text](img/image-9.png)
-
 Esta vista presenta la información sobre un torneo solidario, incluyendo sus objetivos, recaudación y patrocinadores
 
-- Vista para retos
-  
+- Vista para retos 
 ![alt text](img/image-10.png)
 
-Esta vista muestra diferentes desafíos o retos en los que los usuarios pueden participar.
+Esta vista muestra diferentes desafíos o retos en los que los usuarios pueden participar. Al clickar en uno de los retos te llevara a la siguiente vista "vista para cada rama profesional" en el que aparecera mas informacion 
 
-- Vista para cada rama profesional
-  
+- Vista para cada rama profesional 
 ![alt text](img/image-11.png)
 
-Esta vista proporciona información detallada sobre una categoría profesional específica dentro de los retos.
+Esta vista proporciona información detallada sobre una categoría profesional específica dentro de los retos, 
+
 
 ### Iconos 
-![alt text](img/iconoUser.png)
+![alt text](img/iconoUser.png)  ![alt text](img/icons8-settings.png) 
 
+- En el menu de la página de la pagina de se muestra este icono que da acceso a la pagina de logeo 
+- 
 ## Uso de la aplicacion 
 
 ### Cuentas de acceso ✔️
@@ -128,8 +121,43 @@ Esta vista proporciona información detallada sobre una categoría profesional e
 - 👨‍🏫 **Perfil director torneo:** gestion de las actas de los partidos 
 - 👨‍🏫 **Perfil periodista:** mantenimiento de las publicaciones, carrusel fotográfico e imágenes
 ***
-Apartado para un formulario para que se puedan inscribir los equipos
+En la página principal se encuentra un menu en el que se mostraran los apartados que ofrecemos 
+  - Apartado de equipos para consultar los que van a participar 
+  - Apartado para que se puedan inscribir los equipos
+  - Apartado "Torneo Solidario"
+  - Apartado "Reglamento" con sus horarios, clasificacion, final, galería 
+  
+## Software de la aplicacion  <a name="software"></a>
 
+### Estructura del proyecto
+![alt text](img/estructura.png)
+
+### Documentacion del código
+
+``` java
+
+
+ 
+```
+### 🌐 API
+
+| Método | Endpoint |  Descripción |
+|-----------|-----------|-----------|
+| GET   | api/usuarios   | Obtiene la listas de usuarios   |
+| POST    | api/usuarios    | Crea un nuevo usuario    |
+
+``` java
+Ejemplo: 
+
+{
+  "id": 1,
+  "nombre": "Juan Pérez",
+  "email": "juan@example.com"
+  "activo": 
+  "perfil":
+}
+ 
+```
 
 ## Mejoras del producto y lo que falta 
 
@@ -140,5 +168,5 @@ Apartado para un formulario para que se puedan inscribir los equipos
 - MySQLWorkbech 
 - JavaScrip
 - PhpMainer 
-- Color-generator (gama de colores)
+- Color-generator 
  
