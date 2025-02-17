@@ -21,7 +21,7 @@ class ActaController extends Controller
         return ActaResource::collection($acta);
     }
 
-
+//.
     /**
      * Store a newly created resource in storage.
      */
