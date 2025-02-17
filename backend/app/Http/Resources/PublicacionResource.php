@@ -26,7 +26,7 @@ class PublicacionResource extends JsonResource
             'partido' => new PartidoResource($this->whenLoaded('partido')),
             'patrocinador' => new PatrocinadorResource($this->whenLoaded('patrocinador')),
             'jugador' => new JugadorResource($this->whenLoaded('jugador')),
-            'reto' => new RetoResource($this->whenLoaded('jugador')),
+            'reto' => new RetoResource($this->whenLoaded('reto')),
             'ong' => new OngResource($this->whenLoaded('ong')),
             'pabellon' => new PabellonResource($this->whenLoaded('pabellon')),
             'usuarioIdCreacion' => $this->usuarioIdCreacion,
