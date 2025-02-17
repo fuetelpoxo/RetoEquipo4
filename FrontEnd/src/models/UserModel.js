@@ -27,20 +27,33 @@ export const deleteUser = async (userId) => {
 
 export const updateUser = async (userId, userData) => {
   try {
-    const response = await fetch(`/api/users/${userId}`, { // Solicitud relativa
-      method: 'PUT', 
+    console.log('Actualizando usuario:', userId, userData);
+
+    // Si el email no ha cambiado, lo eliminamos de los datos a actualizar
+    const currentUser = await fetch(`/api/users/${userId}`).then(res => res.json());
+    if (currentUser.email === userData.email) {
+      delete userData.email;//borra email antiguo si es igual al nuevo 
+    }
+
+    const response = await fetch(`/api/users/${userId}`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       body: JSON.stringify(userData),
     });
+
     if (!response.ok) {
-      throw new Error('Error al actualizar el usuario');
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Error al actualizar el usuario');
     }
-    const updatedUser = await response.json();
-    return updatedUser; // Devuelve el usuario actualizado
+
+    const data = await response.json();
+    return data.data || data;
   } catch (err) {
-    throw new Error(`Error al actualizar el usuario: ${err.message}`);
+    console.error('Error en updateUser:', err);
+    throw err;
   }
 };
 

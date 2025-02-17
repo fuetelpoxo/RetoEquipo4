@@ -37,12 +37,36 @@ export const useUsers = () => {
   // Actualizar usuario
   const handleUpdateUser = async (userId, userData) => {
     try {
-      const updatedUser = await updateUser(userId, userData); // Llamada a la API para actualizar el usuario
-      setUsers((prevUsers) =>
-        prevUsers.map((user) => (user.id === userId ? updatedUser : user)) // Actualizamos el estado con el usuario modificado
+      const dataToUpdate = {
+        name: userData.name,
+        email: userData.email,
+        perfil: userData.perfil,
+        activo: userData.activo === 'true' || userData.activo === true ? 1 : 0 // Convertir a 1 o 0
+      };
+
+      // Solo incluimos la contraseña si se proporcionó una nueva
+      if (userData.password && userData.password.trim() !== '') {
+        dataToUpdate.password = userData.password;
+      }
+
+      console.log('Datos a actualizar:', dataToUpdate);
+
+      const updatedUser = await updateUser(userId, dataToUpdate);
+      
+      setUsers(prevUsers => 
+        prevUsers.map(user => 
+          user.id === userId ? {
+            ...user, 
+            ...updatedUser,
+            activo: Boolean(updatedUser.activo) // Convertir de nuevo a booleano para el frontend
+          } : user
+        )
       );
+      
+      return updatedUser;
     } catch (err) {
-      setError(`Error al actualizar el usuario: ${err.message}`);
+      console.error('Error al actualizar usuario:', err);
+      throw err;
     }
   };
 

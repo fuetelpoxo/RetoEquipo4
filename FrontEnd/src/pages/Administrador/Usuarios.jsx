@@ -52,10 +52,8 @@ function Usuarios() {
             <div className="col">Estado</div>
             <div className="col">Acciones</div>
           </div>
-          
 
-      
-          { users.map((user) => (
+          {users.map((user) => (
             <div className="row border-bottom py-2" key={user.id}> {/* Usa email o id para clave */}
               <div className="col">{user.name}</div>
               <div className="col">{user.email}</div>
@@ -97,16 +95,88 @@ function Usuarios() {
 
 // Componente para añadir y editar usuario
 const FormularioUsuario = ({ user, onSubmit, onCancel }) => {
-  const [form, setForm] = useState(user || { name: "", email: "", password: "", perfil: "", activo: true });
+  const [form, setForm] = useState({
+    name: user?.name || '',
+    email: user?.email || '',
+    password: '',
+    perfil: user?.perfil || '',
+    activo: user?.activo ?? true
+  });
+
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Validación del nombre
+    if (!form.name.trim()) {
+      newErrors.name = 'El nombre es requerido';
+    } else if (form.name.length > 255) {
+      newErrors.name = 'El nombre debe tener menos de 255 caracteres';
+    }
+
+    // Validación del email
+    const emailRegex = /^[a-zA-Z0-9._-]+@gmail\.com$/;
+    if (!form.email.trim()) {
+      newErrors.email = 'El email es requerido';
+    } else if (!emailRegex.test(form.email)) {
+      newErrors.email = 'Debe ser una dirección de Gmail válida';
+    }
+
+    // Validación de la contraseña (solo para nuevos usuarios o si se intenta cambiar)
+    if (!user && !form.password) {
+      newErrors.password = 'La contraseña es requerida para nuevos usuarios';
+    } else if (form.password) {
+      const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+      if (!passwordRegex.test(form.password)) {
+        newErrors.password = 'La contraseña debe tener al menos 8 caracteres, una mayúscula y un número';
+      }
+    }
+
+    // Validación del perfil
+    if (!form.perfil) {
+      newErrors.perfil = 'El perfil es requerido';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    // Limpiar error del campo cuando el usuario empiece a escribir
+    if (errors[e.target.name]) {
+      setErrors({ ...errors, [e.target.name]: null });
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(form);
-    onCancel();
+    
+    if (!validateForm()) {
+      return;
+    }
+
+    try {
+      const dataToSubmit = {
+        ...form,
+        activo: Boolean(form.activo) // Asegurarse de que sea booleano
+      };
+      
+      // Mantener la lógica existente para email y contraseña
+      if (user && user.email === form.email) {
+        delete dataToSubmit.email;
+      }
+
+      if (user && !form.password.trim()) {
+        delete dataToSubmit.password;
+      }
+
+      await onSubmit(dataToSubmit);
+      onCancel();
+    } catch (error) {
+      console.error('Error al guardar:', error);
+    }
   };
 
   return (
@@ -119,62 +189,71 @@ const FormularioUsuario = ({ user, onSubmit, onCancel }) => {
             name="name"
             value={form.name}
             onChange={handleChange}
-            className="form-control"
+            className={`form-control ${errors.name ? 'is-invalid' : ''}`}
             placeholder="Nombre"
-            required
           />
+          {errors.name && <div className="invalid-feedback">{errors.name}</div>}
         </div>
+
         <div className="mb-3">
           <label className="form-label">Email</label>
           <input
             name="email"
             value={form.email}
             onChange={handleChange}
-            className="form-control"
-            placeholder="Email"
+            className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+            placeholder="ejemplo@gmail.com"
             type="email"
-            required
           />
+          {errors.email && <div className="invalid-feedback">{errors.email}</div>}
         </div>
-        {!user && (
-          <div className="mb-3">
-            <label className="form-label">Contraseña</label>
-            <input
-              name="password"
-              value={form.password}
-              onChange={handleChange}
-              className="form-control"
-              placeholder="Contraseña"
-              type="password"
-              required
-            />
-          </div>
-        )}
+
+        <div className="mb-3">
+          <label className="form-label">
+            Contraseña {user ? '(dejar en blanco para mantener la actual)' : '*'}
+          </label>
+          <input
+            name="password"
+            value={form.password}
+            onChange={handleChange}
+            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+            type="password"
+            placeholder={user ? 'Dejar en blanco para mantener la actual' : 'Contraseña'}
+          />
+          {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+        </div>
+
         <div className="mb-3">
           <label className="form-label">Perfil</label>
-          <input
+          <select
             name="perfil"
             value={form.perfil}
             onChange={handleChange}
-            className="form-control"
-            placeholder="Perfil"
-            required
-          />
+            className={`form-control ${errors.perfil ? 'is-invalid' : ''}`}
+          >
+            <option value="">Seleccione un perfil</option>
+            <option value="administrador">Administrador</option>
+            <option value="entrenador">Entrenador</option>
+            <option value="director">Director</option>
+            <option value="periodista">Periodista</option>
+          </select>
+          {errors.perfil && <div className="invalid-feedback">{errors.perfil}</div>}
         </div>
+
         <div className="mb-3">
-          <label className="form-label">Estado (Activo)</label>
+          <label className="form-label">Estado</label>
           <select
             name="activo"
-            value={form.activo}
+            value={form.activo.toString()} // Convertir a string para el select
             onChange={handleChange}
             className="form-control"
-            required
           >
-            <option value={true}>Activo</option>
-            <option value={false}>Inactivo</option>
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>
           </select>
         </div>
-        <button type="submit" className="btn btn-primary">Guardar</button>
+
+        <button type="submit" className="btn btn-primary me-2">Guardar</button>
         <button type="button" className="btn btn-secondary" onClick={onCancel}>Cancelar</button>
       </form>
     </div>
