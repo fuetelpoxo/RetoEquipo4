@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Partidos from '../../core/Partidos'; // Importar el servicio de partidos
 
 function Horarios() {
     const [partidos, setPartidos] = useState({
@@ -12,8 +11,16 @@ function Horarios() {
 
     useEffect(() => {
         const obtenerPartidos = async () => {
-            const data = await Partidos.obtenerPartidos();
-            setPartidos(data);
+            try {
+                const response = await fetch('URL_DE_TU_API'); // Reemplaza 'URL_DE_TU_API' con la URL correcta
+                if (!response.ok) {
+                    throw new Error('Error en la carga de partidos');
+                }
+                const data = await response.json(); // Convertimos la respuesta a JSON
+                setPartidos(data); // Asignamos los datos a los estados
+            } catch (error) {
+                console.error('Error al obtener los partidos:', error);
+            }
         };
 
         obtenerPartidos();
@@ -28,7 +35,7 @@ function Horarios() {
                     <div className="row bg-danger text-white py-2" style={{ gap: '10px' }}>
                         <div className="col text-center">Partido</div>
                         <div className="col text-center">Fecha</div>
-                        <div className="col text-center">Hora</div> {/* Nueva columna para la hora */}
+                        <div className="col text-center">Hora</div>
                         <div className="col text-center">Equipo 1</div>
                         <div className="col text-center">Equipo 2</div>
                     </div>
@@ -47,7 +54,7 @@ function Horarios() {
                                     <span>{partido.fecha}</span>
                                 </div>
                                 <div className="col text-center d-flex flex-column align-items-center">
-                                    <span>{partido.hora}</span> {/* Mostrar la hora */}
+                                    <span>{partido.hora}</span>
                                 </div>
                                 <div className="col text-center d-flex flex-column align-items-center">
                                     <span>{partido.equipo1}</span>
@@ -64,12 +71,14 @@ function Horarios() {
     );
 
     return (
-        <div className="container mt-5" style={{ borderTop: '4px solid red', paddingTop: '20px' }}>
-            {renderCard(partidos.finales, 'Horarios de las Finales')}
-            {renderCard(partidos.semifinales, 'Horarios de las Semifinales')}
-            {renderCard(partidos.tabla1, 'Tabla 1')}
-            {renderCard(partidos.tabla2, 'Tabla 2')}
-        </div>
+        <>
+            <div className="container mt-5">
+                {renderCard(partidos.finales, 'Horarios de las Finales')}
+                {renderCard(partidos.semifinales, 'Horarios de las Semifinales')}
+                {renderCard(partidos.tabla1, 'Tabla 1')}
+                {renderCard(partidos.tabla2, 'Tabla 2')}
+            </div>
+        </>
     );
 }
 

@@ -15,11 +15,10 @@ import DirectorTorneo from '../pages/Director/DirectorTorneo.jsx';
 import Entrenador from '../pages/Entrenador/Entrenador.jsx';
 import Periodista from '../pages/Periodista/Periodista.jsx';
 import { useAuth } from '../context/UserContext.jsx';
-import Patrocinadores from '../pages/Publicas/Patrocinadores.jsx';
-import Objetivos from '../pages/Publicas/Objetivos.jsx';
 import Horarios from '../pages/Publicas/Horarios.jsx';
 import FaseFinal from '../pages/Publicas/FaseFinal.jsx';
 import Clasificacion from '../pages/Publicas/Clasificacion.jsx';
+import TorneoSolidario from '../pages/Publicas/TorneoSolidario.jsx';
 
 function AppEnrutador() {
     const { loggedInUser } = useAuth();
@@ -52,8 +51,9 @@ function AppEnrutador() {
                     <Route path="login" element={< LogIn />} />
                     <Route path="retos" element={< RetosPublic />} />
                     <Route path="retos/inforetos" element={< RetosInfo />} />
-                    <Route path="solidario/patrocinadores" element={< Patrocinadores />} />
-                    <Route path="solidario/objetivos" element={< Objetivos />} />
+                    {/* <Route path="solidario/patrocinadores" element={< Patrocinadores />} />
+                    <Route path="solidario/objetivos" element={< Objetivos />} /> */}
+                    <Route path="solidario" element={< TorneoSolidario />} />
                     <Route path="equipos" element={< EquiposPublic />} />
                     <Route path="equipos/infoequipos/:nombre" element={< InfoEquipos />} />
                     <Route path="equipos/inscripcion" element={< Inscripcion />} />

@@ -37,18 +37,8 @@ function AppMenu() {
                     <li className="nav-item">
                         <Link className="nav-link text-white custom-hover" to="/equipos">Equipos</Link>
                     </li>
-                    <li className="nav-item dropdown"
-                        onMouseEnter={() => setIsSolidarioOpen(true)}
-                        onMouseLeave={() => setIsSolidarioOpen(false)}>
-                        <span className="nav-link text-white custom-hover" style={{ cursor: "pointer" }}>
-                            Solidario
-                        </span>
-                        {isSolidarioOpen && (
-                            <ul className="dropdown-menu show bg-dark border-0">
-                                <li><Link className="dropdown-item text-white custom-hover bg-dark" to="/solidario/objetivos">Objetivos</Link></li>
-                                <li><Link className="dropdown-item text-white custom-hover bg-dark" to="/solidario/patrocinadores">Patrocinadores</Link></li>
-                            </ul>
-                        )}
+                    <li className="nav-item">
+                        <Link className="nav-link text-white custom-hover" to="/solidario">Solidario</Link>
                     </li>
                     <li className="nav-item ms-auto">
                         <Link className="nav-link text-white icon-container" to="/login">

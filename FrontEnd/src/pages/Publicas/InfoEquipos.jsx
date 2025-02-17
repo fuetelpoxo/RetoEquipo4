@@ -24,18 +24,20 @@ function InfoEquipos() {
     }
 
     return (
-        <div className="container mt-5 pt-4" style={{ borderTop: '4px solid red' }}>
-            <div className="card shadow-lg">
-                <div className="card-body">
-                    <h1 className="card-title text-center text-danger">{equipo.nombre}</h1>
-                    <div className="text-center">
-                        <img src={equipo.foto} alt={equipo.nombre} className="img-fluid mb-3" style={{ maxWidth: '300px' }} />
+        <>
+            <div className="container mt-5 pt-4" style={{ borderTop: '4px solid red' }}>
+                <div className="card shadow-lg">
+                    <div className="card-body">
+                        <h1 className="card-title text-center text-danger">{equipo.nombre}</h1>
+                        <div className="text-center">
+                            <img src={equipo.foto} alt={equipo.nombre} className="img-fluid mb-3" style={{ maxWidth: '300px' }} />
+                        </div>
+                        <p className="card-text text-center">{equipo.descripcion}</p>
+                        <p className="card-text text-center"><strong>Origen:</strong> {equipo.origen}</p>
                     </div>
-                    <p className="card-text text-center">{equipo.descripcion}</p>
-                    <p className="card-text text-center"><strong>Origen:</strong> {equipo.origen}</p>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 
