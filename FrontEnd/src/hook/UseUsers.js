@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getUsers, deleteUser, updateUser, addUser } from "./UserModel";
+import { getUsers, deleteUser, updateUser, addUser } from "../models/UserModel";
 
 export const useUsers = () => {
   const [users, setUsers] = useState([]); // Estado para almacenar los usuarios

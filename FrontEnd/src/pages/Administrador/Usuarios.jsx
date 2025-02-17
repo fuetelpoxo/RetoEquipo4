@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { useUsers } from "../../models/UseUsers"; // Hook que maneja la API
+import { useUsers } from "../../hook/UseUsers"; // Hook que maneja la API
 import Loading from "../../components/Loading";
+import DetallesUsuario from "../../components/DetallesUsuario"; // Importar el nuevo componente
+import { validateUserForm } from '../../core/validateForms';
 
 // Componente principal de gestión de usuarios
 function Usuarios() {
@@ -87,7 +89,10 @@ function Usuarios() {
         />
       )}
       {vista === "detalles" && usuarioSeleccionado && (
-        <DetallesUsuario user={usuarioSeleccionado} onCancel={handleVolver} />
+        <DetallesUsuario 
+          user={usuarioSeleccionado} 
+          onCancel={handleVolver}
+        />
       )}
     </div>
   );
@@ -106,40 +111,9 @@ const FormularioUsuario = ({ user, onSubmit, onCancel }) => {
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {
-    const newErrors = {};
-
-    // Validación del nombre
-    if (!form.name.trim()) {
-      newErrors.name = 'El nombre es requerido';
-    } else if (form.name.length > 255) {
-      newErrors.name = 'El nombre debe tener menos de 255 caracteres';
-    }
-
-    // Validación del email
-    const emailRegex = /^[a-zA-Z0-9._-]+@gmail\.com$/;
-    if (!form.email.trim()) {
-      newErrors.email = 'El email es requerido';
-    } else if (!emailRegex.test(form.email)) {
-      newErrors.email = 'Debe ser una dirección de Gmail válida';
-    }
-
-    // Validación de la contraseña (solo para nuevos usuarios o si se intenta cambiar)
-    if (!user && !form.password) {
-      newErrors.password = 'La contraseña es requerida para nuevos usuarios';
-    } else if (form.password) {
-      const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
-      if (!passwordRegex.test(form.password)) {
-        newErrors.password = 'La contraseña debe tener al menos 8 caracteres, una mayúscula y un número';
-      }
-    }
-
-    // Validación del perfil
-    if (!form.perfil) {
-      newErrors.perfil = 'El perfil es requerido';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    const { errors, isValid } = validateUserForm(form, user);
+    setErrors(errors);
+    return isValid;
   };
 
   const handleChange = (e) => {
@@ -256,19 +230,6 @@ const FormularioUsuario = ({ user, onSubmit, onCancel }) => {
         <button type="submit" className="btn btn-primary me-2">Guardar</button>
         <button type="button" className="btn btn-secondary" onClick={onCancel}>Cancelar</button>
       </form>
-    </div>
-  );
-};
-
-// Componente para ver detalles del usuario
-const DetallesUsuario = ({ user, onCancel }) => {
-  return (
-    <div>
-      <h2>Detalles de {user.name}</h2>
-      <p><strong>Email:</strong> {user.email}</p>
-      <p><strong>Perfil:</strong> {user.perfil}</p>
-      <p><strong>Estado:</strong> {user.activo ? "Activo" : "Inactivo"}</p>
-      <button className="btn btn-secondary" onClick={onCancel}>Volver</button>
     </div>
   );
 };
