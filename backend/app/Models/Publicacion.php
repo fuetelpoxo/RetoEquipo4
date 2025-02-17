@@ -60,7 +60,7 @@ class Publicacion extends Model
     {
         return $this->belongsTo(Pabellon::class);
     }
-/*
+
     protected static function boot()
     {
         parent::boot();
@@ -75,6 +75,6 @@ class Publicacion extends Model
             $model->fechaActualizacion = now();
         });
     }
-*/
+
 
 }
