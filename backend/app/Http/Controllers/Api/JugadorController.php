@@ -19,7 +19,6 @@ class JugadorController extends Controller
     public function index()
     {
         return JugadorResource::collection(Jugador::all());
-
     }
 
     /**
@@ -46,13 +45,12 @@ class JugadorController extends Controller
      */
     public function update(UpdateJugadorRequest $request, Jugador $jugador)
     {
-        Log::info('Datos recibidos para actualizar:', $request->validated()); // 🚀 Esto registra los datos en storage/logs/laravel.log
+        $datos = $request->validated();
+        Log::info('Datos validados:', $datos);
 
-        $jugador->update($request->validated());
+        $jugador->update($datos);
 
-        Log::info('Datos actualizados en la BD:', $jugador->toArray()); // 🚀 Verifica si el modelo realmente se actualizó
-
-        return new JugadorResource($jugador);
+        return response()->json(['message' => 'Jugador actualizado correctamente', 'data' => $jugador]);
     }
 
 

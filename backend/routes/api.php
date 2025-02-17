@@ -1,6 +1,4 @@
 <?php
-
-;
 use App\Http\Controllers\Api\JugadorController;
 use App\Http\Controllers\Api\EquipoController;
 use Illuminate\Http\Request;

@@ -29,7 +29,7 @@ class UpdateJugadorRequest extends FormRequest
             'tipo' => 'nullable|string|max:255',
             'estudio_id' => 'nullable|exists:estudios,id',
             'dni' => 'nullable|string|max:255',
-            'email' => 'nullable|email|max:255|unique:jugadores,email,' . $this->route('id'),
+            'email' => 'nullable|email|max:255|unique:jugadores,email,' . $this->route('jugador'),
             'telefono' => 'nullable|string|max:255',
         ];
     }

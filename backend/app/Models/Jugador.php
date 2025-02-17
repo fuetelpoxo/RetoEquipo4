@@ -65,10 +65,10 @@ class Jugador extends Model
             $model->fechaCreacion = now();
         });
 
-        // static::updating(function ($model) {
-        //     $model->usuarioIdActualizacion = Auth::id() ?? 1;
-        //     $model->fechaActualizacion = now();
-        // });
+        static::updating(function ($model) {
+            $model->usuarioIdActualizacion = Auth::id() ?? 1;
+            $model->fechaActualizacion = now();
+        });
     }
 
 }
