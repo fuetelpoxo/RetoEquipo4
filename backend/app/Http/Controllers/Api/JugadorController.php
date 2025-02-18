@@ -25,24 +25,11 @@ class JugadorController extends Controller
      */
     public function store(StoreJugadorRequest $request)
     {
-        $jugador = Jugador::create([
-            'equipo_id' => $request->equipo_id,
-            'nombre' => $request->nombre,
-            'apellido1' => $request->apellido1,
-            'apellido2' => $request->apellido2,
-            'tipo' => $request->tipo,
-            'estudio_id' => $request->estudio_id,
-            'dni' => $request->dni,
-            'email' => $request->email,
-            'telefono' => $request->telefono,
-            'usuarioIdCreacion' => Auth::id() ?? 1,
-            'fechaCreacion' => now(),
-            'usuarioIdActualizacion' => Auth::id() ?? 1,
-            'fechaActualizacion' => now()
-        ]);
+        $jugador = Jugador::create($request->validated());
+        $jugador->load('equipo', 'estudio');
         return response()->json([
             'message' => 'Jugador creado con éxito',
-            'jugador' => $jugador
+            'data' => new JugadorResource($jugador)
         ], 201);
     }
 
@@ -51,7 +38,10 @@ class JugadorController extends Controller
      */
     public function show($id)
     {
-        $jugador = Jugador::findOrFail($id);
+        $jugador = Jugador::with(['equipo', 'estudio'])->find($id);
+        if(!$jugador){
+            return response()->json(['error'=>'Jugador no encontrado'],404);
+        }
         return new JugadorResource($jugador);
     }
 
@@ -60,9 +50,13 @@ class JugadorController extends Controller
      */
     public function update(UpdateJugadorRequest $request, $id)
     {
-        $jugador = Jugador::findOrFail($id);
-        $jugador->update($request->validated());
-        return new JugadorResource($jugador);
+        $jugador = Jugador::find($id);
+        if(!$jugador){
+            return response()->json(['error'=>'Jugador no encontrado'],404);
+        }
+        $datos = $request->validated();
+        $jugador->update($datos);
+        return response()->json(['message'=>'Jugador actualizado correctamente','data'=>$jugador]);
     }
 
     /**
@@ -70,8 +64,11 @@ class JugadorController extends Controller
      */
     public function destroy($id)
     {
-        $jugador = Jugador::findOrFail($id);
+        $jugador = Jugador::find($id);
+        if(!$jugador){
+            return response()->json(['error'=>'Jugador no encontrado'],404);
+        }
         $jugador->delete();
-        return response()->noContent();
+        return response()->json(['message'=>'Jugador eliminado correctamente']);
     }
 }

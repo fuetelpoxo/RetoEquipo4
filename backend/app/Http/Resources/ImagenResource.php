@@ -14,6 +14,22 @@ class ImagenResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'url' => $this->url,
+            'nombre' => $this->nombre,
+            'equipo' => new EquipoResource($this->whenLoaded('equipo')),
+            'jugador' => new JugadorResource($this->whenLoaded('jugador')),
+            'partido' => new PartidoResource($this->whenLoaded('partido')),
+            'patrocinador' => new PatrocinadorResource($this->whenLoaded('patrocinador')),
+            'reto' => new RetoResource($this->whenLoaded('reto')),
+            'ong' => new OngResource($this->whenLoaded('ong')),
+            'publicacion' => new PublicacionResource($this->whenLoaded('publicacion')),
+            'pabellon' => new PabellonResource($this->whenLoaded('pabellon')),
+            'usuarioIdCreacion' => $this->usuarioIdCreacion,
+            'fechaCreacion' => $this->fechaCreacion,
+            'usuarioIdActualizacion' => $this->usuarioIdActualizacion,
+            'fechaActualizacion' => $this->fechaActualizacion,
+        ];
     }
 }

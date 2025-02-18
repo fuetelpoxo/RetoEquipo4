@@ -16,7 +16,7 @@ class InscripcionController extends Controller
     public function index()
     {
       $inscripcion = Inscripcion::all();
-        return InscripcionResource::collection($inscripcion);
+      return InscripcionResource::collection($inscripcion);
     }
 
 
@@ -25,18 +25,12 @@ class InscripcionController extends Controller
      */
     public function store(StoreInscripcionRequest $request)
     {
-        $inscripcion = Inscripcion::create([
-            'comentarios' => $request->comentarios,
-            'estado' => $request->estado,
-            'equipo_id' => $request->equipo_id,
-            'usuarioIdCreacion' => Auth::id() ?? 1,
-            'fechaCreacion' => now(),
-            'usuarioIdActualizacion' => Auth::id() ?? 1,
-            'fechaActualizacion' => now()
-        ]);
+        $inscripcion = Inscripcion::create($request->validated());
+        $inscripcion->load('equipo');
+
         return response()->json([
             'message' => 'Inscripción creada con éxito',
-            'inscripcion' => $inscripcion
+            'inscripcion' => new InscripcionResource($inscripcion)
         ], 201);
     }
 
@@ -45,7 +39,10 @@ class InscripcionController extends Controller
      */
     public function show( $id)
     {
-        $inscripcion=Inscripcion::find($id);
+        $inscripcion=Inscripcion::with('equipo')->find($id);
+        if(!$inscripcion){
+            return response()->json(['error'=>'Inscripción no encontrada'],404);
+        }
         return new InscripcionResource($inscripcion);
     }
 
@@ -55,9 +52,14 @@ class InscripcionController extends Controller
      */
     public function update(UpdateInscripcionRequest $request, $id)
     {
-        $inscripcion = Inscripcion::findOrfail($id);
-        $inscripcion->update($request->validated());
-        return new InscripcionResource($inscripcion);
+        $inscripcion = Inscripcion::find($id);
+        if(!$inscripcion){
+            return response()->json(['error'=>'Inscripción no encontrada'],404);
+        }
+
+        $datos = $request->validated();
+        $inscripcion->update($datos);
+        return response()->json(['message'=>'Inscripción actualizada correctamente','data'=>$inscripcion]);
     }
 
     /**
@@ -66,6 +68,9 @@ class InscripcionController extends Controller
     public function destroy($id)
     {
         $inscripcion = Inscripcion::find($id);
+        if (!$inscripcion) {
+            return response()->json(['error' => 'Inscripción no encontrada'], 404);
+        }
         $inscripcion->delete();
         return response()->json([
             'message' => 'Inscripción eliminada con éxito'

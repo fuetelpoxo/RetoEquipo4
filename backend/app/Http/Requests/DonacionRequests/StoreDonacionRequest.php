@@ -16,9 +16,9 @@ class StoreDonacionRequest extends FormRequest
     public function rules()
     {
         return [
-            'ong_id' => 'required|exists:ongs,id',
-            'kilos' => 'required|numeric',
-            'importe' => 'required|numeric',
+            'ong_id' => 'required|exists:ongs,id', // La ONG es obligatoria y debe existir en la tabla de ONGs
+            'kilos' => 'required|numeric', // Los kilos son obligatorios y deben ser un número
+            'importe' => 'required|numeric', // El importe es obligatorio y debe ser un número
         ];
     }
 }

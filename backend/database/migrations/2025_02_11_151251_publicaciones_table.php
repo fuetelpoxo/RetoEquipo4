@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('publicaciones', function (Blueprint $table) {
             $table->id();
             //Campos de auditoría /
-            $table->foreignId('usuarioIdCreacion')->constrained('users'); // Relación con la tabla de usuarios
-            $table->timestamp('fechaCreacion')->useCurrent();
+            $table->foreignId('usuarioIdCreacion')->nullable()->constrained('users'); // Relación con la tabla de usuarios
+            $table->timestamp('fechaCreacion')->nullable()->useCurrent();
             $table->foreignId('usuarioIdActualizacion')->nullable()->constrained('users'); // Relación con la tabla de usuarios
             $table->timestamp('fechaActualizacion')->nullable()->useCurrent();
             //Campos de la tabla

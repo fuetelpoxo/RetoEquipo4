@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\InscripcionController;
 use App\Http\Controllers\Api\PatrocinadorController;
 use App\Http\Controllers\Api\PartidoController;
 use App\Http\Controllers\Api\ActaController;
+use App\Http\Controllers\Api\ImagenController;
+use App\Http\Controllers\Api\PublicacionController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -31,3 +33,7 @@ Route::apiResource('patrocinadores', PatrocinadorController::class);
 Route::apiResource('partidos', PartidoController::class);
 
 Route::apiResource('actas', ActaController::class);
+
+Route::apiResource('imagenes', ImagenController::class);
+
+Route::apiResource('publicaciones', PublicacionController::class);

@@ -25,16 +25,10 @@ class PatrocinadorController extends Controller
      */
     public function store(StorePatrocinadorRequest $request)
     {
-        $patrocinador = Patrocinador::create([
-            'nombre' => $request->nombre,
-            'usuarioIdCreacion' => Auth::id() ?? 1,
-            'fechaCreacion' => now(),
-            'usuarioIdActualizacion' => Auth::id() ?? 1,
-            'fechaActualizacion' => now()
-        ]);
-         return response()->json([
+        $patrocinador = Patrocinador::create($request->validated());
+        return response()->json([
             'message' => 'Patrocinador creado con éxito',
-            'patrocinador' => $patrocinador
+            'data' => new PatrocinadorResource($patrocinador)
         ], 201);
     }
 
@@ -43,7 +37,9 @@ class PatrocinadorController extends Controller
      */
     public function show($id)
     {
-        $patrocinador = Patrocinador::find($id);
+        if(!$patrocinador = Patrocinador::find($id)){
+            return response()->json(['error'=>'Patrocinador no encontrado'],404);
+        }
         return new PatrocinadorResource($patrocinador);
     }
     /**
@@ -51,9 +47,13 @@ class PatrocinadorController extends Controller
      */
     public function update(UpdatePatrocinadorRequest $request, $id)
     {
-        $patrocinador = Patrocinador::findOrfail($id);
-        $patrocinador->update($request->validated());
-        return new PatrocinadorResource($patrocinador);
+        $patrocinador = Patrocinador::find($id);
+        if(!$patrocinador){
+            return response()->json(['error'=>'Patrocinador no encontrado'],404);
+        }
+        $datos = $request->validated();
+        $patrocinador->update($datos);
+        return response()->json(['message'=>'Patrocinador actualizado correctamente','data'=>$patrocinador]);
     }
 
     /**
@@ -61,7 +61,10 @@ class PatrocinadorController extends Controller
      */
     public function destroy($id)
     {
-        $patrocinador = Patrocinador::findOrFail($id);
+        $patrocinador = Patrocinador::find($id);
+        if(!$patrocinador){
+            return response()->json(['error'=>'Patrocinador no encontrado'],404);
+        }
         $patrocinador->delete();
         return response()->json([
             'message' => 'Patrocinador eliminado con éxito'

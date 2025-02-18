@@ -22,7 +22,7 @@ class PartidoResource extends JsonResource
             'hora'=> $this->hora,
             'golesL'=> $this->golesL,
             'golesV'=> $this->golesV,
-            'pabellon'=> new PabellonResource($this->whenLoaded('pabellon')), // Incluir la relación con el pabellón
+            'pabellon_id'=> new PabellonResource($this->whenLoaded('pabellon')), // Incluir la relación con el pabellón
             'usuarioIdCreacion'=> $this->usuarioIdCreacion,
             'fechaCreacion'=> $this->fechaCreacion,
             'usuarioIdActualizacion'=> $this->usuarioIdActualizacion,

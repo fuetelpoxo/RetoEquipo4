@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ActaRequests\StoreActaRequest;
+use App\Http\Requests\ActaRequests\UpdateActaRequest;
 use App\Http\Resources\ActaResource;
 use App\Models\Acta;
 use Illuminate\Http\Request;
-use App\Http\Requests\ActaRequests\StoreActaRequest;
-use App\Http\Requests\ActaRequests\UpdateActaRequest;
 use Illuminate\Support\Facades\Auth;
 
 class ActaController extends Controller
@@ -17,30 +17,21 @@ class ActaController extends Controller
      */
     public function index()
     {
-        $acta=Acta::all();
-        return ActaResource::collection($acta);
+        $actas = Acta::all();
+        return ActaResource::collection($actas);
     }
 
-//.
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreActaRequest $request)
     {
-        $acta= Acta::create([
-            'partido_id' => $request->partido_id,
-            'jugador_id' => $request->jugador_id,
-            'incidencia' => $request->incidencia,
-            'hora' => $request->hora,
-            'comentario' => $request->comentario,
-            'usuarioIdCreacion' => Auth::id() ?? 1,
-            'fechaCreacion' => now(),
-            'usuarioIdActualizacion' => Auth::id() ?? 1,
-            'fechaActualizacion' => now()
-        ]);
+
+        $acta = Acta::create($request->validated());
+        $acta->load('partido', 'jugador');
         return response()->json([
             'message' => 'Acta creada con éxito',
-            'acta' => $acta
+            'acta' => new ActaResource($acta)
         ], 201);
     }
 
@@ -49,21 +40,25 @@ class ActaController extends Controller
      */
     public function show($id)
     {
-        $acta = Acta::find($id);
-        return new ActaResource($acta);
+       $acta = Acta::with(['partido', 'jugador', 'incidencia', 'hora', 'comentario'])->find($id);
+        if(!$acta){
+            return response()->json(['error'=>'Acta no encontrada'],404);
+        }
+       return new ActaResource($acta);
     }
-
-    
-   
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateActaRequest $request, $id)
     {
-        $acta = Acta::findOrfail($id);
-        $acta->update($request->validated());
-        return new ActaResource($acta);
+        $actas = Acta::find($id);
+        if(!$actas){
+            return response()->json(['error'=>'Acta no encontrada'],404);
+        }
+        $datos = $request->validated();
+        $actas->update($datos);
+        return response()->json(['message'=>'Acta actualizada correctamente','data'=>$actas]);
     }
 
     /**
@@ -71,10 +66,11 @@ class ActaController extends Controller
      */
     public function destroy($id)
     {
-        $acta = Acta::findOrfail($id);
+        $acta = Acta::find($id);
+        if(!$acta){
+            return response()->json(['error'=>'Acta no encontrada'],404);
+        }
         $acta->delete();
-        return response()->json([
-            'message' => 'Acta eliminada con éxito'
-        ], 200);
+        return response()->noContent();
     }
 }

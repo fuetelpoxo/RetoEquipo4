@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('patrocinadores', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 45); // Nombre del patrocinador
-            $table->foreignId('usuarioIdCreacion')->constrained('users'); // Relación con la tabla de usuarios
-            $table->timestamp('fechaCreacion')->useCurrent();
+            $table->foreignId('usuarioIdCreacion')->nullable()->constrained('users'); // Relación con la tabla de usuarios
+            $table->timestamp('fechaCreacion')->nullable()->useCurrent();
             $table->foreignId('usuarioIdActualizacion')->nullable()->constrained('users'); // Relación con la tabla de usuarios
             $table->timestamp('fechaActualizacion')->nullable()->useCurrent();
             $table->timestamps();

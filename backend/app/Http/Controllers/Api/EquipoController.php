@@ -33,7 +33,9 @@ class EquipoController extends Controller
      */
     public function index()
     {
-        return EquipoResource::collection(Equipo::all());
+        $equipo = Equipo::all();
+        return EquipoResource::collection($equipo);
+
     }
 
     /**
@@ -59,18 +61,11 @@ class EquipoController extends Controller
      */
     public function store(StoreEquipoRequest $request)
     {
-        $equipo = Equipo::create([
-            'nombre'=> $request->nombre,
-            'centro_id'=> $request->centro_id,
-            'grupo'=> $request->grupo,
-            'usuarioIdCreacion'=> Auth::id() ?? 1,
-            'usuarioIdActualizacion'=> Auth::id() ?? 1,
-            'fechaCreacion'=> now(),
-            'fechaActualizacion'=> now()
-        ]);
+        $equipo= Equipo::create($request->validated());
+        $equipo->load('centro');
         return response()->json([
             'message' => 'Equipo creado con éxito',
-            'equipo' => $equipo
+            'data' => new EquipoResource($equipo)
         ], 201);
     }
 
@@ -97,8 +92,12 @@ class EquipoController extends Controller
      *     )
      * )
      */
-    public function show(Equipo $equipo)
+    public function show($id)
     {
+        $equipo = Equipo::with('centro')->find($id);
+        if (!$equipo) {
+            return response()->json(['error' => 'Equipo no encontrado'], 404);
+        }
         return new EquipoResource($equipo);
     }
 
@@ -125,10 +124,15 @@ class EquipoController extends Controller
      *     )
      * )
      */
-    public function update(UpdateEquipoRequest $request, Equipo $equipo)
+    public function update(UpdateEquipoRequest $request, $id)
     {
-        $equipo->update($request->validated());
-        return new EquipoResource($equipo);
+        $equipo = Equipo::find($id);
+        if (!$equipo) {
+            return response()->json(['error' => 'Equipo no encontrado'], 404);
+        }
+        $datos = $request->validated();
+        $equipo->update($datos);
+        return response()->json(['message' => 'Equipo actualizado correctamente', 'data' => $equipo]);
     }
 
     /**
@@ -149,9 +153,15 @@ class EquipoController extends Controller
      *     )
      * )
      */
-    public function destroy(Equipo $equipo)
+    public function destroy($id)
     {
+        $equipo = Equipo::find($id);
+        if (!$equipo) {
+            return response()->json(['error' => 'Equipo no encontrado'], 404);
+        }
         $equipo->delete();
-        return response()->json("Se ha eliminado el equipo", 204);
+        return response()->json([
+            'message' => 'Equipo eliminado con éxito'
+        ]);
     }
 }

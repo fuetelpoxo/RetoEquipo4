@@ -28,7 +28,7 @@ class StoreUserRequest extends FormRequest
             'email' => 'required|email|unique:users,email,' . $this->user,  // validación para email
             'password' => 'required|string|min:8',  // validación para password
             'activo' => 'required|boolean',  // validación para activo
-            'perfil' => 'required|string|max:255',  // validación para perfil
+            'perfil' => 'required|string|in:periodista,administrador,director,entrenador',  // validación para perfil
         ];
     }
 }

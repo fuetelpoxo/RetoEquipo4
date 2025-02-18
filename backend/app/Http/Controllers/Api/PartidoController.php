@@ -32,7 +32,7 @@ class PartidoController extends Controller
             'hora' => $request->hora,
             'golesL' => $request->golesL,
             'golesV' => $request->golesV,
-            'pabellon' => $request->pabellon,
+            'pabellon_id' => $request->pabellon_id,
             'usuarioIdCreacion' => Auth::id() ?? 1,
             'fechaCreacion' => now(),
             'usuarioIdActualizacion' => Auth::id() ?? 1,

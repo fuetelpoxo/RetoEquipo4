@@ -16,15 +16,15 @@ class ActaResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'partido_id' => $this->partido_id,
-            'jugador_id' => $this->jugador_id,
+            'partido' => new PartidoResource($this->whenLoaded('partido')), // Información del partido
+            'jugador' => new JugadorResource($this->whenLoaded('jugador')), // Información del jugador
             'incidencia' => $this->incidencia,
             'hora' => $this->hora,
             'comentario' => $this->comentario,
-            'usuario_creacion_id' => $this->usuarioIdCreacion,
-            'fecha_creacion' => $this->fechaCreacion,
-            'usuario_actualizacion_id' => $this->usuarioIdActualizacion,
-            'fecha_actualizacion' => $this->fechaActualizacion
+            'usuarioIdCreacion' => $this->usuarioIdCreacion,
+            'fechaCreacion' => $this->fechaCreacion,
+            'usuarioIdActualizacion' => $this->usuarioIdActualizacion,
+            'fechaActualizacion' => $this->fechaActualizacion
         ];
     }
 }

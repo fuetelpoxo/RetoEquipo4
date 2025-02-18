@@ -7,8 +7,7 @@ use App\Models\Donacion;
 use App\Http\Requests\DonacionRequests\StoreDonacionRequest;
 use App\Http\Requests\DonacionRequests\UpdateDonacionRequest;
 use App\Http\Resources\DonacionResource;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
+
 
 /**
  * @OA\Info(
@@ -68,18 +67,12 @@ class DonacionController extends Controller
      */
     public function store(StoreDonacionRequest $request)
     {
-        $donacion = Donacion::create([
-            'ong_id' => $request->ong_id,
-            'kilos' => $request->kilos,
-            'importe' => $request->importe,
-            'usuarioIdCreacion' => Auth::id() ?? 1,
-            'fechaCreacion' => now(),
-            'usuarioIdActualizacion' => Auth::id() ?? 1,
-            'fechaActualizacion' => now()
-        ]);
+        $donacion = Donacion::create($request->validated());
+        $donacion->load('ong');
+        
         return response()->json([
             'message' => 'Donación creada con éxito',
-            'donacion' => $donacion
+            'donacion' => new DonacionResource($donacion)
         ], 201);
     }
 
@@ -98,7 +91,10 @@ class DonacionController extends Controller
      */
     public function show($id)
     {
-        $donacion = Donacion::findOrFail($id);
+        $donacion = Donacion::with('ong')->find($id);
+        if (!$donacion) {
+            return response()->json(['error' => 'Donación no encontrada'], 404);
+        }
         return new DonacionResource($donacion);
     }
 
@@ -120,9 +116,14 @@ class DonacionController extends Controller
      */
     public function update(UpdateDonacionRequest $request, $id)
     {
-        $donacion = Donacion::findOrFail($id);
-        $donacion->update($request->validated());
-        return new DonacionResource($donacion);
+        $donacion = Donacion::find($id);
+        if (!$donacion) {
+            return response()->json(['error' => 'Donación no encontrada'], 404);
+        }
+        $datos = $request->validated();
+        $donacion->update($datos);
+        return response()->json([
+            'message' => 'Donación actualizada correctamente','data' => $donacion]);
     }
 
     /**
@@ -136,7 +137,10 @@ class DonacionController extends Controller
      */
     public function destroy($id)
     {
-        $donacion = Donacion::findOrFail($id);
+        $donacion = Donacion::find($id);
+        if (!$donacion) {
+            return response()->json(['error' => 'Donación no encontrada'], 404);
+        }
         $donacion->delete();
         return response()->json([
             'message' => 'Donación eliminada con éxito'
