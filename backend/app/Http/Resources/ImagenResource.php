@@ -21,7 +21,7 @@ class ImagenResource extends JsonResource
             'equipo' => new EquipoResource($this->whenLoaded('equipo')),
             'jugador' => new JugadorResource($this->whenLoaded('jugador')),
             'partido' => new PartidoResource($this->whenLoaded('partido')),
-            'patrocinador' => new PatrocinadorResource($this->whenLoaded('partido')),
+            'patrocinador' => new PatrocinadorResource($this->whenLoaded('patrocinador')),
             'reto' => new RetoResource($this->whenLoaded('reto')),
             'ong' => new OngResource($this->whenLoaded('ong')),
             'publicacion' => new PublicacionResource($this->whenLoaded('publicacion')),
