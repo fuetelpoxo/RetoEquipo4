@@ -1,90 +1,116 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/UserContext'; // Asegúrate de que tengas el contexto de autenticación
+import { useNavigate } from 'react-router-dom';
+import { getEquipos } from '../../models/EquipoModel';
+import Loading from '../../components/Loading';
 
-function InfoEquipos() {
-    const { nombre } = useParams();
-    const [equipo, setEquipo] = useState(null);
-    const [error, setError] = useState(false);
-    const navigate = useNavigate(); // Hook para navegación
-    const { loggedInUser } = useAuth(); // Obtener el usuario logueado desde el contexto
-
-    const isEntrenador = loggedInUser?.role === 'entrenador'; // Verificar si el usuario es entrenador
+function EquiposPublic() {
+    const navigate = useNavigate();
+    const [equipos, setEquipos] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        // Asegúrate de que tu API permita la búsqueda por nombre
-        fetch(`https://tuapi.com/equipos?nombre=${encodeURIComponent(nombre)}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.length > 0) {
-                    setEquipo(data[0]); // Suponemos que la API devuelve un array
-                } else {
-                    setError(true);
-                }
-            })
-            .catch(() => setError(true));
-    }, [nombre]);
+        const cargarEquipos = async () => {
+            try {
+                setLoading(true);
+                const equiposData = await getEquipos();
+                console.log('Equipos cargados:', equiposData);
+                setEquipos(equiposData);
+            } catch (err) {
+                console.error('Error al cargar equipos:', err);
+                setError('Error al cargar los equipos');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        cargarEquipos();
+    }, []);
 
     const handleInscribirse = () => {
-        if (!isEntrenador) {
-            alert('Debes ser un entrenador para inscribir un equipo. Serás redirigido al login.');
-            navigate('/login'); // Redirige a login si no eres entrenador
-        } else {
-            navigate('/equipos/inscripcion'); // Redirige a la vista de inscripción si eres entrenador
-        }
+        navigate('/login');
     };
 
+    const handleVerDetalles = (equipo) => {
+        // Usar el nombre del equipo en lugar del ID
+        const nombreFormateado = equipo.nombre.toLowerCase().replace(/ /g, '-');
+        navigate(`/infoequipos/${nombreFormateado}`);
+    };
+
+    if (loading) return <Loading />;
+
     if (error) {
-
         return (
             <div className="container mt-5">
-                <div className="alert alert-info text-center" role="alert" style={{ marginTop: '60px' }}>
-                    Da error por la API
-                </div>
-            </div>
-        );
-    }
-
-    if (!equipo) {
-        return (
-            <div className="container mt-5">
-                <div className="alert alert-warning text-center" role="alert" style={{ marginTop: '60px' }}>
-                    No se encontraron equipos.
-                </div>
-                {/* Botón para inscribirse */}
-                <div className="text-center mt-4">
-                    <h3 className="text-center text-danger">¿Quieres inscribir tu equipo?</h3>
-                    <button className="btn btn-danger" onClick={handleInscribirse}>Inscribirse</button>
+                <div className="alert alert-danger text-center" role="alert">
+                    {error}
                 </div>
             </div>
         );
     }
 
     return (
-        <>
-            <div className="container mt-5 pt-4" style={{ marginTop: '60px' }}>
-                <div className="card shadow-lg">
-                    <div className="card-body">
-                        <h1 className="card-title text-center bg-dark text-white p-3">{equipo.nombre}</h1>
+        <div className="container-fluid py-5">
+            <div className="container">
+                <h2 className="text-center display-5 mb-5">Equipos Participantes</h2>
+
+                {!equipos || equipos.length === 0 ? (
+                    <div className="alert alert-danger text-center">
+                        No hay equipos registrados.
+                    </div>
+                ) : (
+                    <div className="row justify-content-center row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                        {equipos.map((equipo) => (
+                            <div key={equipo.id} className="col">
+                                <div className="card h-100 border-0 shadow-sm">
+                                    <div className="bg-danger text-white p-3">
+                                        <h3 className="card-title h4 text-center mb-0">
+                                            {equipo.nombre}
+                                        </h3>
+                                    </div>
+                                    <div className="card-body text-center d-flex flex-column">
+                                        <div className="mb-3">
+                                            <img
+                                                src={equipo.foto}
+                                                className="img-fluid rounded shadow-sm"
+                                                style={{
+                                                    width: '200px',
+                                                    height: '200px',
+                                                    objectFit: 'cover'
+                                                }}
+                                                alt={equipo.nombre}
+                                            />
+                                        </div>
+                                        <div className="mt-auto">
+                                            <span className="badge bg-dark px-3 py-2 fs-6 mb-3">
+                                                Grupo: {equipo.grupo || 'No asignado'}
+                                            </span>
+                                            <button onClick={() => handleVerDetalles(equipo)} className="btn btn-danger w-100 mt-3">
+                                                Ver Detalles
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+
+            {/* Banner de inscripción existente */}
+            <div className="container mb-5" style={{ marginTop: '20px' }}>
+                <div className="row justify-content-center">
+                    <div className="col-md-8">
                         <div className="text-center">
-                            <img src={equipo.foto} alt={equipo.nombre} className="img-fluid mb-3" style={{ maxWidth: '300px' }} />
-                        </div>
-                        <p className="card-text text-center">{equipo.descripcion}</p>
-                        <p className="card-text text-center"><strong>Origen:</strong> {equipo.origen}</p>
-
-                        {/* Título condicional */}
-                        <h2 className="text-center mt-4">{isEntrenador ? "¿Eres entrenador?" : "Inicia sesión para inscribirte"}</h2>
-
-                        {/* Botón para inscribirse */}
-                        <div className="text-center mt-4">
-                            <h3 className="text-center text-danger">¿Quieres inscribir tu equipo?</h3>
-                            <button className="btn btn-danger" onClick={handleInscribirse}>Inscribirse</button>
+                            <button className="btn btn-danger btn-lg px-5 py-3 shadow-sm" onClick={handleInscribirse}>
+                                Inscribe tu Equipo
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 
-export default InfoEquipos;
+export default EquiposPublic;

@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+// src/context/UserContext.jsx
+import React, { createContext, useState, useContext } from 'react';
 
 // Creamos el contexto de autenticación
 const AuthContext = createContext();
@@ -8,15 +9,11 @@ export const AuthProvider = ({ children }) => {
   const [loggedInUser, setLoggedInUser] = useState(null);
 
   const login = (user) => {
-    setLoggedInUser(user);
-  };
-
-  const logout = () => {
-    setLoggedInUser(null);
+    setLoggedInUser(user); // Guardamos al usuario en el estado, sin persistir en el localStorage
   };
 
   return (
-    <AuthContext.Provider value={{ loggedInUser, login, logout }}>
+    <AuthContext.Provider value={{ loggedInUser, login }}>
       {children}
     </AuthContext.Provider>
   );

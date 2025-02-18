@@ -8,7 +8,7 @@ function Reglamento() {
                 <div className="row">
                     {/* Sidebar de navegación */}
                     <div className="col-md-3" style={{ position: "sticky", top: 0, height: "100vh", marginTop: '30px' }}>
-                        <h5 className="ms-2" style={{ fontSize: "25px" }}>Ménu</h5> {/* Mover h5 a la derecha */}
+                        <h5 className="ms-2" style={{ fontSize: "25px" }}>Menú</h5> {/* Mover h5 a la derecha */}
                         <aside>
                             <ul className="nav flex-column">
                                 <li className="nav-item">

@@ -1,44 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import EquiposService from '../../core/EquiposService';
 
 function FaseFinal() {
     const location = useLocation();
     const [equipos, setEquipos] = useState(null);
-
-    useEffect(() => {
-        const obtenerEquipos = async () => {
-            const data = await EquiposService.obtenerEquipos();
-
-            const ordenarEquipos = (equipos) => {
-                return equipos.sort((a, b) => {
-                    if (b.puntos !== a.puntos) return b.puntos - a.puntos;
-                    const diferenciaGolesA = a.golesFavor - a.golesContra;
-                    const diferenciaGolesB = b.golesFavor - b.golesContra;
-                    if (diferenciaGolesB !== diferenciaGolesA) return diferenciaGolesB - diferenciaGolesA;
-                    if (a.tarjetasAmarillas !== b.tarjetasAmarillas) return a.tarjetasAmarillas - b.tarjetasAmarillas;
-                    return b.golesFavor - a.golesFavor;
-                });
-            };
-
-            const tabla1Ordenada = ordenarEquipos([...data.tabla1]);
-            const tabla2Ordenada = ordenarEquipos([...data.tabla2]);
-
-            setEquipos({
-                equipo1: tabla1Ordenada[0], // 1º Tabla 1
-                equipo2: tabla1Ordenada[1], // 2º Tabla 1
-                equipo3: tabla2Ordenada[1], // 2º Tabla 2
-                equipo4: tabla2Ordenada[0], // 1º Tabla 2
-                resultadoSemi1: "TBC",
-                resultadoSemi2: "TBC",
-                resultadoFinal: "TBC",
-                ganadorSemi1: null,
-                ganadorSemi2: null
-            });
-        };
-
-        obtenerEquipos();
-    }, []);
 
     if (!equipos) return <p>Cargando equipos...</p>;
 

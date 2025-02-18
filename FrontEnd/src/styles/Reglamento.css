@@ -1,0 +1,21 @@
+.reglamento-sidebar {
+    position: sticky;
+    top: 80px; /* Espacio para el nav */
+    height: calc(100vh - 80px);
+    margin-top: 30px;
+    padding-top: 20px;
+    overflow-y: auto; /* Permite scroll si el contenido es muy largo */
+}
+
+.reglamento-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.reglamento-sidebar::-webkit-scrollbar-thumb {
+    background-color: #dc3545;
+    border-radius: 3px;
+}
+
+.reglamento-sidebar::-webkit-scrollbar-track {
+    background-color: #f8f9fa;
+}
