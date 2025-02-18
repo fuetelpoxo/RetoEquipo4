@@ -387,12 +387,6 @@ La siguiente configuración que aparece no la tocaremos.
 
 ![Creacion-BD](img/image-65.png)
 
-FALLOS PARA PREGUNTAR A MANU
-
-![alt text](image.png)
-
-![alt text](image-1.png)
-
 - Vemos que se ha creado correctamente.
 
 ![Creacion-BD](img/image-66.png)
@@ -409,11 +403,7 @@ FALLOS PARA PREGUNTAR A MANU
 
 ![Conexion-BD](img/image-69.png)
 
-![alt text](image.png)
-
 ![Conexion-BD](img/image-70.png)
-
-![alt text](image-1.png)
 
  Una vez configurado el enrutador con la puerta de enlace de internet, configuraremos el acceso desde MySQLWorkbench. Para ello necesitaremos lo siguiente: 
 
@@ -425,6 +415,12 @@ FALLOS PARA PREGUNTAR A MANU
 
 ![Conexion-BD](img/image-72.png)
 
-A continuación configuraremos la conexión en MySQLWorkbench.
+A continuación probaremos la conexión en MySQLWorkbench. Para ello necesitaremos el puerto de enlace que hemos visto antes, nuestro usuario que es "admin" y el puerto en el que trabajaremos (3306).
+
+![Conexion-BD](img/image-74.png)
+
+Como vemos conecta correctamente.
+
+![Conexión-BD](img/image-73.png)
 
 
