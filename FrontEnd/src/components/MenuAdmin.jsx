@@ -21,6 +21,9 @@ function AdminMenu() {
             <Link to="/administrador/equipos" className="btn btn-danger mx-2">
                 Equipos
             </Link>
+            <Link to="/administrador/jugadores" className="btn btn-danger mx-2">
+                Jugadores
+            </Link>
             <Link to="/administrador/donaciones" className="btn btn-danger mx-2">
                 Donaciones
             </Link>

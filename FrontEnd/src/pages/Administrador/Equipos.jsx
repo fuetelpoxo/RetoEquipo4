@@ -22,9 +22,6 @@ function Equipos() {
     setVista("detalles");
   };
 
-  const handleAñadir = () => {
-    setVista("añadir");
-  };
 
   const handleVolver = () => {
     setVista("listado");
@@ -37,9 +34,7 @@ function Equipos() {
 
       {vista === "listado" && (
         <>
-          <button onClick={handleAñadir} className="btn btn-success mb-4">
-            <i className="fa fa-plus"></i> Añadir Equipo
-          </button>
+        
 
           <div className="row bg-dark text-white">
             <div className="col">Nombre</div>
@@ -71,12 +66,7 @@ function Equipos() {
         </>
       )}
 
-      {vista === "añadir" && (
-        <EditEquipo 
-          onSubmit={handleAddEquipo}
-          onCancel={handleVolver}
-        />
-      )}
+   
 
       {vista === "editar" && equipoSeleccionado && (
         <EditEquipo

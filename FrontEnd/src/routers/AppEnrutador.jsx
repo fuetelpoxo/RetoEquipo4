@@ -30,6 +30,7 @@ import DirectorTorneo from '../pages/Director/DirectorTorneo.jsx';
 import Entrenador from '../pages/Entrenador/Entrenador.jsx';
 import Periodista from '../pages/Periodista/Periodista.jsx';
 import { useAuth } from '../context/UserContext';
+import Jugadores from '../pages/Administrador/Jugadores';
 
 function AppEnrutador() {
   const { loggedInUser } = useAuth();
@@ -97,6 +98,7 @@ function AppEnrutador() {
           <Route path="roles" element={<Roles />} />
           <Route path="retos" element={<Retos />} />
           <Route path="equipos" element={<Equipos />} />
+          <Route path="jugadores" element={<Jugadores />} />
           <Route path="donaciones" element={<Donaciones />} />
         </Route>
 
