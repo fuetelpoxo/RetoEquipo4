@@ -61,6 +61,7 @@ La vista de inicio es la pantalla principal de la aplicación web. Su propósito
 Contiene un texto introductorio que explica el propósito de la aplicación.
 
 - Vista de Torneo de deportivo
+  
 ![alt text](img/image-3.png)
 Esta vista permite gestionar la información sobre torneos deportivos, incluyendo horarios, equipos y clasificaciones.
 A la derecha se muestran los equipos para las clasificatorias, en la izquierda se mostrara un horario con las finales, los grupos A y grupos B que seran los que se van a afrentar en los proximos partidos  
