@@ -3,7 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+/**
+ * @OA\Schema(
+ *  schema="ciclos",
+ *  type="object",
+ *  title="Ciclos",
+ *  @OA\Property(property="nombre", type="string", example="Desarrollo de aplicaciones multiplataforma"),
+ *  @OA\Property(property="familia_id", type="integer", example="1")
+ *  )   
+ */
 class Ciclo extends Model
 {
     protected $table = 'ciclos';

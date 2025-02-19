@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('donaciones', function (Blueprint $table) {
             $table->id();
             $table->foreignId('ong_id')->constrained()->onDelete('cascade'); // Relación con la tabla ongs
-            $table->decimal('kilos', 8, 2); // Para los kilos, puedes usar decimal o float
-            $table->decimal('importe', 10, 2); // Importe recaudado
+            $table->decimal('kilos', 8, 2)->nullable(); // Para los kilos, puedes usar decimal o float
+            $table->decimal('importe', 10, 2)->nullable(); // Importe recaudado
             $table->foreignId('usuarioIdCreacion')->nullable()->constrained('users'); // Relación con la tabla de usuarios
             $table->timestamp('fechaCreacion')->nullable()->useCurrent();
             $table->foreignId('usuarioIdActualizacion')->nullable()->constrained('users'); // Relación con la tabla de usuarios

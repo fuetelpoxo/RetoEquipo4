@@ -14,7 +14,7 @@ return new class extends Migration
     Schema::create('estudios', function (Blueprint $table) {
         $table->id();
         $table->foreignId('centro_id')->constrained('centros');
-        $table->foreignId('ciclo_id')->constrained('ciclos');
+        $table->foreignId('ciclo_id')->nullable()->constrained('ciclos');
         $table->integer('curso')->nullable();
         $table->timestamps();
     });

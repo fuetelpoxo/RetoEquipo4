@@ -10,26 +10,22 @@ use App\Models\Equipo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-/**
- * @OA\Tag(
- *     name="Equipo",
- *     description="Operaciones sobre equipos"
- * )
- */
+
 class EquipoController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/equipos",
-     *     tags={"Equipo"},
-     *     summary="Lista todos los equipos",
-     *     description="Obtiene todos los equipos almacenados",
-     *     @OA\Response(
-     *         response=200,
-     *         description="Lista de equipos",
-     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Equipo"))
-     *     )
+     *  path="/api/equipos",
+     * summary="Obtener equipos",
+     * description="Obtener todos los equipos",
+     * operationId="getEquipos",
+     * tags={"equipos"},
+     * @OA\Response(
+     *  response=200,
+     *  description="Equipos obtenidos",
+     *  @OA\JsonContent(ref="#/components/schemas/equipos")
      * )
+     * )    
      */
     public function index()
     {
@@ -40,23 +36,30 @@ class EquipoController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/equipos",
-     *     tags={"Equipo"},
-     *     summary="Crea un nuevo equipo",
-     *     description="Recibe los datos para crear un nuevo equipo",
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/Equipo")
-     *     ),
-     *     @OA\Response(
-     *         response=201,
-     *         description="Equipo creado con éxito",
-     *         @OA\JsonContent(
-     *             type="object",
-     *             @OA\Property(property="message", type="string"),
-     *             @OA\Property(property="equipo", ref="#/components/schemas/Equipo")
-     *         )
-     *     )
+     *  path="/api/equipos",
+     *  summary="Crear un equipo",
+     *  description="Crear un nuevo equipo",
+     *  operationId="postEquipo",
+     *  tags={"equipos"},
+     * @OA\RequestBody(
+     * required=true,
+     * description="Datos del equipo",
+     * @OA\JsonContent(
+     * required={"nombre","centro_id","grupo"},
+     * @OA\Property(property="nombre", type="string", example="Equipo 1"),
+     * @OA\Property(property="centro_id", type="integer", example="1"),
+     * @OA\Property(property="grupo", type="string", example="A")
+     * )
+     * ),
+     * @OA\Response(
+     *  response=201,
+     *  description="Equipo creado",
+     *  @OA\JsonContent(ref="#/components/schemas/equipos")
+     * ),
+     * @OA\Response(
+     *  response=422,
+     *  description="Datos no válidos"
+     * )
      * )
      */
     public function store(StoreEquipoRequest $request)
@@ -71,25 +74,27 @@ class EquipoController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/equipos/{id}",
-     *     tags={"Equipo"},
-     *     summary="Obtiene un equipo específico",
-     *     description="Muestra los detalles de un equipo por su ID",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Detalles del equipo",
-     *         @OA\JsonContent(ref="#/components/schemas/Equipo")
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Equipo no encontrado"
-     *     )
+     *  path="/api/equipos/{id}",
+     *  summary="Obtener un equipo",
+     *  description="Obtener un equipo por su id",
+     *  operationId="getEquipo",
+     * tags={"equipos"},
+     * @OA\Parameter(
+     *    name="id",
+     *   in="path",
+     *    description="ID del equipo",
+     *    required=true,
+     * @OA\Schema(type="integer",example="1")
+     * ),
+     * @OA\Response(
+     *  response=200,
+     *  description="Equipo encontrado",
+     *  @OA\JsonContent(ref="#/components/schemas/equipos")
+     * ),
+     * @OA\Response(
+     *  response=404,
+     *  description="Equipo no encontrado"
+     * )
      * )
      */
     public function show($id)
@@ -103,25 +108,37 @@ class EquipoController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/equipos/{id}",
-     *     tags={"Equipo"},
-     *     summary="Actualiza un equipo",
-     *     description="Actualiza los datos de un equipo específico",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/Equipo")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Equipo actualizado",
-     *         @OA\JsonContent(ref="#/components/schemas/Equipo")
-     *     )
+     *  path="/api/equipos/{id}",
+     *  summary="Actualizar un equipo",
+     *  description="Actualizar un equipo por su id",
+     *  operationId="updateEquipo",
+     * tags={"equipos"},
+     * @OA\Parameter(
+     *    name="id",
+     *   in="path",
+     *    description="ID del equipo",
+     *    required=true,
+     * @OA\Schema(type="integer",example="1")
+     * ),
+     * @OA\RequestBody(
+     * required=true,
+     * description="Datos del equipo",
+     * @OA\JsonContent(
+     * required={"nombre","centro_id","grupo"},
+     * @OA\Property(property="nombre", type="string", example="Equipo 1"),
+     * @OA\Property(property="centro_id", type="integer", example="1"),
+     * @OA\Property(property="grupo", type="string", example="A")
+     * )
+     * ),
+     * @OA\Response(
+     *  response=200,
+     *  description="Equipo actualizado",
+     *  @OA\JsonContent(ref="#/components/schemas/equipos")
+     * ),
+     * @OA\Response(
+     *  response=404,
+     *  description="Equipo no encontrado"
+     * )
      * )
      */
     public function update(UpdateEquipoRequest $request, $id)
@@ -135,24 +152,32 @@ class EquipoController extends Controller
         return response()->json(['message' => 'Equipo actualizado correctamente', 'data' => $equipo]);
     }
 
-    /**
-     * @OA\Delete(
-     *     path="/api/equipos/{id}",
-     *     tags={"Equipo"},
-     *     summary="Elimina un equipo",
-     *     description="Elimina un equipo por su ID",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=204,
-     *         description="Equipo eliminado"
-     *     )
-     * )
-     */
+   /**
+    * @OA\Delete(
+    *  path="/api/equipos/{id}",
+    *  summary="Eliminar un equipo",
+    *  description="Eliminar un equipo por su id",
+    *  operationId="deleteEquipo",
+    * tags={"equipos"},
+    * @OA\Parameter(
+    *    name="id",
+    *    in="path",
+    *    description="ID del equipo",
+    *    required=true,
+    *    @OA\Schema(
+    *       type="integer"
+    *    )
+    * ),
+    * @OA\Response(
+    *  response=200,
+    *  description="Equipo eliminado"
+    * ),
+    * @OA\Response(
+    *  response=404,
+    *  description="Equipo no encontrado"
+    * )
+    * )
+    */
     public function destroy($id)
     {
         $equipo = Equipo::find($id);

@@ -26,7 +26,7 @@ class StoreActaRequest extends FormRequest
             'jugador_id' => 'required|exists:jugadores,id', // Jugador obligatorio y debe existir
             'incidencia' => 'required|in:amarilla,roja,lesion,cambio,gol,falta,penalti', // Solo permite estos valores
             'hora' => 'required|regex:/^\d{1,2}:\d{2}$/', // Hora es obligatoria y debe estar en formato 'HH:MM'
-            'comentario' => 'nullable|string', // Comentario es opcional, pero si se proporciona debe ser string
+            'comentario' => 'nullable|string' // Comentario es opcional, pero si se proporciona debe ser string
         ];
     }
     public function messages()

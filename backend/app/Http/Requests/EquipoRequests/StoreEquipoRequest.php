@@ -24,7 +24,7 @@ class StoreEquipoRequest extends FormRequest
         return [
             'nombre' => 'required|string|max:255',
             'centro_id' => 'required|exists:centros,id',
-            'grupo' => 'required|string|max:1'
+            'grupo' => 'required|in:A,B'
         ];
     }
 }

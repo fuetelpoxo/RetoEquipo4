@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\EquipoRequests;
+namespace App\Http\Requests\OngRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateEquipoRequest extends FormRequest
+class UpdateOngRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,8 @@ class UpdateEquipoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre'=> 'nullable|string|max:255',
-            'centro_id'=> 'nullable|integer|exists:centros,id',
-            'grupo'=> 'nullable|in:A,B'
+            'nombre' => 'nullable|string|max:255',
+            'landingPage' => 'nullable|string|max:255'
         ];
     }
 }

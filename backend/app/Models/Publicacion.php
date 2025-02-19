@@ -4,6 +4,29 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+/**
+ * @OA\Schema(
+ * schema="publicaciones",
+ * type="object",
+ * title="publicaciones",
+ * @OA\Property(property="titulo", type="string", example="Titulo"),
+ * @OA\Property(property="texto", type="string", example="Texto"),
+ * @OA\Property(property="portada", type="string", example="https://www.google.com"),
+ * @OA\Property(property="rutavideo", type="string", example="https://www.google.com"),
+ * @OA\Property(property="rutaaudio", type="string", example="https://www.google.com"),
+ * @OA\Property(property="equipo_id", type="integer", example="1"),
+ * @OA\Property(property="partido_id", type="integer", example="1"),
+ * @OA\Property(property="patrocinador_id", type="integer", example="1"),
+ * @OA\Property(property="jugador_id", type="integer", example="1"),
+ * @OA\Property(property="reto_id", type="integer", example="1"),
+ * @OA\Property(property="ong_id", type="integer", example="1"),
+ * @OA\Property(property="pabellon_id", type="integer", example="1"),
+ * @OA\Property(property="usuarioIdCreacion", type="integer", example="1"),
+ * @OA\Property(property="fechaCreacion", type="timestamp", example="2022-02-11 15:12:24"),
+ * @OA\Property(property="usuarioIdActualizacion", type="integer", example="1"),
+ * @OA\Property(property="fechaActualizacion", type="timestamp", example="2022-02-11 15:12:24")
+ * )
+ */
 class Publicacion extends Model
 {
     protected $table = 'publicaciones';

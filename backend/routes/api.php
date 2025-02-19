@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\PartidoController;
 use App\Http\Controllers\Api\ActaController;
 use App\Http\Controllers\Api\ImagenController;
 use App\Http\Controllers\Api\PublicacionController;
+use App\Http\Controllers\Api\CicloController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -37,3 +38,5 @@ Route::apiResource('actas', ActaController::class);
 Route::apiResource('imagenes', ImagenController::class);
 
 Route::apiResource('publicaciones', PublicacionController::class);
+
+Route::apiResource('ciclos', CicloController::class);

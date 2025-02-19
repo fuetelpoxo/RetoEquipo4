@@ -4,6 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+/**
+ * @OA\Schema(
+ * schema="inscripciones",
+ * type="object",
+ * title="inscripciones",
+ * @OA\Property(property="comentarios", type="string", example="Comentario"),
+ * @OA\Property(property="estado", type="string", example="pendiente"),
+ * @OA\Property(property="equipo_id", type="integer", example="1"),
+ * @OA\Property(property="usuarioIdCreacion", type="integer", example="1"),
+ * @OA\Property(property="fechaCreacion", type="timestamp", example="2022-02-11 15:12:24"),
+ * @OA\Property(property="usuarioIdActualizacion", type="integer", example="1"),
+ * @OA\Property(property="fechaActualizacion", type="timestamp", example="2022-02-11 15:12:24")
+ * )
+ */
 class Inscripcion extends Model
 {
     protected $table = 'inscripciones';

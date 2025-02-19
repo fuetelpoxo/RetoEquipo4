@@ -10,37 +10,24 @@ use Illuminate\Validation\Rule;
 use App\Http\Requests\UserRequests\StoreUserRequest;
 use App\Http\Requests\UserRequests\UpdateUserRequest;
 
-/**
- * @OA\Info(
- *      title="API de Gestión de Usuarios",
- *      version="1.0",
- *      description="API para la gestión de usuarios con Laravel",
- *      @OA\Contact(
- *          email="tuemail@example.com"
- *      ),
- *      @OA\License(
- *          name="MIT",
- *          url="https://opensource.org/licenses/MIT"
- *      )
- * )
- *
- * @OA\Server(
- *      url=L5_SWAGGER_CONST_HOST,
- *      description="Servidor API"
- * )
- */
+
 class UserController extends Controller
 {
-    /**
+   /**
      * @OA\Get(
-     *     path="/api/users",
-     *     summary="Obtener todos los usuarios",
-     *     tags={"Usuarios"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Lista de usuarios",
-     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/UserResponse"))
-     *     )
+     *  path="/api/users",
+     *  summary="Obtener todos los usuarios",
+     *  description="Obtener todos los usuarios",
+     *  operationId="getUsers",
+     *  tags={"users"},
+     * @OA\Response(
+     * response=200,
+     * description="Lista de usuarios",
+     * @OA\JsonContent(
+     * type="array",
+     * @OA\Items(ref="#/components/schemas/users")
+     * )
+     * )
      * )
      */
     public function index()
@@ -49,25 +36,37 @@ class UserController extends Controller
         return UserResource::collection(User::all());
 
     }
-
     /**
      * @OA\Post(
-     *     path="/api/users",
-     *     summary="Crear un nuevo usuario",
-     *     tags={"Usuarios"},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"name","email","password","perfil"},
-     *             @OA\Property(property="name", type="string", example="Borja Falque"),
-     *             @OA\Property(property="email", type="string", format="email", example="borja@example.com"),
-     *             @OA\Property(property="password", type="string", example="1234"),
-     *             @OA\Property(property="perfil", type="string", enum={"entrenador", "director", "periodista", "administrador"}, example="entrenador")
-     *         )
-     *     ),
-     *     @OA\Response(response=201, description="Usuario creado")
+     *  path="/api/users",
+     *  summary="Crear un usuario",
+     *  description="Crear un nuevo usuario",
+     *  operationId="postUser",
+     *  tags={"users"},
+     * @OA\RequestBody(
+     * required=true,
+     * description="Datos del usuario",
+     * @OA\JsonContent(
+     * required={"name","email","password","activo","perfil"},
+     * @OA\Property(property="name", type="string", example="Usuario 1"),
+     * @OA\Property(property="email", type="string", example="user@example.com"),
+     * @OA\Property(property="password", type="string", example="12345678"),
+     * @OA\Property(property="activo", type="boolean", example="1"),
+     * @OA\Property(property="perfil", type="string", example="administrador")
      * )
+     * ),
+     * @OA\Response(
+     *  response=201,
+     *  description="Usuario creado",
+     *  @OA\JsonContent(ref="#/components/schemas/users")
+     * ),
+     * @OA\Response(
+     *  response=422,
+     *  description="Datos no válidos"
+     * )
+     * )    
      */
+    
     public function store(StoreUserRequest $request)
 {
     // Crear el nuevo usuario con los datos validados
@@ -81,11 +80,27 @@ class UserController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/users/{id}",
-     *     summary="Obtener un usuario por ID",
-     *     tags={"Usuarios"},
-     *     @OA\Parameter(name="id", in="path", required=true, description="ID del usuario", @OA\Schema(type="integer")),
-     *     @OA\Response(response=200, description="Detalles del usuario", @OA\JsonContent(ref="#/components/schemas/UserResponse"))
+     *  path="/api/users/{id}",
+     *  summary="Mostrar usuario",
+     *  description="Mostrar un usuario por su id",
+     *  operationId="getUser",
+     *  tags={"users"},
+     * @OA\Parameter(
+     *  name="id",
+     *  in="path",
+     *  description="ID del usuario",
+     *  required=true,
+     * @OA\Schema(type="integer",example="1")
+     * ),
+     * @OA\Response(
+     *  response=200,
+     *  description="Usuario mostrado",
+     *  @OA\JsonContent(ref="#/components/schemas/users")
+     * ),
+     * @OA\Response(
+     *  response=404,
+     *  description="Usuario no encontrado"
+     * )
      * )
      */
     public function show(User $user)
@@ -98,24 +113,45 @@ class UserController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/users/{id}",
-     *     summary="Actualizar un usuario",
-     *     tags={"Usuarios"},
-     *     @OA\Parameter(name="id", in="path", required=true, description="ID del usuario", @OA\Schema(type="integer")),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="name", type="string", example="Borja Falque"),
-     *             @OA\Property(property="perfil", type="string", enum={"entrenador", "director", "periodista", "administrador"}, example="administrador")
-     *         )
-     *     ),
-     *     @OA\Response(response=200, description="Usuario actualizado")
+     *  path="/api/users/{id}",
+     *  summary="Actualizar un usuario",
+     *  description="Actualizar un usuario por su id",
+     *  operationId="updateUser",
+     * tags={"users"},
+     * @OA\Parameter(
+     *    name="id",
+     *    in="path",
+     *   description="Id del usuario",
+     *  required=true,
+     * @OA\Schema(type="integer",example="1")
+     * ),
+     * @OA\RequestBody(
+     * required=true,
+     * description="Datos del usuario",
+     * @OA\JsonContent(
+     * required={"name","email","password","activo","perfil"},
+     * @OA\Property(property="name", type="string", example="Usuario1"),
+     * @OA\Property(property="email", type="string", example="user@example.com"),
+     * @OA\Property(property="password", type="string", example="12345678"),
+     * @OA\Property(property="activo", type="boolean", example="1"),
+     * @OA\Property(property="perfil", type="string", example="administrador")
+     * )
+     * ),
+     * @OA\Response(
+     *  response=200,
+     *  description="Usuario actualizado",
+     *  @OA\JsonContent(ref="#/components/schemas/users")
+     * ),
+     * @OA\Response(
+     *  response=404,
+     *  description="Usuario no encontrado"
+     * )
      * )
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request, $id)
 {
     // Solo se actualizan los campos validados
-    $user = User::find($user->id);
+    $user = User::find($id);
     if(!$user){
         return response()->json(['error'=>'Usuario no encontrado'],404);
     }
@@ -123,16 +159,31 @@ class UserController extends Controller
     $user->update($datos);
     return response()->json(['message'=>'Usuario actualizado correctamente','data'=>$user]);
 }
-
-    /**
-     * @OA\Delete(
-     *     path="/api/users/{id}",
-     *     summary="Eliminar un usuario",
-     *     tags={"Usuarios"},
-     *     @OA\Parameter(name="id", in="path", required=true, description="ID del usuario", @OA\Schema(type="integer")),
-     *     @OA\Response(response=204, description="Usuario eliminado")
-     * )
-     */
+/**
+ * @OA\Delete(
+ *  path="/api/users/{id}",
+ *  summary="Eliminar un usuario",
+ *  description="Eliminar un usuario por su id",
+ *  operationId="deleteUser",
+ *  tags={"users"},
+ *  @OA\Parameter(
+ *      name="id",
+ *      in="path",
+ *      description="Id del usuario",
+ *   required=true,
+ *   @OA\Schema(type="integer",example="1")
+ *  ),
+ *  @OA\Response(
+ *  response=200,
+ *  description="Usuario eliminado"
+ * ),
+ *  @OA\Response(
+ *  response=404,
+ *  description="Usuario no encontrado"
+ *  )
+ * )
+ */
+   
     public function destroy($id)
     {
         $user = User::find($id);
