@@ -54,7 +54,9 @@ Hemos optado por unos colores oscuros para que la pagina sea minimalista, con un
 ### Vistas 
 
 - Vista de Inicio
+  
 ![alt text](img/image-2.png)
+
 La vista de inicio es la pantalla principal de la aplicación web. Su propósito es proporcionar una introducción al usuario sobre el sistema y ofrecer opciones de navegación.
 Contiene un texto introductorio que explica el propósito de la aplicación.
 
