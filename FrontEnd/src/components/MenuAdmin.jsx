@@ -5,30 +5,19 @@ import 'font-awesome/css/font-awesome.min.css';
 
 function AdminMenu() {
     return (
-        <div className="d-flex">
-            <Link to="/" className="btn btn-danger mx-2">
-                Inicio
-            </Link>
-            <Link to="/administrador/usuarios" className="btn btn-danger mx-2">
-                Usuarios
-            </Link>
-            <Link to="/administrador/roles" className="btn btn-danger mx-2">
-                Roles
-            </Link>
-            <Link to="/administrador/retos" className="btn btn-danger mx-2">
-                Retos
-            </Link>
-            <Link to="/administrador/equipos" className="btn btn-danger mx-2">
-                Equipos
-            </Link>
-            <Link to="/administrador/jugadores" className="btn btn-danger mx-2">
-                Jugadores
-            </Link>
-            <Link to="/administrador/donaciones" className="btn btn-danger mx-2">
-                Donaciones
-            </Link>
+        <div className="container text-center my-3">
+            <div className="btn-group">
+                <Link to="/" className="btn btn-danger">Inicio</Link>
+                <Link to="/administrador/usuarios" className="btn btn-danger">Usuarios</Link>
+                <Link to="/administrador/actas" className="btn btn-danger">Actas</Link>
+                <Link to="/administrador/retos" className="btn btn-danger">Retos</Link>
+                <Link to="/administrador/equipos" className="btn btn-danger">Equipos</Link>
+                <Link to="/administrador/jugadores" className="btn btn-danger">Jugadores</Link>
+                <Link to="/administrador/donaciones" className="btn btn-danger">Donaciones</Link>
+            </div>
         </div>
     );
+    
 }
 
 export default AdminMenu;

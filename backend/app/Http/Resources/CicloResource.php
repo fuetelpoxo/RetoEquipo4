@@ -14,12 +14,10 @@ class CicloResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return  [
-            'id' => $this->id,
-            'nombre' => $this->nombre,
-            'familia' => new FamiliaResource($this->whenLoaded('familias')),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+        return [
+            "id"=> $this->id,
+            "nombre"=> $this->nombre,
+            "familia_id"=> $this->familia_id
         ];
     }
 }

@@ -22,7 +22,7 @@ import AdminLayout from '../layouts/AdminLayout.jsx';
 import AdministradorInicio from '../pages/Administrador/AdminInicio.jsx';
 import Usuarios from '../pages/Administrador/Usuarios.jsx';
 import Detalles from '../pages/Administrador/Detalles.jsx';
-import Roles from '../pages/Administrador/Roles.jsx';
+import Actas from '../pages/Administrador/Actas.jsx';
 import Retos from '../pages/Administrador/Retos.jsx';
 import Equipos from '../pages/Administrador/Equipos.jsx';
 import Donaciones from '../pages/Administrador/Donaciones.jsx';
@@ -94,8 +94,7 @@ function AppEnrutador() {
         <Route path="/administrador" element={<AdminLayout />}>
           <Route index element={<AdministradorInicio />} />
           <Route path="usuarios" element={<Usuarios />} />
-          <Route path="detalles" element={<Detalles />} />
-          <Route path="roles" element={<Roles />} />
+          <Route path="actas" element={<Actas />} />
           <Route path="retos" element={<Retos />} />
           <Route path="equipos" element={<Equipos />} />
           <Route path="jugadores" element={<Jugadores />} />

@@ -14,13 +14,6 @@ class OngResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-            'id' => $this->id,
-            'nombre' => $this->nombre,
-            'landingPage' => $this->landingPage,
-            'donaciones' => DonacionResource::collection($this->whenLoaded('donaciones')),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-        ];
+        return parent::toArray($request);
     }
 }

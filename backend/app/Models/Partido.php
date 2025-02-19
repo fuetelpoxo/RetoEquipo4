@@ -30,12 +30,12 @@ class Partido extends Model
     // Relación con Equipos (un partido pertenece a dos equipos)
     public function equipoLocal()
     {
-        return $this->belongsTo(Equipo::class, 'equipoL_id');
+        return $this->belongsTo(Equipo::class, 'equipo_id');
     }
 
     public function equipoVisitante()
     {
-        return $this->belongsTo(Equipo::class, 'equipoV_id');
+        return $this->belongsTo(Equipo::class, 'equipo_id');
     }
 
     // Relación con Publicaciones (un partido tiene muchas publicaciones)
@@ -61,12 +61,12 @@ class Partido extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->usuarioIdCreacion = Auth::id() ?? 1;
+            $model->usuarioIdCreacion = Auth::id()?? 1;
             $model->fechaCreacion = now();
         });
 
         static::updating(function ($model) {
-            $model->usuarioIdActualizacion = Auth::id() ?? 1;
+            $model->usuarioIdActualizacion = Auth::id()?? 1;
             $model->fechaActualizacion = now();
         });
     }

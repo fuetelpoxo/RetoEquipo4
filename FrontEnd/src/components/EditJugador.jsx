@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import BuscadorEquipos from './BuscadorEquipos';
-import { getEquiposSelect } from '../models/JugadorModel'; // Importar la función para obtener equipos
+import { getEquiposSelect } from '../models/JugadorModel';
 
 const EditJugador = ({ jugador, onSubmit, onCancel }) => {
   const [form, setForm] = useState({
@@ -15,11 +14,8 @@ const EditJugador = ({ jugador, onSubmit, onCancel }) => {
   });
 
   const [errors, setErrors] = useState({});
-
-  // Añadir estado para los equipos
   const [equipos, setEquipos] = useState([]);
-  
-  // Cargar equipos al montar el componente
+
   useEffect(() => {
     const cargarEquipos = async () => {
       try {
@@ -38,6 +34,7 @@ const EditJugador = ({ jugador, onSubmit, onCancel }) => {
     if (!form.apellido1.trim()) newErrors.apellido1 = 'El primer apellido es requerido';
     if (!form.dni.trim()) newErrors.dni = 'El DNI es requerido';
     if (!form.tipo) newErrors.tipo = 'El tipo es requerido';
+    if (!form.equipo_id) newErrors.equipo_id = 'El equipo es requerido';
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -48,20 +45,23 @@ const EditJugador = ({ jugador, onSubmit, onCancel }) => {
     if (!validateForm()) return;
 
     try {
-      // Clonar el objeto form para no modificar el estado directamente
       const dataToSubmit = { ...form };
+      // Si el email no ha cambiado, lo eliminamos para evitar el error de duplicado
+      if (jugador && jugador.email === form.email) {
+        delete dataToSubmit.email;
+      }
       
       await onSubmit(dataToSubmit);
       onCancel();
     } catch (error) {
-      // Si el error es de email duplicado, mostramos el error específico
+      console.error('Error al guardar:', error);
+      // Mostrar error específico para email duplicado
       if (error.message.includes('email')) {
         setErrors(prev => ({
           ...prev,
           email: 'Este email ya está en uso'
         }));
       }
-      console.error('Error al guardar:', error);
     }
   };
 
@@ -72,13 +72,9 @@ const EditJugador = ({ jugador, onSubmit, onCancel }) => {
     }
   };
 
-  const handleEquipoSelect = (equipoId) => {
-    setForm(prev => ({ ...prev, equipo_id: equipoId }));
-  };
-
   return (
     <div className="container mt-3">
-      <h2>{jugador ? "Editar Jugador" : "Añadir Jugador"}</h2>
+      <h2>Editar Jugador</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className="form-label">Nombre</label>
@@ -182,11 +178,6 @@ const EditJugador = ({ jugador, onSubmit, onCancel }) => {
             onChange={handleChange}
           />
         </div>
-
-        <BuscadorEquipos
-          onSelect={handleEquipoSelect}
-          selectedEquipoId={form.equipo_id}
-        />
 
         <div className="mt-3">
           <button type="submit" className="btn btn-primary me-2">Guardar</button>

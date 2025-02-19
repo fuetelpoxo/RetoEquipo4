@@ -16,18 +16,18 @@ class PartidoResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'equipo_local' => new EquipoResource($this->whenLoaded('equipoLocal')),
-            'equipo_visitante' => new EquipoResource($this->whenLoaded('equipoVisitante')),
-            'fecha' => $this->fecha,
-            'hora' => $this->hora,
-            'goles_local' => $this->golesL,
-            'goles_visitante' => $this->golesV,
-            'pabellon' => new PabellonResource($this->whenLoaded('pabellon')),
-            'actas' => ActaResource::collection($this->whenLoaded('actas')),
-            'publicaciones' => PublicacionResource::collection($this->whenLoaded('publicaciones')),
-            'imagenes' => ImagenResource::collection($this->whenLoaded('imagenes')),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'equipoL' => new EquipoResource($this->whenLoaded('equipoLocal')), // Representación del equipo local
+            'equipoV' => new EquipoResource($this->whenLoaded('equipoVisitante')), // Representación del equipo visitante
+            'fecha'=> $this->fecha,
+            'hora'=> $this->hora,
+            'golesL'=> $this->golesL,
+            'golesV'=> $this->golesV,
+            'pabellon_id'=> new PabellonResource($this->whenLoaded('pabellon')), // Incluir la relación con el pabellón
+            'usuarioIdCreacion'=> $this->usuarioIdCreacion,
+            'fechaCreacion'=> $this->fechaCreacion,
+            'usuarioIdActualizacion'=> $this->usuarioIdActualizacion,
+            'fechaActualizacion'=> $this->fechaActualizacion,
+            'actas'=> ActaResource::collection($this->whenLoaded('actas')), // Incluir la relación con las actas
         ];
     }
 }

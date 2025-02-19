@@ -32,7 +32,7 @@ export const getJugadores = async () => {
               const equipoData = await equipoResponse.json();
               return {
                 ...jugador,
-                nombreEquipo: equipoData.data.nombre // Accedemos al nombre dentro de data
+                nombreEquipo: equipoData.data.nombre || 'Sin nombre'
               };
             }
           } catch (error) {
@@ -48,13 +48,11 @@ export const getJugadores = async () => {
 
     // Ordenar primero por equipo y luego por nombre
     return jugadoresConEquipo.sort((a, b) => {
-      // Si ambos tienen equipo_id, compara por equipo primero
       if (a.equipo_id && b.equipo_id) {
-        const equipoComparison = a.equipo_id - b.equipo_id;
+        const equipoComparison = a.nombreEquipo.localeCompare(b.nombreEquipo);
         if (equipoComparison !== 0) return equipoComparison;
         return a.nombre.localeCompare(b.nombre);
       }
-      // Si uno no tiene equipo_id, va al final
       if (!a.equipo_id) return 1;
       if (!b.equipo_id) return -1;
       return 0;
@@ -89,12 +87,8 @@ export const addJugador = async (jugadorData) => {
 
 export const updateJugador = async (jugadorId, jugadorData) => {
   try {
-    // Obtener el jugador actual
-    const currentResponse = await fetch(`/api/jugadores/${jugadorId}`);
-    const currentJugador = await currentResponse.json();
-
-    // Si el email no ha cambiado, lo eliminamos de los datos a actualizar
-    if (currentJugador.data.email === jugadorData.email) {
+    // Si el email no ha cambiado, lo eliminamos
+    if (jugadorData.email === undefined || jugadorData.email === '') {
       delete jugadorData.email;
     }
 
@@ -151,12 +145,35 @@ export const getEquiposSelect = async () => {
 
 export const getEstudiosSelect = async () => {
   try {
-    const response = await fetch('/api/estudios');
-    if (!response.ok) {
+    // Obtener estudios
+    const responseEstudios = await fetch('/api/estudios');
+    if (!responseEstudios.ok) {
       throw new Error('Error al obtener estudios');
     }
-    const data = await response.json();
-    return data.data;
+    const estudiosData = await responseEstudios.json();
+    const estudios = estudiosData.data;
+
+    // Obtener ciclos
+    const responseCiclos = await fetch('/api/ciclos');
+    if (!responseCiclos.ok) {
+      throw new Error('Error al obtener ciclos');
+    }
+    const ciclosData = await responseCiclos.json();
+    const ciclos = ciclosData.data;
+
+    // Combinar la información
+    const estudiosConCiclo = estudios.map(estudio => {
+      const ciclo = ciclos.find(c => c.id === estudio.ciclo_id);
+      return {
+        ...estudio,
+        ciclo: {
+          id: ciclo?.id || '',
+          nombre: ciclo?.nombre || 'Ciclo no encontrado'
+        }
+      };
+    });
+
+    return estudiosConCiclo;
   } catch (err) {
     console.error('Error en getEstudiosSelect:', err);
     throw err;

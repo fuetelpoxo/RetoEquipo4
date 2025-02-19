@@ -8,8 +8,11 @@ class Jugador extends Model
 {
     protected $table = 'jugadores';
 
-    protected const TIPOS = ['jugador', 'entrenador', 'capitan'];
-
+    public const TIPOS = [
+        'JUGADOR' => 'jugador',
+        'ENTRENADOR' => 'entrenador',
+        'CAPITAN' => 'capitan',
+    ];
     protected $fillable = [
         'equipo_id',
         'nombre',
@@ -20,12 +23,11 @@ class Jugador extends Model
         'dni',
         'email',
         'telefono',
-        'usuarioIdCreacion', // 🔥 Añadido
-        'fechaCreacion', // 🔥 Añadido
+        'usuarioIdCreacion',
+        'fechaCreacion',
         'usuarioIdActualizacion',
-        'fechaActualizacion',
+        'fechaActualizacion'
     ];
-
     // Relación con Actas (un jugador puede tener muchas actas)
     public function actas()
     {
@@ -61,14 +63,14 @@ class Jugador extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->usuarioIdCreacion = Auth::id() ?? 1;
+            $model->usuarioIdCreacion = Auth::id()?? 1;
             $model->fechaCreacion = now();
         });
 
         static::updating(function ($model) {
-            $model->usuarioIdActualizacion = Auth::id() ?? 1;
+            $model->usuarioIdActualizacion = Auth::id()?? 1;
             $model->fechaActualizacion = now();
         });
     }
-
+    
 }

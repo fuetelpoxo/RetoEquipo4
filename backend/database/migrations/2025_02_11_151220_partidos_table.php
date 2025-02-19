@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::create('partidos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('equipoL_id')->constrained('equipos'); // Relación con equipos (equipo local)
-            $table->foreignId('equipoV_id')->constrained('equipos'); // Relación con equipos (equipo visitante)
+            $table->foreignId('equipoL_id')->constrained('equipos')->onDelete('cascade'); // Relación con equipos (equipo local)
+            $table->foreignId('equipoV_id')->constrained('equipos')->onDelete('cascade'); // Relación con equipos (equipo visitante)
             $table->date('fecha');
             $table->time('hora');
             $table->integer('golesL')->default(0); // Goles equipo local
             $table->integer('golesV')->default(0); // Goles equipo visitante
             $table->foreignId('pabellon_id')->constrained('pabellones'); // Relación con pabellones
-            $table->foreignId('usuarioIdCreacion')->constrained('users'); // Relación con usuarios
-            $table->timestamp('fechaCreacion');
-            $table->foreignId('usuarioIdActualizacion')->constrained('users'); // Relación con usuarios
-            $table->timestamp('fechaActualizacion');
+            $table->foreignId('usuarioIdCreacion')->nullable()->constrained('users'); // Relación con la tabla de usuarios
+            $table->timestamp('fechaCreacion')->nullable()->useCurrent();
+            $table->foreignId('usuarioIdActualizacion')->nullable()->constrained('users'); // Relación con la tabla de usuarios
+            $table->timestamp('fechaActualizacion')->nullable()->useCurrent();
             $table->timestamps();
         });
     }

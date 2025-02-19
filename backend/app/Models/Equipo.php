@@ -4,19 +4,26 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+
+/**
+ * @OA\Schema(
+ *     schema="Equipo",
+ *     required={"nombre", "centro_id", "grupo"},
+ *     @OA\Property(property="id", type="integer", description="ID del equipo"),
+ *     @OA\Property(property="nombre", type="string", description="Nombre del equipo"),
+ *     @OA\Property(property="centro_id", type="integer", description="ID del centro al que pertenece el equipo"),
+ *     @OA\Property(property="grupo", type="string", description="Grupo al que pertenece el equipo"),
+ *     @OA\Property(property="usuarioIdCreacion", type="integer", description="ID del usuario que creó el equipo"),
+ *     @OA\Property(property="fechaCreacion", type="string", format="date-time", description="Fecha de creación del equipo"),
+ *     @OA\Property(property="usuarioIdActualizacion", type="integer", description="ID del usuario que actualizó el equipo"),
+ *     @OA\Property(property="fechaActualizacion", type="string", format="date-time", description="Fecha de actualización del equipo")
+ * )
+ */
 class Equipo extends Model
 {
     protected $table = 'equipos';
     protected $fillable = [
         'nombre',
-        'apellido1',
-        'apellido2',
-        'tipo',
-        'dni',
-        'email',
-        'equipo_id',
-        'estudio_id',
-        'telefono',
         'centro_id',
         'grupo',
         'usuarioIdCreacion',
@@ -43,10 +50,16 @@ class Equipo extends Model
         return $this->hasMany(Jugador::class, 'equipo_id');
     }
 
-    // Relación con Partidos (un equipo tiene muchos partidos)
-    public function partidos()
+    // Relación con Partidos (un equipo tiene muchos partidos como local)
+    public function partidosLocal()
     {
-        return $this->hasMany(Partido::class, 'equipoL_id')->orWhere('equipoV_id', $this->id);
+        return $this->hasMany(Partido::class, 'equipoL_id');
+    }
+
+    // Relación con Partidos (un equipo tiene muchos partidos como visitante)
+    public function partidosVisitante()
+    {
+        return $this->hasMany(Partido::class, 'equipoV_id');
     }
 
     // Relación con Patrocinadores-Equipos (un equipo tiene muchos patrocinadores)
@@ -72,12 +85,12 @@ class Equipo extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->usuarioIdCreacion = Auth::id() ?? 1;
+            $model->usuarioIdCreacion = Auth::id()?? 1;
             $model->fechaCreacion = now();
         });
 
         static::updating(function ($model) {
-            $model->usuarioIdActualizacion = Auth::id() ?? 1;
+            $model->usuarioIdActualizacion = Auth::id()?? 1;
             $model->fechaActualizacion = now();
         });
     }

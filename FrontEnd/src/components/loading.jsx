@@ -1,11 +1,16 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import './Loading.css';
 
 function Loading() {
     return (
-        <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-            <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
+        <div className="loading-container">
+            <div className="loading-content">
+                <div className="dots-container">
+                    <div className="dot"></div>
+                    <div className="dot"></div>
+                    <div className="dot"></div>
+                </div>
+                
             </div>
         </div>
     );

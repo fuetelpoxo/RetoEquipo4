@@ -17,15 +17,15 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('apellido1');
             $table->string('apellido2');
-            $table->enum('tipo', ['jugador', 'entrenador', 'capitan'])->default('jugador'); // Aquí defines el enum
-            $table->foreignId('estudio_id')->constrained('estudios');
+            $table->enum('tipo', ['jugador', 'entrenador', 'capitan']);
+            $table->foreignId('estudio_id')->constrained('estudios')->onDelete('cascade');
             $table->string('dni');
             $table->string('email');
             $table->string('telefono');
-            $table->foreignId('usuarioIdCreacion')->nullable()->constrained('users'); // Si tienes tabla de usuarios
-            $table->timestamp('fechaCreacion')->nullable();
-            $table->foreignId('usuarioIdActualizacion')->nullable()->constrained('users'); // Si tienes tabla de usuarios
-            $table->timestamp('fechaActualizacion')->nullable();
+            $table->foreignId('usuarioIdCreacion')->nullable()->constrained('users'); // Relación con la tabla de usuarios
+            $table->timestamp('fechaCreacion')->nullable()->useCurrent();
+            $table->foreignId('usuarioIdActualizacion')->nullable()->constrained('users'); // Relación con la tabla de usuarios
+            $table->timestamp('fechaActualizacion')->nullable()->useCurrent();
             $table->timestamps();
         });
     }

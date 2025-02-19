@@ -177,7 +177,7 @@ const AddJugador = ({ onSubmit, onCancel }) => {
             <option value="">Seleccione un estudio</option>
             {estudios.map(estudio => (
               <option key={estudio.id} value={estudio.id}>
-                {`${estudio.ciclo.nombre} - ${estudio.centro.nombre} - Curso ${estudio.curso}`}
+                {`${estudio.ciclo?.nombre || 'Sin ciclo'} - ${estudio.curso}º curso`}
               </option>
             ))}
           </select>

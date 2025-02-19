@@ -4,12 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Jugador;
+use Illuminate\Http\Request;
 use App\Http\Requests\JugadorRequests\StoreJugadorRequest;
 use App\Http\Requests\JugadorRequests\UpdateJugadorRequest;
 use App\Http\Resources\JugadorResource;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class JugadorController extends Controller
 {
@@ -18,48 +17,58 @@ class JugadorController extends Controller
      */
     public function index()
     {
-        return JugadorResource::collection(Jugador::all());
+        $jugadores = Jugador::all();
+        return JugadorResource::collection($jugadores);
     }
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreJugadorRequest $request)
     {
         $jugador = Jugador::create($request->validated());
-        $jugador->load('equipo', 'estudio', 'actas', 'imagenes', 'publicaciones');
-        return new JugadorResource($jugador);
+        $jugador->load('equipo', 'estudio');
+        return response()->json([
+            'message' => 'Jugador creado con éxito',
+            'data' => new JugadorResource($jugador)
+        ], 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Jugador $jugador)
+    public function show($id)
     {
+        $jugador = Jugador::with(['equipo', 'estudio'])->find($id);
+        if(!$jugador){
+            return response()->json(['error'=>'Jugador no encontrado'],404);
+        }
         return new JugadorResource($jugador);
     }
-
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateJugadorRequest $request, Jugador $jugador)
+    public function update(UpdateJugadorRequest $request, $id)
     {
+        $jugador = Jugador::find($id);
+        if(!$jugador){
+            return response()->json(['error'=>'Jugador no encontrado'],404);
+        }
         $datos = $request->validated();
-        Log::info('Datos validados:', $datos);
-
         $jugador->update($datos);
-
-        return response()->json(['message' => 'Jugador actualizado correctamente', 'data' => $jugador]);
+        return response()->json(['message'=>'Jugador actualizado correctamente','data'=>$jugador]);
     }
-
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Jugador $jugador)
+    public function destroy($id)
     {
+        $jugador = Jugador::find($id);
+        if(!$jugador){
+            return response()->json(['error'=>'Jugador no encontrado'],404);
+        }
         $jugador->delete();
-        return response()->noContent();
+        return response()->json(['message'=>'Jugador eliminado correctamente']);
     }
 }

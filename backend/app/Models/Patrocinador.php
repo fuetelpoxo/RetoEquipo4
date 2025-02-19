@@ -40,12 +40,12 @@ class Patrocinador extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->usuarioIdCreacion = Auth::id() ?? 1;
+            $model->usuarioIdCreacion = Auth::id()?? 1;
             $model->fechaCreacion = now();
         });
 
         static::updating(function ($model) {
-            $model->usuarioIdActualizacion = Auth::id() ?? 1;
+            $model->usuarioIdActualizacion = Auth::id()?? 1;
             $model->fechaActualizacion = now();
         });
     }

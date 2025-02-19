@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('partido_id')->constrained('partidos'); // Clave foránea para partido
             $table->foreignId('jugador_id')->constrained('jugadores'); // Clave foránea para jugador
-            $table->string('incidencia');
+            $table->enum('incidencia', ['amarilla','roja','lesion','cambio','gol','falta','penalti']);
             $table->time('hora');
             $table->text('comentario');
-            $table->foreignId('usuarioIdCreacion')->constrained('users'); // Si hay tabla de usuarios
-            $table->timestamp('fechaCreacion');
-            $table->foreignId('usuarioIdActualizacion')->constrained('users'); // Si hay tabla de usuarios
-            $table->timestamp('fechaActualizacion');
+            $table->foreignId('usuarioIdCreacion')->nullable()->constrained('users'); // Relación con la tabla de usuarios
+            $table->timestamp('fechaCreacion')->nullable()->useCurrent();
+            $table->foreignId('usuarioIdActualizacion')->nullable()->constrained('users'); // Relación con la tabla de usuarios
+            $table->timestamp('fechaActualizacion')->nullable()->useCurrent();
             $table->timestamps();
         });
     }

@@ -45,7 +45,9 @@ class UserController extends Controller
      */
     public function index()
     {
+        $users = User::all();
         return UserResource::collection(User::all());
+
     }
 
     /**
@@ -67,22 +69,15 @@ class UserController extends Controller
      * )
      */
     public function store(StoreUserRequest $request)
-    {
-        // Crear el nuevo usuario con los datos validados
-        $user = User::create([
-            'name'=>$request->name,
-            'email' => $request->email,  // Email del usuario
-            'password' => Hash::make($request->password),  // Contraseña cifrada
-            'activo' => $request->activo,  // Estado del usuario (activo)
-            'perfil' => $request->perfil,  // Perfil del usuario
-        ]);
+{
+    // Crear el nuevo usuario con los datos validados
+    $user = User::create($request->validated());
+    return response()->json([
+        'message' => 'Usuario creado con éxito',
+        'data' => new UserResource($user)  
+    ], 201);
+}
 
-        // Respuesta de éxito
-        return response()->json([
-            'message' => 'Usuario creado con éxito',
-            'user' => $user
-        ], 201);
-    }
 
     /**
      * @OA\Get(
@@ -95,6 +90,9 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        if(!$user){
+            return response()->json(['error'=>'Usuario no encontrado'],404);
+        }
         return new UserResource($user);
     }
 
@@ -117,10 +115,13 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
 {
     // Solo se actualizan los campos validados
-    $user->update($request->validated());
-
-    // Retornar el usuario actualizado
-    return new UserResource($user);
+    $user = User::find($user->id);
+    if(!$user){
+        return response()->json(['error'=>'Usuario no encontrado'],404);
+    }
+    $datos = $request->validated();
+    $user->update($datos);
+    return response()->json(['message'=>'Usuario actualizado correctamente','data'=>$user]);
 }
 
     /**
@@ -132,9 +133,13 @@ class UserController extends Controller
      *     @OA\Response(response=204, description="Usuario eliminado")
      * )
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
+        $user = User::find($id);
+        if(!$user){
+            return response()->json(['error'=>'Usuario no encontrado'],404);
+        }
         $user->delete();
-        return response()->json(null, 204);
+        return response()->json(['message'=>'Usuario eliminado correctamente']);
     }
 }

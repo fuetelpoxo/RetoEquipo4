@@ -38,9 +38,29 @@ export const useJugadores = () => {
   const handleUpdateJugador = async (jugadorId, jugadorData) => {
     try {
       const updatedJugador = await updateJugador(jugadorId, jugadorData);
+      
+      // Obtener el nombre del equipo
+      let nombreEquipo = 'Sin equipo';
+      if (updatedJugador.equipo_id) {
+        try {
+          const equipoResponse = await fetch(`/api/equipos/${updatedJugador.equipo_id}`);
+          if (equipoResponse.ok) {
+            const equipoData = await equipoResponse.json();
+            nombreEquipo = equipoData.data.nombre;
+          }
+        } catch (error) {
+          console.error('Error al obtener equipo:', error);
+        }
+      }
+
+      // Actualizar el estado con el jugador actualizado incluyendo el nombre del equipo
       setJugadores(jugadores.map(jugador => 
-        jugador.id === jugadorId ? updatedJugador : jugador
+        jugador.id === jugadorId ? {
+          ...updatedJugador,
+          nombreEquipo
+        } : jugador
       ));
+
       return updatedJugador;
     } catch (err) {
       setError(`Error al actualizar el jugador: ${err.message}`);
