@@ -7,9 +7,8 @@ import AppEnrutador from './routers/AppEnrutador.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthProvider> {/* Envuelve tu aplicación con AuthProvider */}
+    <AuthProvider> 
       <AppEnrutador />
-      
     </AuthProvider>
   </StrictMode>,
 );

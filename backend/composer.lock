@@ -1212,16 +1212,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v11.42.1",
+            "version": "v11.43.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "ff392f42f6c55cc774ce75553a11c6b031da67f8"
+                "reference": "053f26afb699c845945e7380b407dd019a0a2c74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/ff392f42f6c55cc774ce75553a11c6b031da67f8",
-                "reference": "ff392f42f6c55cc774ce75553a11c6b031da67f8",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/053f26afb699c845945e7380b407dd019a0a2c74",
+                "reference": "053f26afb699c845945e7380b407dd019a0a2c74",
                 "shasum": ""
             },
             "require": {
@@ -1423,7 +1423,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-02-12T20:58:18+00:00"
+            "time": "2025-02-19T16:06:03+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -3570,16 +3570,16 @@
         },
         {
             "name": "swagger-api/swagger-ui",
-            "version": "v5.18.3",
+            "version": "v5.19.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swagger-api/swagger-ui.git",
-                "reference": "e322ecd6ba8a5a3ff1ebbb3692aa2334050f6196"
+                "reference": "dfa908d25a2cce32aa37f104ae8aa8a49c5157a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swagger-api/swagger-ui/zipball/e322ecd6ba8a5a3ff1ebbb3692aa2334050f6196",
-                "reference": "e322ecd6ba8a5a3ff1ebbb3692aa2334050f6196",
+                "url": "https://api.github.com/repos/swagger-api/swagger-ui/zipball/dfa908d25a2cce32aa37f104ae8aa8a49c5157a1",
+                "reference": "dfa908d25a2cce32aa37f104ae8aa8a49c5157a1",
                 "shasum": ""
             },
             "type": "library",
@@ -3625,9 +3625,9 @@
             ],
             "support": {
                 "issues": "https://github.com/swagger-api/swagger-ui/issues",
-                "source": "https://github.com/swagger-api/swagger-ui/tree/v5.18.3"
+                "source": "https://github.com/swagger-api/swagger-ui/tree/v5.19.0"
             },
-            "time": "2025-01-28T12:46:44+00:00"
+            "time": "2025-02-17T16:42:44+00:00"
         },
         {
             "name": "symfony/clock",
@@ -6548,16 +6548,16 @@
         },
         {
             "name": "laravel/pint",
-            "version": "v1.20.0",
+            "version": "v1.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/pint.git",
-                "reference": "53072e8ea22213a7ed168a8a15b96fbb8b82d44b"
+                "reference": "531fa0871fbde719c51b12afa3a443b8f4e4b425"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/pint/zipball/53072e8ea22213a7ed168a8a15b96fbb8b82d44b",
-                "reference": "53072e8ea22213a7ed168a8a15b96fbb8b82d44b",
+                "url": "https://api.github.com/repos/laravel/pint/zipball/531fa0871fbde719c51b12afa3a443b8f4e4b425",
+                "reference": "531fa0871fbde719c51b12afa3a443b8f4e4b425",
                 "shasum": ""
             },
             "require": {
@@ -6565,15 +6565,15 @@
                 "ext-mbstring": "*",
                 "ext-tokenizer": "*",
                 "ext-xml": "*",
-                "php": "^8.1.0"
+                "php": "^8.2.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.66.0",
-                "illuminate/view": "^10.48.25",
-                "larastan/larastan": "^2.9.12",
-                "laravel-zero/framework": "^10.48.25",
+                "friendsofphp/php-cs-fixer": "^3.68.5",
+                "illuminate/view": "^11.42.0",
+                "larastan/larastan": "^3.0.4",
+                "laravel-zero/framework": "^11.36.1",
                 "mockery/mockery": "^1.6.12",
-                "nunomaduro/termwind": "^1.17.0",
+                "nunomaduro/termwind": "^2.3",
                 "pestphp/pest": "^2.36.0"
             },
             "bin": [
@@ -6610,7 +6610,7 @@
                 "issues": "https://github.com/laravel/pint/issues",
                 "source": "https://github.com/laravel/pint"
             },
-            "time": "2025-01-14T16:20:53+00:00"
+            "time": "2025-02-18T03:18:57+00:00"
         },
         {
             "name": "laravel/sail",
@@ -7359,16 +7359,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "11.5.7",
+            "version": "11.5.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "e1cb706f019e2547039ca2c839898cd5f557ee5d"
+                "reference": "c9bd61aab12f0fc5e82ecfe621ff518a1d1f1049"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/e1cb706f019e2547039ca2c839898cd5f557ee5d",
-                "reference": "e1cb706f019e2547039ca2c839898cd5f557ee5d",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/c9bd61aab12f0fc5e82ecfe621ff518a1d1f1049",
+                "reference": "c9bd61aab12f0fc5e82ecfe621ff518a1d1f1049",
                 "shasum": ""
             },
             "require": {
@@ -7440,7 +7440,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.5.7"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.5.8"
             },
             "funding": [
                 {
@@ -7456,7 +7456,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-02-06T16:10:05+00:00"
+            "time": "2025-02-18T06:26:59+00:00"
         },
         {
             "name": "sebastian/cli-parser",

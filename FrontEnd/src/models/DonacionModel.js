@@ -15,26 +15,16 @@ export const getDonaciones = async () => {
     }
     const data = await response.json();
     
-    // Simular obtención de datos de ONG
-    const donacionesConOng = data.data.map(donacion => ({
+    // Transformar los datos para incluir la información de la ONG
+    const donacionesFormateadas = data.data.map(donacion => ({
       ...donacion,
-      nombreOng: ONG_DATA.data.nombre
+      nombreOng: donacion.ong?.nombre || 'ONG no encontrada',
+      importe: parseFloat(donacion.importe),
+      kilos: parseFloat(donacion.kilos),
+      fechaActualizacion: new Date(donacion.fechaActualizacion).toLocaleString()
     }));
     
-    /* Código original comentado
-    const donacionesConOng = await Promise.all(
-      data.data.map(async (donacion) => {
-        const ongResponse = await fetch(`/api/ongs/${donacion.ong_id}`);
-        const ongData = await ongResponse.json();
-        return {
-          ...donacion,
-          nombreOng: ongData.data.nombre
-        };
-      })
-    );
-    */
-    
-    return donacionesConOng;
+    return donacionesFormateadas;
   } catch (err) {
     throw new Error("Error al obtener las donaciones: " + err.message);
   }
@@ -42,19 +32,17 @@ export const getDonaciones = async () => {
 
 export const updateDonacion = async (donacionId, donacionData) => {
   try {
-    // Asegurarnos que siempre se envía el ong_id
-    const dataToSend = {
-      ...donacionData,
-      ong_id: 1 // Siempre será 1 (Cruz Roja)
-    };
-
     const response = await fetch(`/api/donaciones/${donacionId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
-      body: JSON.stringify(dataToSend),
+      body: JSON.stringify({
+        ...donacionData,
+        kilos: parseFloat(donacionData.kilos),
+        importe: parseFloat(donacionData.importe)
+      }),
     });
 
     if (!response.ok) {
@@ -63,7 +51,13 @@ export const updateDonacion = async (donacionId, donacionData) => {
     }
 
     const data = await response.json();
-    return data.data;
+    return {
+      ...data.data,
+      nombreOng: data.data.ong?.nombre || 'ONG no encontrada',
+      importe: parseFloat(data.data.importe),
+      kilos: parseFloat(data.data.kilos),
+      fechaActualizacion: new Date(data.data.fechaActualizacion).toLocaleString()
+    };
   } catch (err) {
     throw new Error(`Error al actualizar la donación: ${err.message}`);
   }

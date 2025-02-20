@@ -49,7 +49,6 @@ export const useUsers = () => {
         dataToUpdate.password = userData.password;
       }
 
-      console.log('Datos a actualizar:', dataToUpdate);
 
       const updatedUser = await updateUser(userId, dataToUpdate);
       
@@ -71,25 +70,31 @@ export const useUsers = () => {
   };
 
   // Agregar usuario
- const handleAddUser = async (userData) => {
-  try {
-    if (!userData.password) {
-      throw new Error("La contraseña es obligatoria");
-    }
+  const handleAddUser = async (userData) => {
+    try {
+      if (!userData.password) {
+        throw new Error("La contraseña es obligatoria");
+      }
 
-    // Llamada a la API para agregar un usuario
-    const response = await addUser(userData);
+      // Asegurarnos que el campo activo es un booleano
+      const dataToSend = {
+        ...userData,
+        activo: userData.activo === 'true' || userData.activo === true ? 1 : 0
+      };
 
-    // Verificamos si la API devuelve un usuario válido
-    if (response.user && response.user.id) {
-      setUsers((prevUsers) => [...prevUsers, response.user]); // Agregar solo el usuario
-    } else {
-      throw new Error("La API no devolvió un usuario válido");
+      const response = await addUser(dataToSend);
+      
+      if (response && response.user) {
+        setUsers(prevUsers => [...prevUsers, response.user]);
+        return response.user;
+      } else {
+        throw new Error("Error al crear el usuario");
+      }
+    } catch (err) {
+      setError(`Error al agregar el usuario: ${err.message}`);
+      throw err;
     }
-  } catch (err) {
-    setError(`Error al agregar el usuario: ${err.message}`);
-  }
-};
+  };
 
   return { users, loading, error, handleDeleteUser, handleUpdateUser, handleAddUser };
 };

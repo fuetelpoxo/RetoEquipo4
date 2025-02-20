@@ -4,6 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+/**
+ * @OA\Schema(
+ * schema="patrocinadores",
+ * type="object",
+ * title="patrocinadores",
+ * @OA\Property(property="nombre", type="string", example="Patrocinador 1"),
+ * @OA\Property(property="usuarioIdCreacion", type="integer", example="1"),
+ * @OA\Property(property="fechaCreacion", type="timestamp", example="2022-02-11 15:12:24"),
+ * @OA\Property(property="usuarioIdActualizacion", type="integer", example="1"),
+ * @OA\Property(property="fechaActualizacion", type="timestamp", example="2022-02-11 15:12:24")
+ * )
+ */
 class Patrocinador extends Model
 {
     protected $table = 'patrocinadores';

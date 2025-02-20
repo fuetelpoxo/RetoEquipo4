@@ -36,7 +36,6 @@ function Donaciones() {
         <div className="col">ONG</div>
         <div className="col">Kilos</div>
         <div className="col">Importe</div>
-        <div className="col">Última Actualización</div>
         <div className="col">Acciones</div>
       </div>
 
@@ -45,9 +44,7 @@ function Donaciones() {
           <div className="col">{donacion.nombreOng}</div>
           <div className="col">{donacion.kilos} kg</div>
           <div className="col">{donacion.importe} €</div>
-          <div className="col">
-            {new Date(donacion.fechaActualizacion).toLocaleDateString()}
-          </div>
+        
           <div className="col">
             <button 
               onClick={() => handleEditar(donacion)} 

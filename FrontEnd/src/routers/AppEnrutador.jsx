@@ -9,7 +9,6 @@ import Torneo from '../pages/Publicas/Torneo.jsx';
 import RetosInfo from '../pages/Publicas/RetosInfo.jsx';
 import Reglamento from '../pages/Publicas/Reglamento.jsx';
 import InfoEquipos from '../pages/Publicas/InfoEquipos.jsx';
-import Inscripcion from '../pages/Publicas/Inscripcion.jsx';
 import RetosPublic from '../pages/Publicas/RetosPublic.jsx';
 import EquiposPublic from '../pages/Publicas/EquiposPublic.jsx';
 import TorneoSolidario from '../pages/Publicas/TorneoSolidario.jsx';
@@ -21,9 +20,7 @@ import Clasificacion from '../pages/Publicas/Clasificacion.jsx';
 import AdminLayout from '../layouts/AdminLayout.jsx';
 import AdministradorInicio from '../pages/Administrador/AdminInicio.jsx';
 import Usuarios from '../pages/Administrador/Usuarios.jsx';
-import Detalles from '../pages/Administrador/Detalles.jsx';
 import Actas from '../pages/Administrador/Actas.jsx';
-import Retos from '../pages/Administrador/Retos.jsx';
 import Equipos from '../pages/Administrador/Equipos.jsx';
 import Donaciones from '../pages/Administrador/Donaciones.jsx';
 import DirectorTorneo from '../pages/Director/DirectorTorneo.jsx';
@@ -31,6 +28,7 @@ import Entrenador from '../pages/Entrenador/Entrenador.jsx';
 import Periodista from '../pages/Periodista/Periodista.jsx';
 import { useAuth } from '../context/UserContext';
 import Jugadores from '../pages/Administrador/Jugadores';
+import Inscripciones from '../pages/Administrador/Inscripciones';
 
 function AppEnrutador() {
   const { loggedInUser } = useAuth();
@@ -54,7 +52,6 @@ function AppEnrutador() {
             <Route path="solidario/objetivos" element={<Objetivos />} />
             <Route path="equipos" element={<EquiposPublic />} />
             <Route path="equipos/infoequipos" element={<InfoEquipos />} />
-            <Route path="equipos/inscripcion" element={<Inscripcion />} />
             <Route path="torneo/horario" element={<Horarios />} />
             <Route path="torneo/fase-final" element={<FaseFinal />} />
             <Route path="torneo/reglamento" element={<Reglamento />} />
@@ -83,7 +80,6 @@ function AppEnrutador() {
           <Route path="solidario/objetivos" element={<Objetivos />} />
           <Route path="equipos" element={<EquiposPublic />} />
           <Route path="equipos/infoequipos" element={<InfoEquipos />} />
-          <Route path="equipos/inscripcion" element={<Inscripcion />} />
           <Route path="torneo/horario" element={<Horarios />} />
           <Route path="torneo/fase-final" element={<FaseFinal />} />
           <Route path="torneo/reglamento" element={<Reglamento />} />
@@ -95,10 +91,10 @@ function AppEnrutador() {
           <Route index element={<AdministradorInicio />} />
           <Route path="usuarios" element={<Usuarios />} />
           <Route path="actas" element={<Actas />} />
-          <Route path="retos" element={<Retos />} />
           <Route path="equipos" element={<Equipos />} />
           <Route path="jugadores" element={<Jugadores />} />
           <Route path="donaciones" element={<Donaciones />} />
+          <Route path="inscripciones" element={<Inscripciones />} />
         </Route>
 
         <Route path="/director" element={<DirectorTorneo />} />

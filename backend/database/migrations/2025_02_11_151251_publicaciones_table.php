@@ -22,17 +22,17 @@ return new class extends Migration
             $table->text('titulo');
             $table->longText('texto');
             //Indica si la publicacion es portada, (0 si no lo es, 1 si lo es, 0 por defecto)
-            $table->boolean('portada')->default(0);
-            $table->longText('rutavideo');
-            $table->longText('rutaaudio');
+            $table->boolean('portada')->nullable()->default(0);
+            $table->longText('rutavideo')->nullable();
+            $table->longText('rutaaudio')->nullable();
             //Establecemos la relacion de la clave foranea
-            $table->foreignId('equipo_id')->constrained('equipos')->onDelete('cascade');
-            $table->foreignId('partido_id')->constrained('partidos')->onDelete('cascade');
-            $table->foreignId('patrocinador_id')->constrained('patrocinadores')->onDelete('cascade');
-            $table->foreignId('jugador_id')->constrained('jugadores')->onDelete('cascade');
-            $table->foreignId('reto_id')->constrained('retos')->onDelete('cascade');
-            $table->foreignId('ong_id')->constrained('ongs')->onDelete('cascade');
-            $table->foreignId('pabellon_id')->constrained('pabellones')->onDelete('cascade');
+            $table->foreignId('equipo_id')->nullable()->constrained('equipos')->onDelete('cascade');
+            $table->foreignId('partido_id')->nullable()->constrained('partidos')->onDelete('cascade');
+            $table->foreignId('patrocinador_id')->nullable()->constrained('patrocinadores')->onDelete('cascade');
+            $table->foreignId('jugador_id')->nullable()->constrained('jugadores')->onDelete('cascade');
+            $table->foreignId('reto_id')->nullable()->constrained('retos')->onDelete('cascade');
+            $table->foreignId('ong_id')->nullable()->constrained('ongs')->onDelete('cascade');
+            $table->foreignId('pabellon_id')->nullable()->constrained('pabellones')->onDelete('cascade');
             $table->timestamps();
         });
     }

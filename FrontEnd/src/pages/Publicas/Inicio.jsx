@@ -59,28 +59,70 @@ function Inicio() {
  
  
             {/* Organizadores y Patrocinadores Generales */}
-            <div className='container text-center my-4'>
-                <h2 className='text-danger fw-bold' style={{ margin: '5%' }}>Nuestros Patrocinadores</h2>
-                <div className='row'>
+            <div className='container mt-5'>
+                <h2 className='text-center mb-4'>Nuestros Patrocinadores</h2>
+                <div className='row mb-3'>
                     <div className='col-md-4'>
-                        <img src='' alt='Patrocinador 1' className='sponsor-logo border border-danger rounded-3 p-2 bg-white' />
+                        <img 
+                            src="/placeholder-sponsor.png" 
+                            alt='Patrocinador 1' 
+                            className='sponsor-logo border border-danger rounded-3 p-2 bg-white'
+                            onError={(e) => {
+                                e.target.style.display = 'none'; // Ocultar si la imagen falla
+                            }}
+                        />
                     </div>
                     <div className='col-md-4'>
-                        <img src='' alt='Patrocinador 2' className='sponsor-logo border border-danger rounded-3 p-2 bg-white' />
+                        <img 
+                            src="/placeholder-sponsor.png"
+                            alt='Patrocinador 2' 
+                            className='sponsor-logo border border-danger rounded-3 p-2 bg-white'
+                            onError={(e) => {
+                                e.target.style.display = 'none';
+                            }}
+                        />
                     </div>
                     <div className='col-md-4'>
-                        <img src='' alt='Patrocinador 3' className='sponsor-logo border border-danger rounded-3 p-2 bg-white' />
+                        <img 
+                            src="/placeholder-sponsor.png"
+                            alt='Patrocinador 3' 
+                            className='sponsor-logo border border-danger rounded-3 p-2 bg-white'
+                            onError={(e) => {
+                                e.target.style.display = 'none';
+                            }}
+                        />
                     </div>
                 </div>
                 <div className='row mt-3'>
                     <div className='col-md-4'>
-                        <img src='' alt='Patrocinador 4' className='sponsor-logo border border-danger rounded-3 p-2 bg-white' />
+                        <img 
+                            src="/placeholder-sponsor.png"
+                            alt='Patrocinador 4' 
+                            className='sponsor-logo border border-danger rounded-3 p-2 bg-white'
+                            onError={(e) => {
+                                e.target.style.display = 'none';
+                            }}
+                        />
                     </div>
                     <div className='col-md-4'>
-                        <img src='' alt='Patrocinador 5' className='sponsor-logo border border-danger rounded-3 p-2 bg-white' />
+                        <img 
+                            src="/placeholder-sponsor.png"
+                            alt='Patrocinador 5' 
+                            className='sponsor-logo border border-danger rounded-3 p-2 bg-white'
+                            onError={(e) => {
+                                e.target.style.display = 'none';
+                            }}
+                        />
                     </div>
                     <div className='col-md-4'>
-                        <img src='' alt='Patrocinador 6' className='sponsor-logo border border-danger rounded-3 p-2 bg-white' />
+                        <img 
+                            src="/placeholder-sponsor.png"
+                            alt='Patrocinador 6' 
+                            className='sponsor-logo border border-danger rounded-3 p-2 bg-white'
+                            onError={(e) => {
+                                e.target.style.display = 'none';
+                            }}
+                        />
                     </div>
                 </div>
             </div>

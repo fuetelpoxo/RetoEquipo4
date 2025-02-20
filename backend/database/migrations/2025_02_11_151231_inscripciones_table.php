@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
              //Campos de la tabla/
              $table->longText('comentarios');
-             $table->enum('estado', ['pendiente', 'aprobada', 'rechazada']);
+             $table->enum('estado', ['pendiente', 'aprobada', 'rechazada'])->nullable();
              $table->foreignId('equipo_id')->constrained('equipos')->onDelete('cascade');
             //Campos de auditoría /
             $table->foreignId('usuarioIdCreacion')->nullable()->constrained('users'); // Relación con la tabla de usuarios

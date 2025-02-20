@@ -27,7 +27,7 @@ export const deleteUser = async (userId) => {
 
 export const updateUser = async (userId, userData) => {
   try {
-    console.log('Actualizando usuario:', userId, userData);
+    
 
     // Si el email no ha cambiado, lo eliminamos de los datos a actualizar
     const currentUser = await fetch(`/api/users/${userId}`).then(res => res.json());
@@ -57,24 +57,24 @@ export const updateUser = async (userId, userData) => {
   }
 };
 
-export  const addUser = async (userData) => {
+export const addUser = async (userData) => {
   try {
     const response = await fetch("/api/users", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       body: JSON.stringify(userData),
     });
 
-    // Si la respuesta no es ok, lanzamos un error
     if (!response.ok) {
-      throw new Error('Error al agregar el usuario');
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Error al agregar el usuario');
     }
 
-    // Devuelve la respuesta como JSON
-    const newUser = await response.json(); // Lee y convierte la respuesta en JSON directamente
-    return newUser;
+    const data = await response.json();
+    return { user: data.data }; // Modificamos para devolver el formato esperado
   } catch (err) {
     console.error("Error al agregar el usuario:", err.message);
     throw new Error(`Error al agregar el usuario: ${err.message}`);

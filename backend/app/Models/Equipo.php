@@ -7,17 +7,17 @@ use Illuminate\Support\Facades\Auth;
 
 /**
  * @OA\Schema(
- *     schema="Equipo",
- *     required={"nombre", "centro_id", "grupo"},
- *     @OA\Property(property="id", type="integer", description="ID del equipo"),
- *     @OA\Property(property="nombre", type="string", description="Nombre del equipo"),
- *     @OA\Property(property="centro_id", type="integer", description="ID del centro al que pertenece el equipo"),
- *     @OA\Property(property="grupo", type="string", description="Grupo al que pertenece el equipo"),
- *     @OA\Property(property="usuarioIdCreacion", type="integer", description="ID del usuario que creó el equipo"),
- *     @OA\Property(property="fechaCreacion", type="string", format="date-time", description="Fecha de creación del equipo"),
- *     @OA\Property(property="usuarioIdActualizacion", type="integer", description="ID del usuario que actualizó el equipo"),
- *     @OA\Property(property="fechaActualizacion", type="string", format="date-time", description="Fecha de actualización del equipo")
- * )
+ *  schema="equipos",
+ *  type="object",
+ *  title="equipos",
+ * @OA\Property(property="nombre", type="string", example="Equipo 1"),
+ * @OA\Property(property="centro_id", type="integer", example="1"),
+ * @OA\Property(property="grupo", type="string", example="A"),
+ * @OA\Property(property="usuarioIdCreacion", type="integer", example="1"),
+ * @OA\Property(property="fechaCreacion", type="timestamp", example="2022-02-11 15:12:24"),
+ * @OA\Property(property="usuarioIdActualizacion", type="integer", example="1"),
+ * @OA\Property(property="fechaActualizacion", type="timestamp", example="2022-02-11 15:12:24")
+ *  )
  */
 class Equipo extends Model
 {

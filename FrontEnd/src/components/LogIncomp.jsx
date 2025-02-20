@@ -1,24 +1,31 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { verifyUser } from '../core/loginUsers';
 import { useAuth } from '../context/UserContext';
+import { getUsers } from '../models/UserModel';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const user = verifyUser(username, password);
+    try {
+      const users = await getUsers();
+      const user = users.find(u => u.email === email);
 
-    if (user) {
-      login(user);
-      navigate('/'); // Redirigimos al inicio
-    } else {
-      setError("Usuario o contraseña incorrectos.");
+      if (user) {
+        // Aquí harías la verificación de la contraseña con el backend
+        // Por ahora solo verificamos que el usuario existe
+        login(user);
+        navigate('/');
+      } else {
+        setError("Usuario o contraseña incorrectos.");
+      }
+    } catch (err) {
+      setError("Error al intentar iniciar sesión");
     }
   };
 
@@ -28,14 +35,14 @@ const Login = () => {
         <h2 className="text-center mb-4 text-white fw-bold">Iniciar Sesión</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="username" className="form-label text-white">Nombre de Usuario</label>
+            <label htmlFor="email" className="form-label text-white">Email</label>
             <input
-              type="text"
-              id="username"
+              type="email"
+              id="email"
               className="form-control bg-dark text-white"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Introduce tu usuario"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="ejemplo@gmail.com"
               required
             />
           </div>
@@ -53,7 +60,9 @@ const Login = () => {
             />
           </div>
 
-          <button type="submit" className="btn btn-danger w-100 fw-bold">Iniciar Sesión</button>
+          <button type="submit" className="btn btn-danger w-100 fw-bold">
+            Iniciar Sesión
+          </button>
         </form>
 
         {error && <div className="text-danger mt-3">{error}</div>}

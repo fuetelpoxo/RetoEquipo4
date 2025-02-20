@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('equipos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('centro_id')->constrained('centros'); // Relación con centros
+            $table->foreignId('centro_id')->nullable()->constrained('centros'); // Relación con centros
             $table->string('nombre', 100);
-            $table->string('grupo', 50);
+            $table->enum('grupo', ['A', 'B'])->nullable();
             $table->foreignId('usuarioIdCreacion')->nullable()->constrained('users'); // Relación con la tabla de usuarios
             $table->timestamp('fechaCreacion')->nullable()->useCurrent();
             $table->foreignId('usuarioIdActualizacion')->nullable()->constrained('users'); // Relación con la tabla de usuarios

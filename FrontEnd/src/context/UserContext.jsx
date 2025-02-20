@@ -1,23 +1,40 @@
 // src/context/UserContext.jsx
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
-// Creamos el contexto de autenticación
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
-// Proveedor del contexto
 export const AuthProvider = ({ children }) => {
-  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [loggedInUser, setLoggedInUser] = useState(() => {
+    // Recuperar usuario del localStorage al iniciar
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
 
-  const login = (user) => {
-    setLoggedInUser(user); // Guardamos al usuario en el estado, sin persistir en el localStorage
+  const login = (userData) => {
+    setLoggedInUser(userData);
+    // Guardar en localStorage
+    localStorage.setItem('user', JSON.stringify(userData));
   };
 
+  const logout = () => {
+    setLoggedInUser(null);
+    // Limpiar localStorage
+    localStorage.removeItem('user');
+  };
+
+
+
   return (
-    <AuthContext.Provider value={{ loggedInUser, login }}>
+    <AuthContext.Provider value={{ loggedInUser, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Hook para usar el contexto de autenticación
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth debe ser usado dentro de un AuthProvider');
+  }
+  return context;
+};

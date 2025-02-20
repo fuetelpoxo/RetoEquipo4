@@ -17,20 +17,20 @@ class JugadorResource extends JsonResource
         return [
             "id"=> $this->id,
             "equipo_id"=> $this->equipo_id,
+            'equipo'=> new EquipoResource($this->whenLoaded('equipo')),
             "nombre"=> $this->nombre,
             "apellido1"=> $this->apellido1,
             "apellido2"=> $this->apellido2,
             "tipo"=> $this->tipo,
             "estudio_id"=> $this->estudio_id,
+            'estudio'=> new EstudioResource($this->whenLoaded('estudio')),
             "dni"=> $this->dni,
             "email"=> $this->email,
             "telefono"=> $this->telefono,
             'usuarioIdCreacion' => $this->usuarioIdCreacion,
             'fechaCreacion' => $this->fechaCreacion,
             'usuarioIdActualizacion' => $this->usuarioIdActualizacion,
-            'fechaActualizacion' => $this->fechaActualizacion,
-            'equipo'=> new EquipoResource($this->whenLoaded('equipo')),
-            'estudio'=> new EstudioResource($this->whenLoaded('estudio')),
+            'fechaActualizacion' => $this->fechaActualizacion
         ];
     }
 }

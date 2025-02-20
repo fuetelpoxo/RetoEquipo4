@@ -1,12 +1,28 @@
+// Cache para equipos
+let equiposCache = null;
+let lastFetchEquipos = 0;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
+
+// Función optimizada para obtener equipos
+const getEquiposCache = async () => {
+  const now = Date.now();
+  if (equiposCache && (now - lastFetchEquipos < CACHE_DURATION)) {
+    return equiposCache;
+  }
+
+  const response = await fetch("/api/equipos");
+  if (!response.ok) throw new Error("Error al obtener equipos");
+  const data = await response.json();
+  equiposCache = data.data;
+  lastFetchEquipos = now;
+  return equiposCache;
+};
+
 // Función para obtener el nombre del equipo
 export const getEquipoById = async (equipoId) => {
   try {
-    const response = await fetch(`/api/equipos/${equipoId}`);
-    if (!response.ok) {
-      throw new Error("Error al obtener el equipo");
-    }
-    const data = await response.json();
-    return data.data;
+    const equipos = await getEquiposCache();
+    return equipos.find(e => e.id === equipoId) || null;
   } catch (err) {
     console.error("Error al obtener el equipo:", err);
     return null;
@@ -15,48 +31,22 @@ export const getEquipoById = async (equipoId) => {
 
 export const getJugadores = async () => {
   try {
-    const response = await fetch("/api/jugadores");
-    if (!response.ok) {
+    const [jugadoresResponse, equiposResponse] = await Promise.all([
+      fetch("/api/jugadores"),
+      getEquiposCache()
+    ]);
+
+    if (!jugadoresResponse.ok) {
       throw new Error("Error en la respuesta de la API");
     }
-    const data = await response.json();
-    const jugadores = data.data;
 
-    // Obtener el nombre del equipo para cada jugador
-    const jugadoresConEquipo = await Promise.all(
-      jugadores.map(async (jugador) => {
-        if (jugador.equipo_id) {
-          try {
-            const equipoResponse = await fetch(`/api/equipos/${jugador.equipo_id}`);
-            if (equipoResponse.ok) {
-              const equipoData = await equipoResponse.json();
-              return {
-                ...jugador,
-                nombreEquipo: equipoData.data.nombre || 'Sin nombre'
-              };
-            }
-          } catch (error) {
-            console.error(`Error al obtener equipo ${jugador.equipo_id}:`, error);
-          }
-        }
-        return {
-          ...jugador,
-          nombreEquipo: 'Sin equipo'
-        };
-      })
-    );
-
-    // Ordenar primero por equipo y luego por nombre
-    return jugadoresConEquipo.sort((a, b) => {
-      if (a.equipo_id && b.equipo_id) {
-        const equipoComparison = a.nombreEquipo.localeCompare(b.nombreEquipo);
-        if (equipoComparison !== 0) return equipoComparison;
-        return a.nombre.localeCompare(b.nombre);
-      }
-      if (!a.equipo_id) return 1;
-      if (!b.equipo_id) return -1;
-      return 0;
-    });
+    const jugadoresData = await jugadoresResponse.json();
+    
+    // Procesar jugadores con nombres de equipo en una sola iteración
+    return jugadoresData.data.map(jugador => ({
+      ...jugador,
+      nombreEquipo: equiposResponse.find(e => e.id === jugador.equipo_id)?.nombre || 'Sin equipo'
+    }));
   } catch (err) {
     throw new Error("Error al obtener los jugadores: " + err.message);
   }
@@ -79,7 +69,12 @@ export const addJugador = async (jugadorData) => {
     }
 
     const data = await response.json();
-    return data.data;
+    const equipo = await getEquipoById(jugadorData.equipo_id);
+    
+    return {
+      ...data.data,
+      nombreEquipo: equipo?.nombre || 'Sin equipo'
+    };
   } catch (err) {
     throw new Error(`Error al agregar el jugador: ${err.message}`);
   }
@@ -87,7 +82,6 @@ export const addJugador = async (jugadorData) => {
 
 export const updateJugador = async (jugadorId, jugadorData) => {
   try {
-    // Si el email no ha cambiado, lo eliminamos
     if (jugadorData.email === undefined || jugadorData.email === '') {
       delete jugadorData.email;
     }
@@ -107,7 +101,12 @@ export const updateJugador = async (jugadorId, jugadorData) => {
     }
 
     const data = await response.json();
-    return data.data;
+    const equipo = await getEquipoById(jugadorData.equipo_id);
+
+    return {
+      ...data.data,
+      nombreEquipo: equipo?.nombre || 'Sin equipo'
+    };
   } catch (err) {
     console.error('Error en updateJugador:', err);
     throw err;
@@ -132,12 +131,7 @@ export const deleteJugador = async (jugadorId) => {
 
 export const getEquiposSelect = async () => {
   try {
-    const response = await fetch("/api/equipos");
-    if (!response.ok) {
-      throw new Error("Error al obtener los equipos");
-    }
-    const data = await response.json();
-    return data.data;
+    return await getEquiposCache();
   } catch (err) {
     throw new Error("Error al obtener los equipos: " + err.message);
   }

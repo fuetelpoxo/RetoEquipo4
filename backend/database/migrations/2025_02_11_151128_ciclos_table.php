@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('ciclos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre',255);
-            $table->foreignId('familia_id')->constrained('familias')->onDelete('cascade');
+            $table->foreignId('familia_id')->nullable()->constrained('familias')->onDelete('cascade');
             $table->timestamps();
         });
     }
