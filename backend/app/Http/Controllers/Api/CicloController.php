@@ -30,7 +30,7 @@ class CicloController extends Controller
      */
     public function index()
     {
-        $ciclo = Ciclo::all();
+        $ciclo = Ciclo::with('familia')->get();
         return CicloResource::collection($ciclo);
     }
 
@@ -93,7 +93,7 @@ class CicloController extends Controller
      *  description="Ciclo encontrado",
      *  @OA\JsonContent(ref="#/components/schemas/ciclos")
      *  )
-     * ) 
+     * )
      */
     public function show($id)
     {
@@ -175,7 +175,7 @@ class CicloController extends Controller
      *  response=200,
      *  description="Ciclo eliminado con éxito"
      * )
-     * )    
+     * )
      */
     public function destroy($id)
     {

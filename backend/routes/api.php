@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\ActaController;
 use App\Http\Controllers\Api\ImagenController;
 use App\Http\Controllers\Api\PublicacionController;
 use App\Http\Controllers\Api\CicloController;
+use App\Http\Controllers\Api\OngController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -40,3 +41,5 @@ Route::apiResource('imagenes', ImagenController::class);
 Route::apiResource('publicaciones', PublicacionController::class);
 
 Route::apiResource('ciclos', CicloController::class);
+
+Route::apiResource('ongs', OngController::class);

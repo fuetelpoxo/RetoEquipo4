@@ -25,11 +25,12 @@ class EquipoController extends Controller
      *  description="Equipos obtenidos",
      *  @OA\JsonContent(ref="#/components/schemas/equipos")
      * )
-     * )    
+     * )
+     * )
      */
     public function index()
     {
-        $equipo = Equipo::all();
+        $equipo = Equipo::with('centro')->get();
         return EquipoResource::collection($equipo);
 
     }
@@ -142,15 +143,22 @@ class EquipoController extends Controller
      * )
      */
     public function update(UpdateEquipoRequest $request, $id)
-    {
-        $equipo = Equipo::find($id);
-        if (!$equipo) {
-            return response()->json(['error' => 'Equipo no encontrado'], 404);
-        }
-        $datos = $request->validated();
-        $equipo->update($datos);
-        return response()->json(['message' => 'Equipo actualizado correctamente', 'data' => $equipo]);
+{
+    $equipo = Equipo::with('centro')->find($id);
+    if (!$equipo) {
+        return response()->json(['error' => 'Equipo no encontrado'], 404);
     }
+
+    $datos = $request->validated();
+    $equipo->update($datos);
+
+    // Usar EquipoResource para formatear la respuesta
+    return response()->json([
+        'message' => 'Equipo actualizado correctamente',
+        'data' => new EquipoResource($equipo),
+    ]);
+}
+
 
    /**
     * @OA\Delete(

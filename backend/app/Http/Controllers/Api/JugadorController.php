@@ -33,7 +33,7 @@ class JugadorController extends Controller
      */
     public function index()
     {
-        $jugadores = Jugador::all();
+        $jugadores = Jugador::with(['equipo', 'estudio'])->get();
         return JugadorResource::collection($jugadores);
     }
     /**

@@ -1828,7 +1828,7 @@
                                     },
                                     "hora": {
                                         "type": "string",
-                                        "example": "10:00:00"
+                                        "example": "10:00"
                                     },
                                     "golesL": {
                                         "type": "integer",
@@ -1948,7 +1948,7 @@
                                     },
                                     "hora": {
                                         "type": "string",
-                                        "example": "10:00:00"
+                                        "example": "10:00"
                                     },
                                     "golesL": {
                                         "type": "integer",
@@ -2259,15 +2259,15 @@
                                     },
                                     "portada": {
                                         "type": "string",
-                                        "example": "Portada de la publicación"
+                                        "example": "1"
                                     },
                                     "rutavideo": {
                                         "type": "string",
-                                        "example": "Ruta del video de la publicación"
+                                        "example": "https://www.example.com/video.mp4"
                                     },
                                     "rutaaudio": {
                                         "type": "string",
-                                        "example": "Ruta del audio de la publicación"
+                                        "example": "https://www.example.com/audio.mp3"
                                     },
                                     "equipo_id": {
                                         "type": "integer",
@@ -2408,11 +2408,11 @@
                                     },
                                     "rutavideo": {
                                         "type": "string",
-                                        "example": "Ruta del video de la publicación"
+                                        "example": "https://www.example.com/video.mp4"
                                     },
                                     "rutaaudio": {
                                         "type": "string",
-                                        "example": "Ruta del audio de la publicación"
+                                        "example": "https://www.example.com/audio.mp3"
                                     },
                                     "equipo_id": {
                                         "type": "integer",

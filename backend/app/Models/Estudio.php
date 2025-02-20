@@ -44,5 +44,11 @@ class Estudio extends Model
     {
         return $this->hasMany(Jugador::class, 'estudio_id');
     }
-    
+
+    // Relación con Ciclo (un estudio pertenece a un ciclo)
+    public function ciclo()
+    {
+        return $this->belongsTo(Ciclo::class, 'ciclo_id');
+    }
+
 }

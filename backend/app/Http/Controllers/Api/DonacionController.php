@@ -29,10 +29,9 @@ class DonacionController extends Controller
      * )
      * )
      */
-  
     public function index()
     {
-        $donaciones = Donacion::all();
+        $donaciones = Donacion::with('ong')->get();
         return DonacionResource::collection($donaciones);
     }
     /**
@@ -74,7 +73,6 @@ class DonacionController extends Controller
             'donacion' => new DonacionResource($donacion)
         ], 201);
     }
-    
 /**
      * @OA\Get(
      *  path="/api/donaciones/{id}",

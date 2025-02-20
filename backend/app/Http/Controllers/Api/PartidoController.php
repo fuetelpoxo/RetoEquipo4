@@ -55,7 +55,7 @@ class PartidoController extends Controller
      * @OA\Property(property="equipoL_id", type="integer", example="1"),
      * @OA\Property(property="equipoV_id", type="integer", example="2"),
      * @OA\Property(property="fecha", type="string", example="2021-10-10"),
-     * @OA\Property(property="hora", type="string", example="10:00:00"),
+     * @OA\Property(property="hora", type="string", example="10:00"),
      * @OA\Property(property="golesL", type="integer", example="2"),
      * @OA\Property(property="golesV", type="integer", example="1"),
      * @OA\Property(property="pabellon_id", type="integer", example="1")
@@ -73,14 +73,16 @@ class PartidoController extends Controller
      * )
      */
     public function store(StorePartidoRequest $request)
-    {
-        $partidos = Partido::create($request->validated());
-        $partidos->load('equipoLocal','equipoVisitante', 'pabellon');
-        return response()->json([
-            'message' => 'Partido creado con éxito',
-            'data' => new PartidoResource($partidos)
-        ], 201);
-    }
+{
+    $partido = Partido::create($request->validated());
+    $partido->load('equipoLocal', 'equipoVisitante', 'pabellon');
+    return response()->json([
+        'message' => 'Partido creado con éxito',
+        'data' => new PartidoResource($partido)
+    ], 201);
+}
+
+
 
     /**
      * Display the specified resource.
@@ -149,7 +151,7 @@ class PartidoController extends Controller
      * @OA\Property(property="equipoL_id", type="integer", example="1"),
      * @OA\Property(property="equipoV_id", type="integer", example="2"),
      * @OA\Property(property="fecha", type="string", example="2021-10-10"),
-     * @OA\Property(property="hora", type="string", example="10:00:00"),
+     * @OA\Property(property="hora", type="string", example="10:00"),
      * @OA\Property(property="golesL", type="integer", example="2"),
      * @OA\Property(property="golesV", type="integer", example="1"),
      * @OA\Property(property="pabellon_id", type="integer", example="1")

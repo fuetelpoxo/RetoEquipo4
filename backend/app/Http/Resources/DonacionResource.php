@@ -12,11 +12,11 @@ class DonacionResource extends JsonResource
             'id' => $this->id,
             'kilos' => $this->kilos,
             'importe' => $this->importe,
+            'ong' => new OngResource($this->whenLoaded('ong')),
             'usuarioIdCreacion' => $this->usuarioIdCreacion,
             'fechaCreacion' => $this->fechaCreacion,
             'usuarioIdActualizacion' => $this->usuarioIdActualizacion,
-            'fechaActualizacion' => $this->fechaActualizacion,
-            'ong' => new OngResource($this->whenLoaded('ong_id')), // Incluir la relación con la ONG
+            'fechaActualizacion' => $this->fechaActualizacion
         ];
     }
 }

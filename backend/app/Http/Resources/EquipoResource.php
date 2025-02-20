@@ -18,17 +18,19 @@ class EquipoResource extends JsonResource
             'id' => $this->id,
             'nombre' => $this->nombre,
             'grupo' => $this->grupo,
-            'centro_id' => new CentroResource($this->whenLoaded('centro')), // Centro al que pertenece el equipo
-            'jugadores' => JugadorResource::collection($this->whenLoaded('jugadores')), // Lista de jugadores
-            'inscripciones' => InscripcionResource::collection($this->whenLoaded('inscripciones')), // Lista de inscripciones
-            'partidos' => PartidoResource::collection($this->whenLoaded('partidos')), // Lista de partidos
-            'patrocinadores' => PatrocinadorEquipoResource::collection($this->whenLoaded('patrocinadores')), // Lista de patrocinadores
-            'publicaciones' => PublicacionResource::collection($this->whenLoaded('publicaciones')), // Lista de publicaciones
-            'imagenes' => ImagenResource::collection($this->whenLoaded('imagenes')), // Lista de imágenes
+            'centro_id' => $this->centro_id, // Primero 'centro_id'
+            'centro' => new CentroResource($this->whenLoaded('centro')), // Luego 'centro' como relación
+            'jugadores' => JugadorResource::collection($this->whenLoaded('jugadores')),
+            'inscripciones' => InscripcionResource::collection($this->whenLoaded('inscripciones')),
+            'partidos' => PartidoResource::collection($this->whenLoaded('partidos')),
+            'patrocinadores' => PatrocinadorEquipoResource::collection($this->whenLoaded('patrocinadores')),
+            'publicaciones' => PublicacionResource::collection($this->whenLoaded('publicaciones')),
+            'imagenes' => ImagenResource::collection($this->whenLoaded('imagenes')),
             'usuarioIdCreacion' => $this->usuarioIdCreacion,
             'fechaCreacion' => $this->fechaCreacion,
             'usuarioIdActualizacion' => $this->usuarioIdActualizacion,
             'fechaActualizacion' => $this->fechaActualizacion,
         ];
     }
+
 }
