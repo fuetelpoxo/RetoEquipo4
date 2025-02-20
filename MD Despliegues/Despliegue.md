@@ -22,26 +22,26 @@
 # Introducción
 
 
-A lo largo de esta guía de despliegue vamos a explicar como montar un servidor en AWS para poder subir nuestra página web, siguiendo todos los pasos y explicándolos para que se vea de forma correcta el proceso que hemos seguido para poder lanzar nuestra aplicaión en AWS.
+A lo largo de esta guía de despliegue vamos a explicar cómo montar un servidor en AWS para poder subir nuestra página web, siguiendo todos los pasos y explicándolos para que se vea de forma correcta el proceso que hemos seguido para poder lanzar nuestra aplicación en AWS.
 
 
 
 ## *Creación de una VPC*
 
-El primer paso que vamos a llevar a cabo es el de crear una VPC (Virtual private Cloud), esto es una red privada dentro de AWS donde podremos desplegar nuestras instancias y recursos, la cual también nos permitirá definir subredes, grupos de seguridad y configuraciones de red personalizadas. A continuación, mostraremos la creación de la VPC con las especificaciones necesarias:
+El primer paso que vamos a llevar a cabo es el de crear una VPC (Virtual Private Cloud), esto es una red privada dentro de AWS donde podremos desplegar nuestras instancias y recursos, la cual también nos permitirá definir subredes, grupos de seguridad y configuraciones de red personalizadas. A continuación, mostraremos la creación de la VPC con las especificaciones necesarias:
 
 La VPC lleva el nombre "Equipo4RETO" que hace referencia al proyecto que llevamos a cabo. Por otra parte le asignamos un Bloque de CIDR (Classless Inter-Domain Routing) IPv4 que nos permitirá asignar rangos en direcciones IP. En nuestro caso le asignamos "10.0.0.0/16" lo que significa que la VPC tendrá las direcciones disponibles desde "10.0.0.0 hasta 10.0.255.255".
 
 ![Configuracion-VPC](img/image-1.png)
 
-Marcamos una sola zona de disponibilidad las cuales son centros de datos dentro de una región de AWS. Nosotros hemos marcado la zona "ues-east-1a" que nos indica que los recursos se crearán en la primera zona de disponibilidad de la región a la que hace referencia (US East - North Virginia).
+Marcamos una sola zona de disponibilidad, las cuales son centros de datos dentro de una región de AWS. Nosotros hemos marcado la zona "us-east-1a" que nos indica que los recursos se crearán en la primera zona de disponibilidad de la región a la que hace referencia (US East - North Virginia).
 
 Como podemos ver asignamos una subred pública y otra privada dentro del bloque CIDR de subredes. La red pública será "10.0.0.0/24" (de la 10.0.0.0 a la 10.0.0.255) y la red privada será "10.0.1.0/24" (de la 10.0.1.0 a la 10.0.1.255), lo que significa que tendrán 256 direcciones IP disponibles cada una. 
  
 
 ![Configuracion-VPC](img/image-2.png)
 
-En los puntos de enlace de a VPC marcamos la opción "Ninguna", porque si marcamos la opción "Gateway de S3" en el mapa de recursos nos aparecerá otra red que se conecta a la subred privada y nos dará problemas a la hora de que la MV que crearemos se pueda conectar a la red.
+En los puntos de enlace de la VPC marcamos la opción "Ninguna", porque si marcamos la opción "Gateway de S3" en el mapa de recursos nos aparecerá otra red que se conecta a la subred privada y nos dará problemas a la hora de que la MV que crearemos se pueda conectar a la red.
 
 ![Configuracion-VPC](img/image-14.png)
 
@@ -65,13 +65,13 @@ Este es el mensaje que nos indica que se ha creado correctamente. En la imagen p
 
 ## *Grupos de seguridad*
 
-Los grupos de seguridad en AWS actúan como un firewall para controlar que tráfico puede entrar o salir de una instancia EC2.
+Los grupos de seguridad en AWS actúan como un firewall para controlar qué tráfico puede entrar o salir de una instancia EC2.
 
 El nombre elegido para el grupo de seguridad es "grupo-seguridad-web-Equipo4RETO". Este grupo de seguridad le utilizaremos para habilitar los puertos web y le asignamos a la VPC creada anteriormente.
 
 ![Configuracion-grupoSeguridad](img/image-5.png)
 
-Creamos dos reglas de entrada. la primera es para permitir el tráfico HTTP, actuará en el puerto 80 y marcamos en tipo de origen "Anywhere IPv4" (0.0.0.0/0) que significa que cualquier dispositivo de Internet puede acceder al servidor a través del puerto especificado, está regla la necesitaremos para servir páginas web. La segunda regla es para permitir el tráfico de SSH y actuará en puerto 22 y como en la anterior marcamos el mismo tipo de origen el cual servirá para lo mismo, en este caso la regla la utilizaremos para conectarnos a la instancia y administrarla.
+Creamos dos reglas de entrada. La primera es para permitir el tráfico HTTP, actuará en el puerto 80 y marcamos en tipo de origen "Anywhere IPv4" (0.0.0.0/0) que significa que cualquier dispositivo de Internet puede acceder al servidor a través del puerto especificado. Esta regla la necesitaremos para servir páginas web. La segunda regla es para permitir el tráfico de SSH y actuará en el puerto 22 y como en la anterior marcamos el mismo tipo de origen, el cual servirá para lo mismo. En este caso, la regla la utilizaremos para conectarnos a la instancia y administrarla.
 
 ![Configuracion-grupoSeguridad](img/image-6.png)
 
@@ -98,13 +98,13 @@ Como nombre le daremos "ServidorWebEquipo4RETO" y el Sistema operativo que utili
 
 ![Configuracion-EC2](img/image-15.png)
 
-EL tipo de instancia que vamoa a elegir es "T2.medium", la cual consta de 2 vCPUs (procesadores virtuales) y de 4GB de RAM. En el caso de que la aplicación fuese muy grande o si en un futuro crece demasiado habría que cambiar a una instancia más grande, es decir, que tenga mas capacidad.
+El tipo de instancia que vamos a elegir es "T2.medium", la cual consta de 2 vCPUs (procesadores virtuales) y de 4GB de RAM. En el caso de que la aplicación fuese muy grande o si en un futuro crece demasiado, habría que cambiar a una instancia más grande, es decir, que tenga más capacidad.
 
 Además elegiremos la opción de crear un par de claves vockey (pública y privada) que se usan para acceder por SSH a la instancia.
 
 ![Configuracion-EC2](img/image-9.png)
 
-Dentro de la configuración de red de la Máquina Virtual, le asignamos la vpc creada al principio y la subred pública "Equipo4RETO-subnet-public1-us-east-1a". La instancia creará esta subred dentro de la VPC y al ser pública  permitirá el acceso a internet.
+Dentro de la configuración de red de la Máquina Virtual, le asignamos la VPC creada al principio y la subred pública "Equipo4RETO-subnet-public1-us-east-1a". La instancia creará esta subred dentro de la VPC y al ser pública permitirá el acceso a internet.
 
 Habilitaremos la IP pública que se asignará a la instancia, lo que permitirá el acceso desde fuera de AWS (necesario para el servidor web y SSH).
 
@@ -178,7 +178,7 @@ Comprobamos que el servidor este funcionando correctamente utilizando `sudo syst
 
 ![Configuracion-Servidor](img/image-18.png)
 
-A través de la IP de la máquina virtual vemos en el buscador que nos muestra la web por defecto de apache, loq ue significa que se ha instalado correctamente. Esta página de muestra la cambiaremos más adelante para mostrar lo que nosotros queramos.
+A través de la IP de la máquina virtual vemos en el buscador que nos muestra la web por defecto de apache, lo que significa que se ha instalado correctamente. Esta página de muestra la cambiaremos más adelante para mostrar lo que nosotros queramos.
 
 ![Configuracion-Servidor](img/image-19.png)
 
@@ -194,7 +194,7 @@ Creamos el directorio mecionado anteriormente y nos aseguramos de que se ha crea
 
 ![Configuracion-Servidor](img/image-22.png)
 
-Cambiamos los permisos de propiedad del directorio y nos aseguramos de que se ha realizado correctamente utilizando el segundo comando `ls -ld /var/www/Equipo4`, que nos muestra los permisos y propiedades del directorio sin listar us contenido.
+Cambiamos los permisos de propiedad del directorio y nos aseguramos de que se ha realizado correctamente utilizando el segundo comando `ls -ld /var/www/Equipo4`, que nos muestra los permisos y propiedades del directorio sin listar su contenido.
 
 ![Configuracion-Servidor](img/image-23.png)
 
@@ -218,7 +218,7 @@ Y esta sería la salida, es decir, el contenido antes mostrado, reflejado en el 
 
 ![Configuracion-Servidor](img/image-29.png)
 
-El siguiente paso que vamos a seguir es la instalacion de ufw (Uncomplicated Firewall), es decir, vamos a instalar un firewall en nuestra EC2 a través del siguiente comando. Esto nos permitirá mejorar la seguridad de nuestro servidor, permitiendo solo el tráfico necesario y bloqueando el resto.
+El siguiente paso que vamos a seguir es la instalación de ufw (Uncomplicated Firewall), es decir, vamos a instalar un firewall en nuestra EC2 a través del siguiente comando. Esto nos permitirá mejorar la seguridad de nuestro servidor, permitiendo solo el tráfico necesario y bloqueando el resto.
 
 ![Configuracion-Servidor](img/image-31.png)
 
@@ -244,7 +244,7 @@ Utilizamos otra vez `sudo apt update` para asegurarnos que nuestro sistema tenga
 
 En este apartado, configuraremos un grupo de seguridad para controlar el acceso entre un servidor web y una base de datos que se encuentra en Amazon RDS.
 
-EL nombre que le otorgamos al grupo de seguridad es "grupoSeguridadBDEquipo4". Este lo vamos a utilizar para permitir el acceso a la base de datos y le asignamos la VPC con la que llevamos trabajando desde el principio de la guía.
+El nombre que le otorgamos al grupo de seguridad es "grupoSeguridadBDEquipo4". Este lo vamos a utilizar para permitir el acceso a la base de datos y le asignamos la VPC con la que llevamos trabajando desde el principio de la guía.
 
 ![Configuracion-GrupoSeguridadBD](img/image-37.png)
 
@@ -321,7 +321,7 @@ Como podemos ver le asignamos a la VPC "Equipo4RETO" como siempre, ya que es la 
 
 ![Configuracion-SubredBD](img/image-44.png)
 
-En el apartado de zonas de disponibilidad elegimos las 2 primeras que nos aparecen que son "us-east-1a" y "us-east-1b". Las subredes que utilizaremos son las dos privadas con las que contamos que utilizan los rangos  de CIDR "10.0.1.0/24" y "10.0.3.0/24".
+En el apartado de zonas de disponibilidad elegimos las 2 primeras que nos aparecen, que son "us-east-1a" y "us-east-1b". Las subredes que utilizaremos son las dos privadas con las que contamos, que utilizan los rangos de CIDR "10.0.1.0/24" y "10.0.3.0/24".
 
 ![Configuracion-SubredBD](img/image-46.png)
 
@@ -393,7 +393,7 @@ La siguiente configuración que aparece no la tocaremos.
 
 ## *Conexión de la Base de Datos*
 
-- Una vez creada la base de datos vamos a ir a la vpc creada y cambiamos las reglas de entrada para qe permita la entrada desde cualquier IPv4 (AnywhereIPv4).
+- Una vez creada la base de datos vamos a ir a la VPC creada y cambiamos las reglas de entrada para que permita la entrada desde cualquier IPv4 (AnywhereIPv4).
 
 ![Conexion-BD](img/image-67.png)
 
