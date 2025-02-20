@@ -14,16 +14,6 @@ class PatrocinadorEquipoResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-            'id' => $this->id,
-            'equipo' => new EquipoResource($this->whenLoaded('equipo')),
-            'patrocinador' => new PatrocinadorResource($this->whenLoaded('patrocinador')),
-            'usuarioIdCreacion' => $this->usuarioIdCreacion,
-            'fechaCreacion' => $this->fechaCreacion,
-            'usuarioIdActualizacion' => $this->usuarioIdActualizacion,
-            'fechaActualizacion' => $this->fechaActualizacion,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-        ];
+        return parent::toArray($request);
     }
 }

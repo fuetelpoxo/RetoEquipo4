@@ -24,7 +24,7 @@ class UpdateEquipoRequest extends FormRequest
         return [
             'nombre'=> 'nullable|string|max:255',
             'centro_id'=> 'nullable|integer|exists:centros,id',
-            'grupo'=> 'nullable|string|max:1'
+            'grupo'=> 'nullable|in:A,B'
         ];
     }
 }

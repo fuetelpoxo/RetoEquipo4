@@ -15,6 +15,10 @@ function EquiposPublic() {
                 setLoading(true);
                 const equiposData = await getEquipos();
                 console.log('Equipos cargados:', equiposData);
+                // Log the structure of the first team's center
+                if (equiposData.length > 0) {
+                    console.log('Centro del primer equipo:', equiposData[0].centro);
+                }
                 setEquipos(equiposData);
             } catch (err) {
                 console.error('Error al cargar equipos:', err);
@@ -63,7 +67,7 @@ function EquiposPublic() {
                         {equipos.map((equipo) => (
                             <div key={equipo.id} className="col">
                                 <div className="card h-100 border-0 shadow-sm">
-                                    <div className="bg-danger text-white p-3">
+                                    <div className="bg-dark text-white p-3">
                                         <h3 className="card-title h4 text-center mb-0">
                                             {equipo.nombre}
                                         </h3>
@@ -82,10 +86,10 @@ function EquiposPublic() {
                                             />
                                         </div>
                                         <div className="mt-auto">
-                                            <span className="badge bg-dark px-3 py-2 fs-6 mb-3">
-                                                Grupo: {equipo.grupo || 'No asignado'}
+                                            <span className="badge bg-success-subtle text-success px-3 py-2 fs-6 mb-3">
+                                                Centro: {equipo.centro?.nombre || 'No asignado'}
                                             </span>
-                                            <button onClick={() => handleVerDetalles(equipo)} className="btn btn-danger w-100 mt-3">
+                                            <button onClick={() => handleVerDetalles(equipo)} className="btn btn-dark w-100 mt-3">
                                                 Ver Detalles
                                             </button>
                                         </div>

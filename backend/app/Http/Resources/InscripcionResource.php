@@ -15,16 +15,14 @@ class InscripcionResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'comentarios' => $this->comentarios,
-            'estado' => $this->estado,
-            'equipo' => new EquipoResource($this->whenLoaded('equipo')),
+            "id"=> $this->id,
+            "comentarios"=> $this->comentarios,
+            "estado"=> $this->estado,
             'usuarioIdCreacion' => $this->usuarioIdCreacion,
             'fechaCreacion' => $this->fechaCreacion,
             'usuarioIdActualizacion' => $this->usuarioIdActualizacion,
             'fechaActualizacion' => $this->fechaActualizacion,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            "equipo_id"=>new EquipoResource($this->whenLoaded('equipo'))
         ];
     }
 }

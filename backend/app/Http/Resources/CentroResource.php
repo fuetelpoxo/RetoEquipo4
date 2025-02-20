@@ -15,12 +15,8 @@ class CentroResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'nombre' => $this->nombre,
-            'equipos' => EquipoResource::collection($this->whenLoaded('equipos')),
-            'estudios' => EstudioResource::collection($this->whenLoaded('estudios')),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            "id"=> $this->id,
+            "nombre"=> $this->nombre
         ];
     }
 }

@@ -23,8 +23,22 @@ const Login = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh', backgroundColor: '#fff' }}>
-      <div className="card p-4 shadow-lg" style={{ width: '400px', backgroundColor: '#121212' }}>
+    <div className="d-flex justify-content-center align-items-center"
+      style={{
+        minHeight: '100vh',
+        width: '100%',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundImage: 'url(/Fondo1.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed'
+      }}>
+      <div className="card p-4 shadow-lg" style={{ width: '400px', backgroundColor: 'rgba(18, 18, 18, 0.9)' }}>
         <h2 className="text-center mb-4 text-white fw-bold">Iniciar Sesión</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">

@@ -15,11 +15,7 @@ class FamiliaResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'nombre' => $this->nombre,
-            'ciclos' => CicloResource::collection($this->whenLoaded('ciclos')),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'nombre' => $this->nombre
         ];
-    }
+        }
 }

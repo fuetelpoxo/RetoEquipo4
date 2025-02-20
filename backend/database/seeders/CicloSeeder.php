@@ -13,6 +13,8 @@ class CicloSeeder extends Seeder
      */
     public function run(): void
     {
+        
+        
         DB::table('ciclos')->insert([
             ['nombre' => 'Estética Integral y Bienestar', 'familia_id' => 1],
             ['nombre' => 'Sonido para audiovisuales y espectáculos', 'familia_id' => 2],

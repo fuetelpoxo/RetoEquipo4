@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('pabellones', function (Blueprint $table) {
             $table->id();
             $table->string('nombre',255);
-            $table->string('direccion',255);
+            $table->string('direccion',255)->nullable();
             $table->timestamps();
         });
     }
