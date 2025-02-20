@@ -423,4 +423,9 @@ Como vemos conecta correctamente.
 
 ![Conexión-BD](img/image-73.png)
 
+## *Mapa de recursos*
+
+Este sería el mapa de recursos final de nuestra vpc, donde se muestran todas las subredes y como se conectan con las tablas de enrutamiento y estas a su vez desembocan en la conexión de red.
+![MapaRecursos](img/image-75.png)
+
 
