@@ -22,7 +22,16 @@ class StorePatrocinadorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => 'required|string|max:255'
+            'nombre' => 'required|unique:patrocinadores,nombre|string|max:20'
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'nombre.required'=>'El nombre es obligatorio',
+            'nombre.unique'=>'El nombre del patrocinador ya se encuentra en nuestra base de datos',
+            'nombre.string'=>'El nombre debe ser una cadena de texto',
+            'nombre.max'=>'El nombre no puede exceder los 20 caracteres'
         ];
     }
 }

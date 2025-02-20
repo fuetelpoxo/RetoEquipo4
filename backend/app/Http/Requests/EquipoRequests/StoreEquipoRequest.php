@@ -22,9 +22,23 @@ class StoreEquipoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => 'required|string|max:255',
-            'centro_id' => 'required|exists:centros,id',
-            'grupo' => 'required|in:A,B'
+            'nombre' => 'required|string|unique:equipos,nombre|max:100', // Ajustado a 100 según la migración
+            'centro_id' => 'required|integer|exists:centros,id', // Añadido integer
+            'grupo' => 'required|in:A,B',
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'nombre.required' => 'El campo nombre es obligatorio.',
+            'nombre.string' => 'El campo nombre debe ser una cadena de texto.',
+            'nombre.max' => 'El campo nombre no debe exceder los 100 caracteres.',
+            'nombre.unique' => 'El nombre del equipo ya se encuentra en nuestra base de datos.',
+            'centro_id.required' => 'El campo centro es obligatorio.',
+            'centro_id.integer' => 'El campo centro debe ser un número entero.',
+            'centro_id.exists' => 'El centro seleccionado no existe.',
+            'grupo.required' => 'El campo grupo es obligatorio.',
+            'grupo.in' => 'El campo grupo debe ser A o B.',
         ];
     }
 }

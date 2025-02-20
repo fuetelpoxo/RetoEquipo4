@@ -29,39 +29,52 @@ class StorePublicacionRequest extends FormRequest
             'rutaaudio' => 'nullable|url', // rutaaudio es opcional, pero si está presente, debe ser una URL válida
 
             // Validación de las claves foráneas
-            'equipo_id' => 'required|exists:equipos,id',
-            'partido_id' => 'required|exists:partidos,id',
-            'patrocinador_id' => 'required|exists:patrocinadores,id',
-            'jugador_id' => 'required|exists:jugadores,id',
-            'reto_id' => 'required|exists:retos,id',
-            'ong_id' => 'required|exists:ongs,id',
-            'pabellon_id' => 'required|exists:pabellones,id',
+            'equipo_id' => 'nullable|integer|exists:equipos,id',
+            'partido_id' => 'nullable|integer|exists:partidos,id',
+            'patrocinador_id' => 'nullable|integer|exists:patrocinadores,id',
+            'jugador_id' => 'nullable|integer|exists:jugadores,id',
+            'reto_id' => 'nullable|integer|exists:retos,id',
+            'ong_id' => 'nullable|integer|exists:ongs,id',
+            'pabellon_id' => 'nullable|integer|exists:pabellones,id',
         ];
     }
     public function messages(): array
     {
         return [
             'titulo.required' => 'El título es obligatorio.',
-            'titulo.string' => 'El título debe ser una cadena de texto.',
-            'titulo.max' => 'El título no puede exceder los 255 caracteres.',
+            'titulo.string' => 'El título debe ser una cadena de caracteres.',
+            'titulo.max' => 'El título no puede tener más de 255 caracteres.',
+
             'texto.required' => 'El texto es obligatorio.',
-            'portada.boolean' => 'El valor de portada debe ser un valor booleano.',
-            'rutavideo.url' => 'La URL del video debe ser válida.',
-            'rutaaudio.url' => 'La URL del audio debe ser válida.',
-            'equipo_id.required' => 'El equipo es obligatorio.',
-            'equipo_id.exists' => 'El equipo seleccionado debe existir en la tabla de equipos.',
-            'partido_id.required' => 'El partido es obligatorio.',
-            'partido_id.exists' => 'El partido seleccionado debe existir en la tabla de partidos.',
-            'patrocinador_id.required' => 'El patrocinador es obligatorio.',
-            'patrocinador_id.exists' => 'El patrocinador seleccionado debe existir en la tabla de patrocinadores.',
-            'jugador_id.required' => 'El jugador es obligatorio.',
-            'jugador_id.exists' => 'El jugador seleccionado debe existir en la tabla de jugadores.',
-            'reto_id.required' => 'El reto es obligatorio.',
-            'reto_id.exists' => 'El reto seleccionado debe existir en la tabla de retos.',
-            'ong_id.required' => 'La ONG es obligatoria.',
-            'ong_id.exists' => 'La ONG seleccionada debe existir en la tabla de ONGs.',
-            'pabellon_id.required' => 'El pabellón es obligatorio.',
-            'pabellon_id.exists' => 'El pabellón seleccionado debe existir en la tabla de pabellones.',
+            'texto.string' => 'El texto debe ser una cadena de caracteres.',
+
+            'portada.boolean' => 'La portada debe ser un valor booleano (true o false).',
+
+            'rutavideo.url' => 'La URL del video no es válida.',
+
+            'rutaaudio.url' => 'La URL del audio no es válida.',
+
+            'equipo_id.integer' => 'El ID del equipo debe ser un número entero.',
+            'equipo_id.exists' => 'El equipo seleccionado no existe.',
+
+            'partido_id.integer' => 'El ID del partido debe ser un número entero.',
+            'partido_id.exists' => 'El partido seleccionado no existe.',
+
+            'patrocinador_id.integer' => 'El ID del patrocinador debe ser un número entero.',
+            'patrocinador_id.exists' => 'El patrocinador seleccionado no existe.',
+
+            'jugador_id.integer' => 'El ID del jugador debe ser un número entero.',
+            'jugador_id.exists' => 'El jugador seleccionado no existe.',
+
+            'reto_id.integer' => 'El ID del reto debe ser un número entero.',
+            'reto_id.exists' => 'El reto seleccionado no existe.',
+
+            'ong_id.integer' => 'El ID de la ONG debe ser un número entero.',
+            'ong_id.exists' => 'La ONG seleccionada no existe.',
+
+            'pabellon_id.integer' => 'El ID del pabellón debe ser un número entero.',
+            'pabellon_id.exists' => 'El pabellón seleccionado no existe.',
         ];
     }
+
 }

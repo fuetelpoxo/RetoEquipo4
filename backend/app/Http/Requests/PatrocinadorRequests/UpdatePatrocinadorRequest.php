@@ -22,7 +22,14 @@ class UpdatePatrocinadorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => 'required|string|max:255'
+            'nombre' => 'nullable|string|max:20'
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'nombre.string'=>'El nombre debe ser una cadena de texto',
+            'nombre.max'=>'El nombre no puede exceder los 20 caracteres'
         ];
     }
 }

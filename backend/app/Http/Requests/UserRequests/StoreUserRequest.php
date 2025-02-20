@@ -31,4 +31,27 @@ class StoreUserRequest extends FormRequest
             'perfil' => 'required|string|in:periodista,administrador,director,entrenador',  // validación para perfil
         ];
     }
+    public function messages()
+    {
+        return [
+            'name.required' => 'El nombre es obligatorio.',
+            'name.string' => 'El nombre debe ser una cadena de texto.',
+            'name.max' => 'El nombre no debe exceder los 255 caracteres.',
+
+            'email.required' => 'El correo electrónico es obligatorio.',
+            'email.email' => 'El correo electrónico debe ser válido.',
+            'email.unique' => 'Ya existe una cuenta registrada con ese correo electrónico.',
+
+            'password.required' => 'La contraseña es obligatoria.',
+            'password.string' => 'La contraseña debe ser una cadena de texto.',
+            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+
+            'activo.required' => 'El estado de activación es obligatorio.',
+            'activo.boolean' => 'El estado de activación debe ser un valor booleano (true o false).',
+
+            'perfil.required' => 'El perfil es obligatorio.',
+            'perfil.string' => 'El perfil debe ser una cadena de texto.',
+            'perfil.in' => 'El perfil debe ser uno de los siguientes: periodista, administrador, director, entrenador.',
+        ];
+    }
 }
