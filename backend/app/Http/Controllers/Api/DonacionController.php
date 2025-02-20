@@ -47,8 +47,8 @@ class DonacionController extends Controller
      * @OA\JsonContent(
      * required={"ong_id","kilos","importe"},
      * @OA\Property(property="ong_id", type="integer", example="1"),
-     * @OA\Property(property="kilos", type="integer", example="10"),
-     * @OA\Property(property="importe", type="integer", example="100")
+     * @OA\Property(property="kilos", type="integer", example="50.5"),
+     * @OA\Property(property="importe", type="integer", example="100.75")
      * )
      * ),
      * @OA\Response(
@@ -83,7 +83,7 @@ class DonacionController extends Controller
      *  @OA\Parameter(
      *     name="id",
      *      in="path",
-     *      description="Id del producto",
+     *      description="Id de la donación",
      *   required=true,
      *   @OA\Schema(type="integer",example="1")
      *  ),
@@ -126,8 +126,8 @@ class DonacionController extends Controller
      * @OA\JsonContent(
      * required={"ong_id","kilos","importe"},
      * @OA\Property(property="ong_id", type="integer", example="1"),
-     * @OA\Property(property="kilos", type="integer", example="10"),
-     * @OA\Property(property="importe", type="integer", example="100")
+     * @OA\Property(property="kilos", type="integer", example="50.5"),
+     * @OA\Property(property="importe", type="integer", example="100.75")
      * )
      * ),
      * @OA\Response(

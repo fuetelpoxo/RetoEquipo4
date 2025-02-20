@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\UserRequests;
 
+use App\Rules\EmailValidator;
+use App\Rules\StrongPasswordValidator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreUserRequest extends FormRequest
@@ -25,8 +27,8 @@ class StoreUserRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',  // Añadir validación para el campo 'name'
-            'email' => 'required|email|unique:users,email,' . $this->user,  // validación para email
-            'password' => 'required|string|min:8',  // validación para password
+            'email' => ['required', 'string', new EmailValidator()],
+            'password' => ['required', 'string', new StrongPasswordValidator()],
             'activo' => 'required|boolean',  // validación para activo
             'perfil' => 'required|string|in:periodista,administrador,director,entrenador',  // validación para perfil
         ];
@@ -40,7 +42,6 @@ class StoreUserRequest extends FormRequest
 
             'email.required' => 'El correo electrónico es obligatorio.',
             'email.email' => 'El correo electrónico debe ser válido.',
-            'email.unique' => 'Ya existe una cuenta registrada con ese correo electrónico.',
 
             'password.required' => 'La contraseña es obligatoria.',
             'password.string' => 'La contraseña debe ser una cadena de texto.',

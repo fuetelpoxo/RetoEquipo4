@@ -52,14 +52,14 @@ class JugadorController extends Controller
      * @OA\JsonContent(
      * required={"equipo_id","nombre","apellido1","apellido2","tipo","estudio_id","dni","email","telefono"},
      * @OA\Property(property="equipo_id", type="integer", example="1"),
-     * @OA\Property(property="nombre", type="string", example="Jugador 1"),
-     * @OA\Property(property="apellido1", type="string", example="Apellido 1"),
-     * @OA\Property(property="apellido2", type="string", example="Apellido 2"),
+     * @OA\Property(property="nombre", type="string", example="Carlos"),
+     * @OA\Property(property="apellido1", type="string", example="González"),
+     * @OA\Property(property="apellido2", type="string", example="Martínez"),
      * @OA\Property(property="tipo", type="string", example="jugador"),
      * @OA\Property(property="estudio_id", type="integer", example="1"),
-     * @OA\Property(property="dni", type="string", example="12345678A"),
-     * @OA\Property(property="email", type="string", example="jugador@example.com"),
-     * @OA\Property(property="telefono", type="string", example="123456789")
+     * @OA\Property(property="dni", type="string", example="72222290B"),
+     * @OA\Property(property="email", type="string", example="carlos.gonzalez@gmail.com"),
+     * @OA\Property(property="telefono", type="string", example="600123456")
      * )
      * ),
      * @OA\Response(
@@ -148,14 +148,14 @@ class JugadorController extends Controller
       * @OA\JsonContent(
       * required={"equipo_id","nombre","apellido1","apellido2","tipo","estudio_id","dni","email","telefono"},
       * @OA\Property(property="equipo_id", type="integer", example="1"),
-      * @OA\Property(property="nombre", type="string", example="Jugador 1"),
-      * @OA\Property(property="apellido1", type="string", example="Apellido 1"),
-      * @OA\Property(property="apellido2", type="string", example="Apellido 2"),
+      * @OA\Property(property="nombre", type="string", example="Carlos"),
+      * @OA\Property(property="apellido1", type="string", example="Gonzalez"),
+      * @OA\Property(property="apellido2", type="string", example="Martinez"),
       * @OA\Property(property="tipo", type="string", example="jugador"),
       * @OA\Property(property="estudio_id", type="integer", example="1"),
-      * @OA\Property(property="dni", type="string", example="12345678A"),
-      * @OA\Property(property="email", type="string", example="jugador@example.com"),
-      * @OA\Property(property="telefono", type="string", example="123456789")
+      * @OA\Property(property="dni", type="string", example="72222290B"),
+      * @OA\Property(property="email", type="string", example="carlos.gonzalez@gmail.com"),
+      * @OA\Property(property="telefono", type="string", example="600123456")
       * )
       * ),
       * @OA\Response(

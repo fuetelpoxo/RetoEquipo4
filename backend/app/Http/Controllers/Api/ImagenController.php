@@ -49,8 +49,8 @@ class ImagenController extends Controller
      * description="Datos de la imagen",
      * @OA\JsonContent(
      * required={"url","nombre","equipo_id","jugador_id","partido_id","patrocinador_id","reto_id","ong_id","publicacion_id","pabellon_id"},
-     * @OA\Property(property="url", type="string", example="https://www.ejemplo.com/imagen.jpg"),
-     * @OA\Property(property="nombre", type="string", example="Imagen 1"),
+     * @OA\Property(property="url", type="string", example="https://example.com/imagen.jpg"),
+     * @OA\Property(property="nombre", type="string", example="Imagen Prueba"),
      * @OA\Property(property="equipo_id", type="integer", example="1"),
      * @OA\Property(property="jugador_id", type="integer", example="1"),
      * @OA\Property(property="partido_id", type="integer", example="1"),

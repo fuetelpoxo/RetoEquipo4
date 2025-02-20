@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\UserRequests;
 
+use App\Rules\EmailValidator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateUserRequest extends FormRequest
@@ -25,7 +26,7 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name' => 'nullable|string|max:255',  // Añadir validación para el campo 'name'
-            'email' => 'nullable|email|unique:users,email,' . $this->user,  // validación para email
+            'email' => ['nullable', 'string', new EmailValidator()],
             'password' => 'nullable|string|min:8',  // validación para password
             'activo' => 'nullable|boolean',  // validación para activo
             'perfil' => 'nullable|string|in:periodista,administrador,director,entrenador',  // validación para perfil
