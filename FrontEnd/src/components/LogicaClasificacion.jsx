@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function ValoresClasificacion() {
+function LogicaClasificacion() {
     const [equipos, setEquipos] = useState({ tabla1: [], tabla2: [] });
     const [cargando, setCargando] = useState(true);
     const [mensaje, setMensaje] = useState("");
@@ -162,4 +162,4 @@ function ValoresClasificacion() {
     };
 }
 
-export default ValoresClasificacion;
+export default LogicaClasificacion;

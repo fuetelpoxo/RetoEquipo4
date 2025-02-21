@@ -1,10 +1,10 @@
 import React from 'react';
-import ValoresClasificacion from '../../components/ValoresClasificacion';
+import LogicaClasificacion from '../../components/LogicaClasificacion';
 import { useNavigate } from 'react-router-dom';
 
 function Clasificacion() {
     const navigate = useNavigate();
-    const { equipos, cargando, mensaje, ordenarEquipos } = ValoresClasificacion();
+    const { equipos, cargando, mensaje, ordenarEquipos } = LogicaClasificacion();
 
     const getColumnHeader = (title) => (
         <div className="col text-center">

@@ -1,6 +1,8 @@
+/*Titulo principal de la pagina*/
 h1 {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    font-size: 25px;
 }
 
 h5 {
@@ -8,39 +10,97 @@ h5 {
 
 }
 
-.nav-link-reglamento {
-    color: rgba(12, 1, 1, 0.836) !important;
-    font-size: 17px;
-    padding: 5px;
-    margin: 5px;
-    transition: transform 0.4s ease, color 0.4s ease !important;
-    border: 1px solid black;
+
+.accordion-body {
+    text-align: left !important;
+    padding: 1.5rem !important; /* Aumentado de 0.8rem a 1.5rem */
 }
 
-.nav-link-reglamento:hover {
-    color: rgb(253, 253, 253) !important;
-    transform: scale(0.9) !important;
+.accordion-body p {
+    text-align: left !important;
+    margin-bottom: 1.5rem;
 }
 
-.card {
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.726);
+.section-title {
+    text-align: left !important;
+    font-weight: bold;
+    margin-bottom: 1rem;
 }
 
-.titulo {
-    background-color: rgb(10, 116, 0);
-    color: rgb(255, 255, 255);
+.sub-section {
+    text-align: left !important;
+    margin-top: 1.5rem;
 }
 
-.fade-in {
-    animation: fadeIn 2s ease-in-out;
+.accordion-body strong {
+    display: block;
+    text-align: left !important;
+    margin-bottom: 0.5rem;
 }
 
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
+.accordion-button {
+    background-color: #4CAF50 !important;
+    color: white !important;
+    font-size: 20px !important;
+    padding: 1.5rem 2rem !important; /* Aumentado el padding */
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important; /* Aumentado el espacio entre la imagen y el texto */
+}
 
-    100% {
-        opacity: 1;
-    }
+.accordion-button img {
+    width: 28px !important; /* Aumentado de 24px a 28px */
+    height: 28px !important; /* Aumentado de 24px a 28px */
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #45a049 !important;
+    color: white !important;
+}
+
+/* Para mantener el color verde cuando está enfocado o con hover */
+.accordion-button:focus,
+.accordion-button:hover {
+    background-color: #45a049 !important;
+    color: white !important;
+    box-shadow: none !important;
+}
+
+/* Para cambiar el color del icono del acordeón */
+.accordion-button::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") !important;
+}
+
+.container {
+    max-width: 95% !important;
+    /* Reducido de 98% a 95% */
+    padding: 0 10px;
+}
+
+.accordion {
+    margin-bottom: 0.3rem;
+    width: 95%;
+    /* Reducido de 98% a 95% */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.row {
+    margin-right: -1px;
+    /* Reducido de -2px a -1px */
+    margin-left: -1px;
+    /* Reducido de -2px a -1px */
+    margin-bottom: 0.3rem !important;
+    /* Reducido de 0.5rem a 0.3rem */
+}
+
+.col-md-4 {
+    padding-right: 3px;
+    /* Aumentado de 2px a 3px */
+    padding-left: 3px;
+    /* Aumentado de 2px a 3px */
+}
+
+.accordion-body {
+    padding: 1.5rem !important; /* Aumentado de 0.8rem a 1.5rem */
 }

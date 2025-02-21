@@ -1,95 +1,96 @@
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import React from 'react';
+import LogicaFaseFinal from '../../components/LogicaFaseFinal';
 
 function FaseFinal() {
-    const location = useLocation();
-    const [equipos, setEquipos] = useState(null);
+    // Obtener datos y funciones de la lógica de la fase final
+    const { equipos, error, avanzarEquipo } = LogicaFaseFinal();
 
-    if (!equipos) return <p>Cargando equipos...</p>;
-
-    const renderEquipo = (equipo) => (equipo ? equipo.nombre : "TBC");
-
-    const renderResultado = (resultado) => {
-        return resultado ? resultado : "0 a 0 de momento";
-    };
+    // Mostrar mensaje de error si hay algún problema
+    if (error) return <div className="alert alert-danger text-center">{error}</div>;
+    // Mostrar mensaje si no hay datos disponibles
+    if (!equipos) return <div className="text-center">No hay datos disponibles</div>;
 
     return (
-        <>
-            <div className="container d-flex justify-content-center align-items-center" style={{ marginTop: '90px' }}>
-                <div className="w-100">
-                    <h1 className="text-center mb-4 text-danger">Fase Final</h1>
+        <div className="container mt-5">
+            <h2 className="text-center mb-4">Fase Final del Torneo</h2>
 
-                    <div className="d-flex justify-content-center">
-                        {/* Semifinal 1 */}
-                        <div className="col-md-4 text-center mb-4 d-flex flex-column align-items-stretch">
-                            <div className="card mb-3 border-dark flex-grow-1">
-                                <h3 className="text-white bg-danger p-2 rounded">Semifinal 1</h3>
-                                <div className="card-body bg-dark text-white">
-                                    <div className="d-flex justify-content-between">
-                                        <div>
-                                            <h5 className="card-title">{renderEquipo(equipos.equipo1)}</h5>
-                                        </div>
-                                        <div>
-                                            <h5 className="card-title">{renderResultado(equipos.resultadoSemi1)}</h5>
-                                        </div>
-                                        <div>
-                                            <h5 className="card-title">{renderEquipo(equipos.equipo3)}</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            {/* Semifinales */}
+            <div className="row mb-4">
+                <div className="col-md-6">
+                    <div className="card shadow">
+                        <div className="card-header bg-success text-white text-center">
+                            <h3 className="card-title mb-0">Semifinal 1</h3>
                         </div>
-
-                        <div className="col-md-1 d-flex justify-content-center align-items-center">
-                            <h2 className="text-white">vs</h2>
-                        </div>
-
-                        {/* Semifinal 2 */}
-                        <div className="col-md-4 text-center mb-4 d-flex flex-column align-items-stretch">
-                            <div className="card mb-3 border-dark flex-grow-1">
-                                <h3 className="text-white bg-danger p-2 rounded">Semifinal 2</h3>
-                                <div className="card-body bg-dark text-white">
-                                    <div className="d-flex justify-content-between">
-                                        <div>
-                                            <h5 className="card-title">{renderEquipo(equipos.equipo2)}</h5>
-                                        </div>
-                                        <div>
-                                            <h5 className="card-title">{renderResultado(equipos.resultadoSemi2)}</h5>
-                                        </div>
-                                        <div>
-                                            <h5 className="card-title">{renderEquipo(equipos.equipo4)}</h5>
-                                        </div>
-                                    </div>
+                        <div className="card-body text-center">
+                            <h5 className="mb-3">{equipos.equipo1?.nombre || 'Por Determinar'} vs {equipos.equipo4?.nombre || 'Por Determinar'}</h5>
+                            {equipos.ganadorSemi1 && (
+                                <div className="alert alert-success mt-3">
+                                    Avanza: {equipos.ganadorSemi1.nombre}
                                 </div>
-                            </div>
+                            )}
                         </div>
                     </div>
-
-                    {/* Final */}
-                    <div className="d-flex justify-content-center mt-5">
-                        <div className="col-md-6 text-center d-flex flex-column align-items-stretch">
-                            <h3 className="text-white bg-danger p-2 rounded">Final</h3>
-                            <div className="card mb-3 border-dark flex-grow-1">
-                                <div className="card-body bg-dark text-white">
-                                    <div className="d-flex justify-content-between">
-                                        <div>
-                                            <h5 className="card-title">{renderEquipo(equipos.ganadorSemi1)}</h5>
-                                        </div>
-                                        <div>
-                                            <h5 className="card-title">{renderResultado(equipos.resultadoFinal)}</h5>
-                                        </div>
-                                        <div>
-                                            <h5 className="card-title">{renderEquipo(equipos.ganadorSemi2)}</h5>
-                                        </div>
-                                    </div>
+                </div>
+                <div className="col-md-6">
+                    <div className="card shadow">
+                        <div className="card-header bg-success text-white text-center">
+                            <h3 className="card-title mb-0">Semifinal 2</h3>
+                        </div>
+                        <div className="card-body text-center">
+                            <h5 className="mb-3">{equipos.equipo2?.nombre || 'Por Determinar'} vs {equipos.equipo3?.nombre || 'Por Determinar'}</h5>
+                            {equipos.ganadorSemi2 && (
+                                <div className="alert alert-success mt-3">
+                                    Avanza: {equipos.ganadorSemi2.nombre}
                                 </div>
-                            </div>
+                            )}
                         </div>
                     </div>
                 </div>
             </div>
-        </>
+
+            {/* Final */}
+            <div className="row">
+                <div className="col-md-6 offset-md-3">
+                    <div className="card shadow">
+                        <div className="card-header bg-danger text-white text-center">
+                            <h3 className="card-title mb-0">Final</h3>
+                        </div>
+                        <div className="card-body text-center">
+                            <h5 className="mb-3">
+                                {equipos.ganadorSemi1?.nombre || 'Por Determinar'} vs {equipos.ganadorSemi2?.nombre || 'Por Determinar'}
+                            </h5>
+                            {equipos.campeon && (
+                                <div className="alert alert-success mt-3">
+                                    ¡Campeón del Torneo: {equipos.campeon.nombre}!
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Tercer Puesto */}
+            <div className="row mb-4">
+                <div className="col-md-4 offset-md-4 mt-4">
+                    <div className="card shadow">
+                        <div className="card-header bg-dark text-white text-center">
+                            <h3 className="card-title mb-0">Tercer Puesto</h3>
+                        </div>
+                        <div className="card-body text-center">
+                            <h5 className="mb-3">
+                                {equipos.resultadoSemi1?.perdedor?.nombre || 'Por Determinar'} vs {equipos.resultadoSemi2?.perdedor?.nombre || 'Por Determinar'}
+                            </h5>
+                            {equipos.tercerPuesto && (
+                                <div className="alert alert-warning mt-3">
+                                    Tercer Lugar: {equipos.tercerPuesto.nombre}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
-};
+}
 
 export default FaseFinal;

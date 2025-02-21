@@ -12,8 +12,12 @@ export const AuthProvider = ({ children }) => {
     setLoggedInUser(user); // Guardamos al usuario en el estado, sin persistir en el localStorage
   };
 
+  const logout = () => {
+    setLoggedInUser(null);
+  };
+
   return (
-    <AuthContext.Provider value={{ loggedInUser, login }}>
+    <AuthContext.Provider value={{ loggedInUser, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

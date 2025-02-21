@@ -1,64 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/UserContext';
+import React from 'react';
+import { useLogicaInicio } from '../../components/LogicaInicio';
 
 function Inicio() {
-    const { loggedInUser } = useAuth();
-    const navigate = useNavigate();
-    const [carouselImages, setCarouselImages] = useState([]);
-    const [sponsorImages, setSponsorImages] = useState([]);
-    const isEntrenador = loggedInUser?.role === 'entrenador';
-    const canEditImages = ['periodista', 'administrador'].includes(loggedInUser?.role);
-
-    useEffect(() => {
-        // Cargar imágenes desde la API con fetch
-        fetch('/api/images/carousel')
-            .then(response => response.json())
-            .then(data => setCarouselImages(data))
-            .catch(error => console.error('Error cargando imágenes del carrusel:', error));
-
-        fetch('/api/images/sponsors')
-            .then(response => response.json())
-            .then(data => setSponsorImages(data))
-            .catch(error => console.error('Error cargando imágenes de patrocinadores:', error));
-    }, []);
-
-    function handleInscripcionClick() {
-        if (!isEntrenador) {
-            navigate('/login');
-        }
-    }
-
-    function handleImageUpload(event, type, index) {
-        const file = event.target.files[0];
-        if (file) {
-            const formData = new FormData();
-            formData.append('image', file);
-            formData.append('type', type);
-            formData.append('index', index);
-
-            fetch('/api/images/upload', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json',
-                },
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (type === 'carousel') {
-                        const updatedImages = [...carouselImages];
-                        updatedImages[index] = data.url;
-                        setCarouselImages(updatedImages);
-                    } else {
-                        const updatedSponsors = [...sponsorImages];
-                        updatedSponsors[index] = data.url;
-                        setSponsorImages(updatedSponsors);
-                    }
-                })
-                .catch(error => console.error('Error subiendo imagen:', error));
-        }
-    }
+    const {
+        carouselImages,
+        sponsorImages,
+        canEditImages,
+        handleInscripcionClick,
+        handleImageUpload
+    } = useLogicaInicio();
 
     return (
         <>
