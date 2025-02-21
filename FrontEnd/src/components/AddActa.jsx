@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getJugadores } from '../models/JugadorModel';
+import { getPartidos } from '../models/PartidoModel';
 
 const AddActa = ({ onSubmit, onCancel }) => {
   const [form, setForm] = useState({
@@ -9,6 +11,10 @@ const AddActa = ({ onSubmit, onCancel }) => {
     comentario: ''
   });
 
+  const [partidos, setPartidos] = useState([]);
+  const [jugadores, setJugadores] = useState([]);
+  const [jugadoresFiltrados, setJugadoresFiltrados] = useState([]);
+  const [busquedaJugador, setBusquedaJugador] = useState('');
   const [errors, setErrors] = useState({});
 
   const incidencias = [
@@ -20,6 +26,33 @@ const AddActa = ({ onSubmit, onCancel }) => {
     'falta',
     'penalti'
   ];
+
+  useEffect(() => {
+    const cargarDatos = async () => {
+      try {
+        const [partidosData, jugadoresData] = await Promise.all([
+          getPartidos(),
+          getJugadores()
+        ]);
+        setPartidos(partidosData);
+        setJugadores(jugadoresData);
+        setJugadoresFiltrados(jugadoresData);
+      } catch (error) {
+        console.error("Error al cargar datos:", error);
+      }
+    };
+    cargarDatos();
+  }, []);
+
+  // Filtrar jugadores basado en la búsqueda
+  useEffect(() => {
+    const filtered = jugadores.filter(jugador => {
+      const nombreCompleto = `${jugador.nombre} ${jugador.apellido1} ${jugador.apellido2}`.toLowerCase();
+      const busqueda = busquedaJugador.toLowerCase();
+      return nombreCompleto.includes(busqueda);
+    });
+    setJugadoresFiltrados(filtered);
+  }, [busquedaJugador, jugadores]);
 
   const validateForm = () => {
     const newErrors = {};
@@ -73,13 +106,24 @@ const AddActa = ({ onSubmit, onCancel }) => {
             onChange={handleChange}
           >
             <option value="">Seleccione un partido</option>
-            {/* Aquí irían las opciones de partidos */}
+            {partidos.map(partido => (
+              <option key={partido.id} value={partido.id}>
+                {`${partido.equipoLocalNombre} vs ${partido.equipoVisitanteNombre} - ${new Date(partido.fecha).toLocaleDateString()} ${partido.hora}`}
+              </option>
+            ))}
           </select>
           {errors.partido_id && <div className="invalid-feedback">{errors.partido_id}</div>}
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Jugador</label>
+          <label className="form-label">Buscar Jugador</label>
+          <input
+            type="text"
+            className="form-control mb-2"
+            placeholder="Buscar por nombre..."
+            value={busquedaJugador}
+            onChange={(e) => setBusquedaJugador(e.target.value)}
+          />
           <select
             className={`form-select ${errors.jugador_id ? 'is-invalid' : ''}`}
             name="jugador_id"
@@ -87,7 +131,11 @@ const AddActa = ({ onSubmit, onCancel }) => {
             onChange={handleChange}
           >
             <option value="">Seleccione un jugador</option>
-            {/* Aquí irían las opciones de jugadores */}
+            {jugadoresFiltrados.map(jugador => (
+              <option key={jugador.id} value={jugador.id}>
+                {`${jugador.nombre} ${jugador.apellido1} ${jugador.apellido2} - ${jugador.nombreEquipo || 'Sin equipo'}`}
+              </option>
+            ))}
           </select>
           {errors.jugador_id && <div className="invalid-feedback">{errors.jugador_id}</div>}
         </div>

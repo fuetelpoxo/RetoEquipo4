@@ -4,6 +4,7 @@ import Loading from '../../components/Loading';
 import EditActa from '../../components/EditActa';
 import AddActa from '../../components/AddActa';
 
+
 function Actas() {
   const { actas, loading, error, handleDeleteActa, handleAddActa, handleUpdateActa } = useActas();
   const [vista, setVista] = useState("listado");
@@ -38,48 +39,52 @@ function Actas() {
   const renderListado = () => (
     <>
       <div className="d-flex justify-content-between mb-4">
-        <button onClick={handleAñadir} className="btn btn-success">
+        <button onClick={handleAñadir} className="btn btn-danger">
           <i className="fa fa-plus"></i> Añadir Acta
         </button>
       </div>
 
-      <div className="row bg-dark text-white py-2">
-        <div className="col">Partido</div>
-        <div className="col">Jugador</div>
-        <div className="col">Incidencia</div>
-        <div className="col">Hora</div>
-        <div className="col">Acciones</div>
+      {/* Cabecera */}
+      <div className="row bg-dark text-white">
+        <div className="col-md-3"><strong>Partido</strong></div>
+        <div className="col-md-2"><strong>Jugador</strong></div>
+        <div className="col-md-2"><strong>Incidencia</strong></div>
+        <div className="col-md-2"><strong>Hora</strong></div>
+        <div className="col-md-3"><strong>Acciones</strong></div>
       </div>
 
+      {/* Lista de actas */}
       {actas.map((acta) => (
-        <div className="row border-bottom py-2" key={`acta-${acta.id}`}>
-          <div className="col">
-            {acta.partidoInfo}
+        <div className="row py-3 border-bottom align-items-center" key={acta.id}>
+          <div className="col-md-3">
+            {acta.partido ? 
+              `${acta.partido.equipoLocalNombre} vs ${acta.partido.equipoVisitanteNombre}` : 
+              'Partido no encontrado'}
           </div>
-          <div className="col">
-            {acta.jugadorNombre}
+          <div className="col-md-2">
+            {acta.jugadorNombre || 'Jugador no encontrado'}
           </div>
-          <div className="col">
+          <div className="col-md-2">
             <span className={`badge ${
               acta.incidencia === 'gol' ? 'bg-success' :
               acta.incidencia === 'roja' ? 'bg-danger' :
               acta.incidencia === 'amarilla' ? 'bg-warning text-dark' :
               'bg-primary'
             }`}>
-              {acta.incidencia}
+              {acta.incidencia || 'Sin incidencia'}
             </span>
           </div>
-          <div className="col">{acta.hora}</div>
-          <div className="col">
+          <div className="col-md-2">{acta.hora || '--:--'}</div>
+          <div className="col-md-3">
             <button 
               onClick={() => handleEditar(acta)} 
-              className="btn btn-black btn-sm me-2"
+              className="btn btn-dark btn-sm me-2"
               title="Editar"
             >
               <i className="fa fa-edit"></i>
             </button>
             <button 
-              className="btn btn-black btn-sm" 
+              className="btn btn-dark btn-sm" 
               onClick={() => handleDeleteActa(acta.id)}
               title="Eliminar"
             >

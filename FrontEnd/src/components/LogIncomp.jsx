@@ -7,6 +7,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -17,8 +18,6 @@ const Login = () => {
       const user = users.find(u => u.email === email);
 
       if (user) {
-        // Aquí harías la verificación de la contraseña con el backend
-        // Por ahora solo verificamos que el usuario existe
         login(user);
         navigate('/');
       } else {
@@ -27,6 +26,10 @@ const Login = () => {
     } catch (err) {
       setError("Error al intentar iniciar sesión");
     }
+  };
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -49,15 +52,24 @@ const Login = () => {
 
           <div className="mb-3">
             <label htmlFor="password" className="form-label text-white">Contraseña</label>
-            <input
-              type="password"
-              id="password"
-              className="form-control bg-dark text-white"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Introduce tu contraseña"
-              required
-            />
+            <div className="input-group">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                className="form-control bg-dark text-white"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Introduce tu contraseña"
+                required
+              />
+              <button
+                className="btn btn-outline-secondary"
+                type="button"
+                onClick={toggleShowPassword}
+              >
+                <i className={`fa ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+              </button>
+            </div>
           </div>
 
           <button type="submit" className="btn btn-danger w-100 fw-bold">

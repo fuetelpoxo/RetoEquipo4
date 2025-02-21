@@ -1,52 +1,43 @@
-// Función auxiliar para obtener datos de partidos, jugadores y equipos en paralelo
-const getPartidosYJugadores = async () => {
-  try {
-    const [partidosResponse, jugadoresResponse] = await Promise.all([
-      fetch("/api/partidos"),
-      fetch("/api/jugadores")
-    ]);
-
-    if (!partidosResponse.ok || !jugadoresResponse.ok) {
-      throw new Error("Error al obtener datos relacionados");
-    }
-
-    const partidos = await partidosResponse.json();
-    const jugadores = await jugadoresResponse.json();
-
-    return {
-      partidos: partidos.data,
-      jugadores: jugadores.data.map(j => ({
-        ...j,
-        nombreCompleto: `${j.nombre} ${j.apellido1}`,
-        nombreEquipo: j.equipo?.nombre || 'Sin equipo'
-      }))
-    };
-  } catch (err) {
-    throw new Error("Error al cargar datos relacionados: " + err.message);
-  }
-};
+import { getPartidos } from './PartidoModel';
+import { getJugadores } from './JugadorModel';
 
 export const getActas = async () => {
   try {
-    // Obtener las actas
-    const actasResponse = await fetch("/api/actas");
+    // Obtener todo en paralelo igual que en AddActa
+    const [actasResponse, partidosData] = await Promise.all([
+      fetch("/api/actas"),
+      getPartidos() // Esta función ya procesa los nombres de equipos correctamente
+    ]);
+
     if (!actasResponse.ok) {
-      throw new Error("Error al obtener las actas");
+      throw new Error("Error al obtener los datos");
     }
+
     const actasData = await actasResponse.json();
 
-    // Transformar los datos usando la información que YA VIENE del backend
-    const actasTransformadas = actasData.data.map(acta => ({
-      ...acta,
-      jugadorNombre: acta.jugador ? `${acta.jugador.nombre} ${acta.jugador.apellido1}` : 'Jugador no encontrado',
-      partidoInfo: acta.partido ? 
-        `${acta.partido.equipoLocal?.nombre || 'Local'} vs ${acta.partido.equipoVisitante?.nombre || 'Visitante'}` : 
-        'Partido no encontrado'
-    }));
+    // Mapear las actas usando los datos de partidos que YA TIENEN los nombres procesados
+    const actasTransformadas = actasData.data.map(acta => {
+      // Encontrar el partido que corresponde a esta acta
+      const partido = partidosData.find(p => p.id === acta.partido_id);
+
+      return {
+        ...acta,
+        partido: partido ? {
+          ...partido,
+          // Usar los mismos nombres que vienen de getPartidos()
+          equipoLocalNombre: partido.equipoLocalNombre,
+          equipoVisitanteNombre: partido.equipoVisitanteNombre
+        } : null,
+        jugadorNombre: acta.jugador ? 
+          `${acta.jugador.nombre} ${acta.jugador.apellido1}` : 
+          'Jugador no encontrado'
+      };
+    });
 
     return actasTransformadas;
   } catch (err) {
-    throw new Error("Error: " + err.message);
+    console.error("Error completo:", err);
+    throw new Error("Error al obtener las actas: " + err.message);
   }
 };
 
