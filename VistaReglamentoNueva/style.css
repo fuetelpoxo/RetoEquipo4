@@ -1,0 +1,91 @@
+
+/*Titulo principal de la pagina*/
+h1{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    font-size: 25px;
+}
+
+h5{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+}
+
+
+.accordion-body {
+    text-align: left !important;
+    padding: 20px;
+}
+
+.accordion-body p {
+    text-align: left !important;
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    text-align: left !important;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.sub-section {
+    text-align: left !important;
+    margin-top: 1.5rem;
+}
+
+.accordion-body strong {
+    display: block;
+    text-align: left !important;
+    margin-bottom: 0.5rem;
+}
+
+.accordion-button {
+    background-color: #4CAF50 !important; /* Verde */
+    color: white !important;
+    font-size: 20px !important;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #45a049 !important; /* Verde más oscuro cuando está expandido */
+    color: white !important;
+}
+
+/* Para mantener el color verde cuando está enfocado o con hover */
+.accordion-button:focus,
+.accordion-button:hover {
+    background-color: #45a049 !important;
+   
+    color: white !important;
+    box-shadow: none !important;
+}
+
+/* Para cambiar el color del icono del acordeón */
+.accordion-button::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") !important;
+}
+.container {
+    max-width: 95% !important;  /* Reducido de 98% a 95% */
+    padding: 0 10px;
+}
+
+.accordion {
+    margin-bottom: 0.3rem;
+    width: 95%;  /* Reducido de 98% a 95% */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.row {
+    margin-right: -1px;  /* Reducido de -2px a -1px */
+    margin-left: -1px;   /* Reducido de -2px a -1px */
+    margin-bottom: 0.3rem !important;  /* Reducido de 0.5rem a 0.3rem */
+}
+
+.col-md-4 {
+    padding-right: 3px;  /* Aumentado de 2px a 3px */
+    padding-left: 3px;   /* Aumentado de 2px a 3px */
+}
+
+.accordion-body {
+    padding: 0.8rem;  /* Reducido de 1rem a 0.8rem */
+}
