@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\ImagenRequests;
 
+use App\Rules\ValidarImagen;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreImagenRequest extends FormRequest
@@ -22,7 +23,7 @@ class StoreImagenRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'url' => 'required|url', // La URL de la imagen debe ser válida
+            'imagen' => ['required', new ValidarImagen], // Usamos la nueva regla personalizada
             'nombre' => 'required|string|max:255', // Nombre de la imagen, debe ser una cadena (sin límite de caracteres)
 
             // Validaciones de claves foráneas (ahora nullable)
@@ -45,8 +46,8 @@ class StoreImagenRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'url.required' => 'La URL de la imagen es obligatoria.',
-            'url.url' => 'La URL de la imagen debe ser válida.',
+            'imagen.required' => 'La imagen es obligatoria.',
+            'imagen.image' => 'El archivo debe ser una imagen válida.',
             'nombre.required' => 'El nombre de la imagen es obligatorio.',
             'nombre.string' => 'El nombre de la imagen debe ser una cadena de texto.',
             'nombre.max' => 'El nombre de la imagen no puede exceder los 255 caracteres.',
