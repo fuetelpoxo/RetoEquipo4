@@ -19,6 +19,15 @@ class EstudioResource extends JsonResource
             "centro_id"=> $this->centro_id,
             "ciclo_id"=> $this->ciclo_id,
             "curso"=> $this->curso,
+            "centro"=> new CentroResource($this->whenLoaded('centro')),
+            'ciclo' => new CicloResource($this->whenLoaded('ciclo')),
+            'retos' => RetoResource::collection($this->whenLoaded('retos')),
+            'jugadores' => JugadorResource::collection($this->whenLoaded('jugadores')),
+            'usuarioIdCreacion' => $this->usuarioIdCreacion,
+            'fechaCreacion' => $this->fechaCreacion,
+            'usuarioIdActualizacion' => $this->usuarioIdActualizacion,
+            'fechaActualizacion' => $this->fechaActualizacion,
+
         ];
     }
 }

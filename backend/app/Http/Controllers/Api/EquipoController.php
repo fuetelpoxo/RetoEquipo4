@@ -7,6 +7,7 @@ use App\Http\Resources\EquipoResource;
 use App\Http\Requests\EquipoRequests\StoreEquipoRequest;
 use App\Http\Requests\EquipoRequests\UpdateEquipoRequest;
 use App\Models\Equipo;
+use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,6 +29,11 @@ class EquipoController extends Controller
      * )
      * )
      */
+
+    public static function middleware(){
+
+    }
+
     public function index()
     {
         $equipo = Equipo::with('centro')->get();
