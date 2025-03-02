@@ -1,23 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { useLogicaRetos } from "../../components/LogicaRetos";
 
-function RetosPublic({ userRole }) {
+function RetosPublic() {
     const navigate = useNavigate();
-    const [ramasFP, setRamasFP] = useState([]);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        fetch("https://api.example.com/ramasFP")
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Error al obtener los datos");
-                }
-                return response.json();
-            })
-            .then((data) => setRamasFP(data))
-            .catch((error) => setError(error.message));
-    }, []);
+    const { retos, error } = useLogicaRetos();
 
     if (error) {
         return (
@@ -29,27 +16,30 @@ function RetosPublic({ userRole }) {
         );
     }
 
-    const renderCard = (rama) => (
-        <div key={rama.id} className="col-md-4 mb-4">
-            <div className="border h-100 d-flex flex-column">
-                <h2 className="text-center text-danger mb-0 bg-dark text-white p-3">{rama.nombre}</h2>
-                <div className="p-3 flex-grow-1 d-flex flex-column">
-                    <p className="flex-grow-1">{rama.descripcion}</p>
-                    <button className="btn btn-danger mt-auto w-100" onClick={() => navigate(`/retos/inforetos/${rama.nombre}`)}>
-                        Ver más
-                    </button>
+    const renderCard = (reto) => {
+        const fotoUrl = `/api/imagenes/${reto.retos_id}`;
+
+        return (
+            <div key={reto.retos_id} className="col-md-6 col-lg-4 mb-4">
+                <div className="border h-100 d-flex flex-column" style={{ minHeight: "350px" }}>
+                    <h2 className="text-center text-danger mb-0 bg-dark text-white p-3">{reto.titulo}</h2>
+                    <img src={fotoUrl} alt={reto.titulo} className="img-fluid" style={{ maxHeight: "220px", objectFit: "cover" }} />
+                    <div className="p-3 flex-grow-1 d-flex flex-column">
+                        <button className="btn btn-danger mt-auto w-100" onClick={() => navigate(`/retos/info/${reto.retos_id}`)}>
+                            Ver más
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-    );
+        );
+    };
 
     return (
-        <>        <div className="container mt-5" style={{ borderTop: "4px solid red", paddingTop: "20px" }}>
+        <div className="container mt-5" style={{ borderTop: "4px solid red", paddingTop: "20px" }}>
             <div className="row d-flex flex-wrap">
-                {ramasFP.map((rama) => renderCard(rama))}
+                {retos.map((reto) => renderCard(reto))}
             </div>
         </div>
-        </>
     );
 }
 

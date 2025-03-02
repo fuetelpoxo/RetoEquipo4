@@ -1,61 +1,44 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React from "react";
+import { useLogicaRetos } from "../../components/LogicaRetos";
 
-function RetosInfo({ userRole }) {
-    const { id } = useParams();
-    const navigate = useNavigate();
-    const [info, setInfo] = useState(null);
-    const [fotos, setFotos] = useState([]);
+function RetosInfo() {
+    const { retos, error } = useLogicaRetos();
 
-    useEffect(() => {
-        fetch(`https://api.example.com/retos/${id}`)
-            .then((response) => response.json())
-            .then((data) => {
-                setInfo(data);
-                setFotos(data.fotos || []);
-            })
-            .catch((error) => console.error("Error fetching data:", error));
-    }, [id]);
-
-    if (!info) {
-        return <div className="container mt-4 text-center">Cargando...</div>;
-    }
-
-    return (
-        <>
-            <div className="container mt-5" style={{ borderTop: "4px solid red", paddingTop: "20px" }}>
-                <div className="border p-4">
-                    <h1 className="text-center text-danger mb-3 bg-dark text-white p-3">{info.nombre}</h1>
-                    <h3 className="text-center text-primary">{info.fpNombre}</h3>
-                    <p className="text-center">{info.descripcion}</p>
-                    <div className="card mt-3">
-                        <div className="card-body">
-                            <h5 className="card-title text-danger">Detalles del reto</h5>
-                            <p className="card-text">{info.detalles}</p>
-                        </div>
-                    </div>
-                    <div className="mt-4">
-                        <h5 className="text-center text-danger">Fotos del reto</h5>
-                        <div className="d-flex flex-wrap justify-content-center">
-                            {fotos.map((foto, index) => (
-                                <img key={index} src={foto} alt={`Reto ${index}`} className="m-2" style={{ width: "300px", height: "200px", objectFit: "cover" }} />
-                            ))}
-                        </div>
-                    </div>
-                    {(userRole === "periodista" || userRole === "admin") && (
-                        <button className="btn btn-warning mt-4 w-100" onClick={() => navigate(`/editar-reto/${id}`)}>
-                            Editar Reto
-                        </button>
-                    )}
-                    {userRole === "periodista" && (
-                        <button className="btn btn-danger mt-4 w-100" onClick={() => navigate("/crear-post")}>
-                            Crear Post
-                        </button>
-                    )}
+    if (error) {
+        return (
+            <div className="d-flex justify-content-center align-items-center vh-100">
+                <div className="alert alert-danger text-center" role="alert">
+                    {error}
                 </div>
             </div>
-        </>
+        );
+    }
+
+    if (!retos || retos.length === 0) {
+        return (
+            <div className="container text-center mt-5">
+                <h2 className="text-danger">No hay retos disponibles</h2>
+                <p>Inténtalo más tarde.</p>
+            </div>
+        );
+    }
+
+    // Suponiendo que tomamos el primer reto de la lista como referencia
+    const reto = retos[0];
+
+    return (
+        <div className="container mt-5">
+            <h1 className="text-center text-danger mb-4">{reto.titulo}</h1>
+            <div className="d-flex justify-content-center">
+                <img
+                    src={`/api/imagenes/${reto.retos_id}`}
+                    alt={reto.titulo}
+                    className="img-fluid rounded shadow"
+                    style={{ maxWidth: "80%", maxHeight: "400px", objectFit: "cover" }}
+                />
+            </div>
+            <p className="mt-4">{reto.texto}</p>
+        </div>
     );
 }
 

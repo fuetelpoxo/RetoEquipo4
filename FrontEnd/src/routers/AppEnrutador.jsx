@@ -43,7 +43,7 @@ function AppEnrutador() {
               <Route index element={<LogIn />} />
             </Route>
             <Route path="retos" element={<RetosPublic />} />
-            <Route path="retos/inforetos" element={<RetosInfo />} />
+            <Route path="retos/inforetos/:titulo" element={<RetosInfo />} />
             <Route path="solidario" element={<TorneoSolidario />} />
             <Route path="equipos" element={<EquiposPublic />} />
             <Route path="infoequipos/:nombre" element={<InfoEquipos />} />
