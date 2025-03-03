@@ -1,15 +1,31 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useActas } from '../../hook/UseActas';
 import AddActa from '../../components/AddActa';
 import EditActa from '../../components/EditActa';
 import Loading from '../../components/Loading';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/UserContext';
+import Confirm from '../../components/Confirm';
 
 function ActasDirector() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const [showConfirm, setShowConfirm] = useState(false);
   const { actas, loading, error, handleAddActa, handleUpdateActa, handleDeleteActa } = useActas(user?.id);
   const [vista, setVista] = useState('listado');
   const [actaSeleccionada, setActaSeleccionada] = useState(null);
+
+  const handleLogoutClick = () => {
+    setShowConfirm(true);
+  };
+
+  const handleConfirmLogout = () => {
+    if (typeof logout === 'function') {
+      logout();
+      navigate('/');
+      setShowConfirm(false);
+    }
+  };
 
   const handleVolver = () => {
     setVista('listado');
@@ -75,26 +91,55 @@ function ActasDirector() {
   );
 
   return (
-    <div className="container mt-5">
-      {vista === 'listado' && renderListado()}
-      
-      {vista === 'crear' && (
-        <AddActa 
-          onSubmit={handleAddActa}
-          onCancel={handleVolver}
-          usuarioId={user?.id}
-        />
-      )}
-      
-      {vista === 'editar' && actaSeleccionada && (
-        <EditActa 
-          acta={actaSeleccionada}
-          onSubmit={(data) => handleUpdateActa(actaSeleccionada.id, data)}
-          onCancel={handleVolver}
-          usuarioId={user?.id}
-        />
-      )}
-    </div>
+    <>
+      {/* Menú Superior */}
+      <div className="container text-center my-3">
+        <div className="btn-group">
+          <Link to="/" className="btn btn-danger">
+            <i className="fa fa-home me-2"></i>
+            Página Principal
+          </Link>
+
+          <button 
+            onClick={handleLogoutClick}
+            className="btn btn-outline-danger"
+            title="Cerrar sesión"
+          >
+            <i className="fa fa-sign-out"></i>
+          </button>
+        </div>
+      </div>
+
+      {/* Contenido Principal */}
+      <div className="container mt-5">
+        {vista === 'listado' && renderListado()}
+        
+        {vista === 'crear' && (
+          <AddActa 
+            onSubmit={handleAddActa}
+            onCancel={handleVolver}
+            usuarioId={user?.id}
+          />
+        )}
+        
+        {vista === 'editar' && actaSeleccionada && (
+          <EditActa 
+            acta={actaSeleccionada}
+            onSubmit={(data) => handleUpdateActa(actaSeleccionada.id, data)}
+            onCancel={handleVolver}
+            usuarioId={user?.id}
+          />
+        )}
+      </div>
+
+      <Confirm
+        show={showConfirm}
+        title="Cerrar Sesión"
+        message="¿Estás seguro que deseas cerrar sesión?"
+        onConfirm={handleConfirmLogout}
+        onCancel={() => setShowConfirm(false)}
+      />
+    </>
   );
 }
 

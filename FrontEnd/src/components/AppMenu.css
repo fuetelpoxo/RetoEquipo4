@@ -1,3 +1,41 @@
+/* Estilos base del navbar */
+.navbar {
+    padding: 0.5rem 1rem;
+}
+
+.navbar .container-fluid {
+    position: relative;
+}
+
+/* Añade estas reglas al inicio del archivo */
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Estilos para el logo */
+.navbar-brand {
+    position: absolute;
+    left: 15px;
+    z-index: 1;
+}
+
+.navbar-collapse {
+    justify-content: center;
+}
+
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        text-align: center;
+    }
+
+    .navbar-nav {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
 .navegacion {
     ul {
     list-style: none;
@@ -9,28 +47,128 @@
     padding-right: 10px;
     }
     }
-    .custom-hover {
-        position: relative;
-        transition: color 0.6s ease; /* Suaviza el cambio de color */
-    }
-    
-    .custom-hover::after {
-        content: "";
+
+/* Estilos hover para links */
+.custom-hover {
+    position: relative;
+    transition: color 0.6s ease; /* Suaviza el cambio de color */
+}
+
+.custom-hover::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background-color: red;
+    transition: width 0.5s ease; /* Animación para la línea roja */
+}
+
+.custom-hover:hover {
+    color: red !important; /* Cambia el color del texto a rojo */
+}
+
+.custom-hover:hover::after {
+    width: 100%; /* La línea roja se extiende al 100% al hacer hover */
+}
+
+/* Estilos para dropdowns */
+.dropdown-menu {
+    margin-top: 0;
+    border: none;
+    border-radius: 0;
+    background-color: #343a40;
+}
+
+.dropdown-item:hover {
+    background-color: #23272b;
+}
+
+/* Estilos para iconos de usuario */
+.icon-container {
+    padding: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.icon-container:hover {
+    color: red !important;
+}
+
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        margin-top: 1rem;
         position: absolute;
+        top: 100%;
         left: 0;
-        bottom: 0;
-        width: 0;
-        height: 2px;
-        background-color: red;
-        transition: width 0.5s ease; /* Animación para la línea roja */
+        right: 0;
+        background-color: #343a40;
+        padding: 1rem;
+        z-index: 1000;
     }
-    
-    .custom-hover:hover {
-        color: red; /* Cambia el color del texto a rojo */
+
+    .dropdown-menu {
+        background-color: transparent !important;
+        border: none !important;
+        padding-left: 1.5rem;
+        position: static !important;
+        float: none;
+        width: 100%;
+        text-align: center;
     }
-    
-    .custom-hover:hover::after {
-        width: 100%; /* La línea roja se extiende al 100% al hacer hover */
+
+    .dropdown-item {
+        padding: 0.5rem 1rem;
+        color: white !important;
+        text-align: center;
     }
-   
-    
+
+    .navbar-nav .nav-item {
+        padding: 0.5rem 0;
+        margin: 0.5rem 0;
+    }
+
+    .icon-container {
+        padding: 0.5rem 0;
+    }
+
+    .navbar-nav .ms-lg-2 {
+        margin-left: 0 !important;
+        margin-top: 0.5rem;
+    }
+
+    .navbar-nav {
+        text-align: center;
+        margin: 1rem 0;
+    }
+
+    .d-flex.align-items-center {
+        position: relative !important;
+        right: auto !important;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    .navbar-brand {
+        position: relative;
+        left: 0;
+        margin-right: auto;
+    }
+
+    .dropdown-menu.show {
+        display: block !important;
+    }
+}
+
+/* Ensure dropdowns work on hover for desktop */
+@media (min-width: 992px) {
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+
+    .navbar-nav {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+

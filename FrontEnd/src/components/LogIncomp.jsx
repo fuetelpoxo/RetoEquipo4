@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/UserContext';
-import { getUsers } from '../models/UserModel';
+import { useUsers } from '../hook/UseUsers';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -10,31 +10,62 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const { users } = useUsers(); // Usamos el hook existente
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const users = await getUsers();
+      // Buscar el usuario con el email proporcionado
       const user = users.find(u => u.email === email);
 
       if (user) {
-        login(user);
-        navigate('/');
+        // Comprobar que el usuario está activo
+        if (!user.activo) {
+          setError('Usuario inactivo');
+          return;
+        }
+
+        // Aquí iría la verificación de la contraseña hasheada
+        // Como está en el backend, necesitaríamos una ruta específica para esto
+        const response = await fetch('/api/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password })
+        });
+
+        if (response.ok) {
+          login(user);
+          navigate('/');
+        } else {
+          setError('Contraseña incorrecta');
+        }
       } else {
-        setError("Usuario o contraseña incorrectos.");
+        setError('Usuario no encontrado');
       }
     } catch (err) {
-      setError("Error al intentar iniciar sesión");
+      setError('Error al intentar iniciar sesión');
     }
   };
 
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
   return (
-    <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh', backgroundColor: '#fff' }}>
-      <div className="card p-4 shadow-lg" style={{ width: '400px', backgroundColor: '#121212' }}>
+    <div className="d-flex justify-content-center align-items-center"
+      style={{
+        minHeight: '100vh',
+        width: '100%',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundImage: 'url(/Fondo1.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed'
+      }}>
+      <div className="card p-4 shadow-lg" style={{ width: '400px', backgroundColor: 'rgba(18, 18, 18, 0.9)' }}>
         <h2 className="text-center mb-4 text-white fw-bold">Iniciar Sesión</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
@@ -65,7 +96,7 @@ const Login = () => {
               <button
                 className="btn btn-outline-secondary"
                 type="button"
-                onClick={toggleShowPassword}
+                onClick={() => setShowPassword(!showPassword)}
               >
                 <i className={`fa ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
               </button>

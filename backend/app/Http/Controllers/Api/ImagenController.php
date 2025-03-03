@@ -75,58 +75,34 @@ class ImagenController extends Controller
      * )
 
      */
-    public function store(Request $request)
+    public function store(StoreImagenRequest $request)
     {
-        try {
-            \Log::info('Recibiendo solicitud de imagen', $request->all());
-            
-            if (!$request->hasFile('imagen')) {
-                return response()->json([
-                    'message' => 'No se recibió ninguna imagen'
-                ], 400);
-            }
+        // Validar y almacenar la imagen en el directorio deseado
+        $path = $request->file('imagen')->store('imagenes', 'public'); // Guardar en 'storage/app/public/imagenes'
 
-            $file = $request->file('imagen');
-            $fileName = time() . '_' . $request->nombre . '.' . $file->getClientOriginalExtension();
-            
-            // Asegurar que el directorio existe
-            if (!Storage::disk('public')->exists('jugadores')) {
-                Storage::disk('public')->makeDirectory('jugadores');
-            }
-            
-            // Guardar archivo
-            $path = Storage::disk('public')->putFileAs(
-                'jugadores',
-                $file,
-                $fileName
-            );
+        // Crear la imagen en la base de datos, usando los datos validados
+        $imagenes = Imagen::create($request->validated());
 
-            // Crear registro en BD
-            $imagen = new Imagen();
-            $imagen->url = '/storage/' . $path;
-            $imagen->nombre = $request->nombre;
-            $imagen->jugador_id = $request->jugador_id;
-            $imagen->equipo_id = 0;
-            $imagen->partido_id = 0;
-            $imagen->patrocinador_id = 0;
-            $imagen->reto_id = 0;
-            $imagen->ong_id = 0;
-            $imagen->publicacion_id = 0;
-            $imagen->pabellon_id = 0;
-            $imagen->save();
+        // Asignar la ruta de la imagen (sin 'public/')
+        $imagenes->url = $path;
 
-            return response()->json([
-                'message' => 'Imagen guardada correctamente',
-                'data' => $imagen
-            ], 201);
+        $urlCompleta = asset('storage/' . $path);
 
-        } catch (\Exception $e) {
-            \Log::error('Error al guardar imagen: ' . $e->getMessage());
-            return response()->json([
-                'message' => 'Error al guardar la imagen',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        $imagenes->url = $urlCompleta;
+        // Guardar la imagen con la ruta
+        $imagenes->save();
+
+        // Cargar las relaciones y devolver la respuesta
+        $imagenes->load('equipo', 'jugador', 'partido', 'patrocinador', 'reto', 'ong', 'publicacion', 'pabellon');
+
+        // Construir la URL completa para la respuesta
+
+        return response()->json([
+            'message' => 'Imagen creada con éxito',
+            'data' => [
+                'data' => new ImagenResource($imagenes)
+            ]
+        ], 201);
     }
     /**
      * Display the specified resource.

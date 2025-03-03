@@ -31,22 +31,7 @@ class StoreJugadorRequest extends FormRequest
             'apellido2' => 'nullable|string|min:3|max:10',
             'tipo' => 'required|string|in:jugador,entrenador,capitan',
             'estudio_id' => 'nullable|integer|exists:estudios,id',
-            'dni' => [
-                'required',
-                'string',
-                'unique:jugadores,dni',
-                'regex:/^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i',
-                function ($attribute, $value, $fail) {
-                    $numeros = substr($value, 0, 8);
-                    $letra = strtoupper(substr($value, 8, 1));
-                    $letras = "TRWAGMYFPDXBNJZSQVHLCKE";
-                    $letraCorrecta = $letras[intval($numeros) % 23];
-                    
-                    if ($letra !== $letraCorrecta) {
-                        $fail('La letra del DNI no es válida para esos números.');
-                    }
-                },
-            ],
+            'dni' => ['required', 'string', 'unique:jugadores,dni',new DniValidator],
             'email' => ['nullable', 'string', new EmailValidator()],
             'telefono' => ['required', 'string','unique:jugadores,telefono', new PhoneValidator()],
         ];

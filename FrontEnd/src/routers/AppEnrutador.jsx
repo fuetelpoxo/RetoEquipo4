@@ -23,7 +23,7 @@ import Usuarios from '../pages/Administrador/Usuarios.jsx';
 import Actas from '../pages/Administrador/Actas.jsx';
 import Equipos from '../pages/Administrador/Equipos.jsx';
 import Donaciones from '../pages/Administrador/Donaciones.jsx';
-import DirectorTorneo from '../pages/Director/DirectorTorneo.jsx';
+import ActasDirector from '../pages/DirectorTecnico/ActasDirector.jsx';
 import Entrenador from '../pages/Entrenador/Entrenador.jsx';
 import Periodista from '../pages/Periodista/Periodista.jsx';
 import { useAuth } from '../context/UserContext';
@@ -97,7 +97,7 @@ function AppEnrutador() {
           <Route path="inscripciones" element={<Inscripciones />} />
         </Route>
 
-        <Route path="/director" element={<DirectorTorneo />} />
+        <Route path="/director" element={<ActasDirector />} />
         <Route path="/entrenador" element={<Entrenador />} />
         <Route path="/periodista" element={<Periodista />} />
         <Route path="*" element={<Navigate to="/login" />} />

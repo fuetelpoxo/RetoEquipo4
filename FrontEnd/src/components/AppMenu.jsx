@@ -23,13 +23,12 @@ function AppMenu() {
         }
     };
 
-    // Función de redirección para el ícono de configuración
     const handleConfiguracionClick = () => {
         if (!loggedInUser) {
-            navigate("/login"); // Si no hay usuario, redirige al login
+            navigate("/login");
         } else {
-            switch (loggedInUser.perfil) { // Cambiado de role a perfil
-                case 'administrador': // Cambiado de admin a administrador
+            switch (loggedInUser.perfil) {
+                case 'administrador':
                     navigate("/administrador");
                     break;
                 case 'director':
@@ -42,7 +41,7 @@ function AppMenu() {
                     navigate("/periodista");
                     break;
                 default:
-                    navigate("/");  
+                    navigate("/");
                     break;
             }
         }
@@ -50,74 +49,91 @@ function AppMenu() {
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-                <div className="container-fluid">
-                    <ul className="navbar-nav mx-auto">
-                        <li className="nav-item">
-                            <Link className="nav-link text-white custom-hover" to="/">Inicio</Link>
-                        </li>
-                        <li className="nav-item dropdown"
-                            onMouseEnter={() => setIsTorneoOpen(true)}
-                            onMouseLeave={() => setIsTorneoOpen(false)}>
-                            <span className="nav-link text-white custom-hover" style={{ cursor: "pointer" }}>
-                                Torneo
-                            </span>
-                            {isTorneoOpen && (
-                                <ul className="dropdown-menu show bg-dark border-0">
-                                    <li><Link className="dropdown-item text-white custom-hover bg-dark" to="/torneo/horario">Horario</Link></li>
-                                    <li><Link className="dropdown-item text-white custom-hover bg-dark" to="/torneo/clasificacion">Clasificación</Link></li>
-                                    <li><Link className="dropdown-item text-white custom-hover bg-dark" to="/torneo/fase-final">Fase Final</Link></li>
-                                    <li><Link className="dropdown-item text-white custom-hover bg-dark" to="/torneo/reglamento">Reglamento</Link></li>
-                                </ul>
+            <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top p-3">
+                <div className="container-fluid position-relative">
+                    {/* Logo en la parte izquierda */}
+                    <div className="navbar-brand position-absolute" style={{ left: '15px' }}>
+                        <img 
+                            src="/logo_sede_torrelavega.png" 
+                            alt="Logo Sede Torrelavega" 
+                            height="50"
+                            className="d-inline-block align-top"
+                        />
+                    </div>
+
+                    {/* Resto del menú centrado */}
+                    <div className="w-100 d-flex justify-content-center align-items-center">
+                        <ul className="navbar-nav">
+                            <li className="nav-item">
+                                <Link className="nav-link text-white custom-hover fs-5" to="/">Inicio</Link>
+                            </li>
+                            <li className="nav-item dropdown"
+                                onMouseEnter={() => setIsTorneoOpen(true)}
+                                onMouseLeave={() => setIsTorneoOpen(false)}>
+                                <span className="nav-link text-white custom-hover fs-5" style={{ cursor: "pointer" }}>
+                                    Torneo
+                                </span>
+                                {isTorneoOpen && (
+                                    <ul className="dropdown-menu show bg-dark border-0">
+                                        <li><Link className="dropdown-item text-white custom-hover bg-dark fs-5" to="/torneo/horario">Horario</Link></li>
+                                        <li><Link className="dropdown-item text-white custom-hover bg-dark fs-5" to="/torneo/clasificacion">Clasificación</Link></li>
+                                        <li><Link className="dropdown-item text-white custom-hover bg-dark fs-5" to="/torneo/fase-final">Fase Final</Link></li>
+                                        <li><Link className="dropdown-item text-white custom-hover bg-dark fs-5" to="/torneo/reglamento">Reglamento</Link></li>
+                                    </ul>
+                                )}
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link text-white custom-hover fs-5" to="/retos">Retos</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link text-white custom-hover fs-5" to="/equipos">Equipos</Link>
+                            </li>
+                            <li className="nav-item dropdown"
+                                onMouseEnter={() => setIsSolidarioOpen(true)}
+                                onMouseLeave={() => setIsSolidarioOpen(false)}>
+                                <span className="nav-link text-white custom-hover fs-5" style={{ cursor: "pointer" }}>
+                                    Solidario
+                                </span>
+                                {isSolidarioOpen && (
+                                    <ul className="dropdown-menu show bg-dark border-0">
+                                        <li><Link className="dropdown-item text-white custom-hover bg-dark fs-5" to="/solidario/objetivos">Objetivos</Link></li>
+                                        <li><Link className="dropdown-item text-white custom-hover bg-dark fs-5" to="/solidario/patrocinadores">Patrocinadores</Link></li>
+                                    </ul>
+                                )}
+                            </li>
+                        </ul>
+
+                        {/* Iconos de usuario a la derecha */}
+                        <div className="d-flex align-items-center position-absolute" style={{ right: '15px' }}>
+                            <li className="nav-item list-unstyled">
+                                <Link className="nav-link text-white icon-container" to="/login">
+                                    <i className="fa fa-user fa-2x"></i>
+                                </Link>
+                            </li>
+                            {loggedInUser && (
+                                <>
+                                    <li className="nav-item list-unstyled ms-2">
+                                        <span
+                                            className="nav-link text-white icon-container"
+                                            style={{ cursor: 'pointer' }}
+                                            onClick={handleConfiguracionClick}
+                                        >
+                                            <i className="fa fa-cog fa-2x"></i>
+                                        </span>
+                                    </li>
+                                    <li className="nav-item list-unstyled ms-2">
+                                        <button 
+                                            onClick={handleLogoutClick}
+                                            className="btn btn-outline-danger"
+                                            title="Cerrar sesión"
+                                        >
+                                            <i className="fa fa-sign-out fa-2x"></i>
+                                        </button>
+                                    </li>
+                                </>
                             )}
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link text-white custom-hover" to="/retos">Retos</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link text-white custom-hover" to="/equipos">Equipos</Link>
-                        </li>
-                        <li className="nav-item dropdown"
-                            onMouseEnter={() => setIsSolidarioOpen(true)}
-                            onMouseLeave={() => setIsSolidarioOpen(false)}>
-                            <span className="nav-link text-white custom-hover" style={{ cursor: "pointer" }}>
-                                Solidario
-                            </span>
-                            {isSolidarioOpen && (
-                                <ul className="dropdown-menu show bg-dark border-0">
-                                    <li><Link className="dropdown-item text-white custom-hover bg-dark" to="/solidario/objetivos">Objetivos</Link></li>
-                                    <li><Link className="dropdown-item text-white custom-hover bg-dark" to="/solidario/patrocinadores">Patrocinadores</Link></li>
-                                </ul>
-                            )}
-                        </li>
-                        <li className="nav-item ms-auto">
-                            <Link className="nav-link text-white icon-container" to="/login">
-                                <i className="fa fa-user"></i>
-                            </Link>
-                        </li>
-                        {loggedInUser && (
-                            <>
-                                <li className="nav-item ms-auto">
-                                    <span
-                                        className="nav-link text-white icon-container"
-                                        style={{ cursor: 'pointer' }}
-                                        onClick={handleConfiguracionClick}  // Llamamos a la función de redirección
-                                    >
-                                        <i className="fa fa-cog"></i>
-                                    </span>
-                                </li>
-                                <li className="nav-item ms-2">
-                                    <button 
-                                        onClick={handleLogoutClick}
-                                        className="btn btn-outline-danger"
-                                        title="Cerrar sesión"
-                                    >
-                                        <i className="fa fa-sign-out"></i>
-                                    </button>
-                                </li>
-                            </>
-                        )}
-                    </ul>
+                        </div>
+                    </div>
                 </div>
             </nav>
 
