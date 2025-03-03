@@ -25,7 +25,7 @@ class PatrocinadorController extends Controller
      *  description="Lista de patrocinadores",
      * @OA\JsonContent(ref="#/components/schemas/patrocinadores")
      * )
-     * ) 
+     * )
      */
     public function index()
     {
@@ -47,7 +47,7 @@ class PatrocinadorController extends Controller
      * description="Datos del patrocinador",
      * @OA\JsonContent(
      * required={"nombre"},
-     * @OA\Property(property="nombre", type="string", example="Patrocinador 1")
+     * @OA\Property(property="nombre", type="string", example="La Cala")
      * )
      * ),
      * @OA\Response(
@@ -120,7 +120,7 @@ class PatrocinadorController extends Controller
      * description="Datos del patrocinador",
      * @OA\JsonContent(
      * required={"nombre"},
-     * @OA\Property(property="nombre", type="string", example="Patrocinador 1")
+     * @OA\Property(property="nombre", type="string", example="La Cala")
      * )
      * ),
      * @OA\Parameter(

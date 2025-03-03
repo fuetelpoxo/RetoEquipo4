@@ -53,7 +53,7 @@ class InscripcionController extends Controller
       * description="Datos de la inscripción",
       * @OA\JsonContent(
       * required={"comentarios","estado","equipo_id"},
-      * @OA\Property(property="comentarios", type="string", example="Comentarios de la inscripción"),
+      * @OA\Property(property="comentarios", type="string", example="El equipo ha demostrado un gran rendimiento en la temporada pasada"),
       * @OA\Property(property="estado", type="string", example="pendiente"),
       * @OA\Property(property="equipo_id", type="integer", example="1")
       * )
@@ -119,7 +119,7 @@ class InscripcionController extends Controller
         return new InscripcionResource($inscripcion);
     }
 
-    
+
     /**
      * Update the specified resource in storage.
      */
@@ -144,8 +144,7 @@ class InscripcionController extends Controller
      * description="Datos de la inscripción",
      * @OA\JsonContent(
      * required={"comentarios","estado","equipo_id"},
-     * @OA\Property(property="comentarios", type="string", example="Comentarios de la inscripción"),
-     * @OA\Property(property="estado", type="string", example="pendiente"),
+     * @OA\Property(property="comentarios", type="string", example="El equipo ha demostrado un gran rendimiento en la temporada pasada"),
      * @OA\Property(property="equipo_id", type="integer", example="1")
      * )
      * ),
@@ -158,7 +157,7 @@ class InscripcionController extends Controller
      *  response=404,
      *  description="Inscripción no encontrada"
      * )
-     * ) 
+     * )
     */
     public function update(UpdateInscripcionRequest $request, $id)
     {

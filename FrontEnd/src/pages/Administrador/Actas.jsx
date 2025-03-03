@@ -1,91 +1,62 @@
 import React, { useState } from 'react';
 import { useActas } from '../../hook/UseActas';
-import Loading from '../../components/Loading';
-import EditActa from '../../components/EditActa';
 import AddActa from '../../components/AddActa';
-
+import EditActa from '../../components/EditActa';
+import Loading from '../../components/Loading';
 
 function Actas() {
-  const { actas, loading, error, handleDeleteActa, handleAddActa, handleUpdateActa } = useActas();
-  const [vista, setVista] = useState("listado");
+  const { actas, loading, error, handleAddActa, handleUpdateActa, handleDeleteActa } = useActas();
+  const [vista, setVista] = useState('listado');
   const [actaSeleccionada, setActaSeleccionada] = useState(null);
 
-  const handleEditar = (acta) => {
-    setActaSeleccionada({...acta});
-    setVista("editar");
-  };
-
-  const handleAñadir = () => {
-    setVista("añadir");
-  };
-
   const handleVolver = () => {
-    setVista("listado");
+    setVista('listado');
     setActaSeleccionada(null);
-  };
-
-  const handleUpdate = async (actaId, actaData) => {
-    try {
-      await handleUpdateActa(actaId, actaData);
-      handleVolver();
-    } catch (error) {
-      console.error('Error al actualizar:', error);
-    }
-  };
-
+  };  
   if (loading) return <Loading />;
   if (error) return <div className="alert alert-danger">{error}</div>;
 
   const renderListado = () => (
     <>
-      <div className="d-flex justify-content-between mb-4">
-        <button onClick={handleAñadir} className="btn btn-danger">
-          <i className="fa fa-plus"></i> Añadir Acta
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h1>Gestión de Actas</h1>
+        <button className="btn btn-success" onClick={() => setVista('crear')}>
+          <i className="fa fa-plus"></i> Nueva Acta
         </button>
       </div>
 
-      {/* Cabecera */}
-      <div className="row bg-dark text-white">
-        <div className="col-md-3"><strong>Partido</strong></div>
-        <div className="col-md-2"><strong>Jugador</strong></div>
-        <div className="col-md-2"><strong>Incidencia</strong></div>
-        <div className="col-md-2"><strong>Hora</strong></div>
-        <div className="col-md-3"><strong>Acciones</strong></div>
+      <div className="row bg-dark text-white py-2">
+        <div className="col">Partido</div>
+        <div className="col">Jugador</div>
+        <div className="col">Incidencia</div>
+        <div className="col">Hora</div>
+        <div className="col">Acciones</div>
       </div>
 
-      {/* Lista de actas */}
       {actas.map((acta) => (
-        <div className="row py-3 border-bottom align-items-center" key={acta.id}>
-          <div className="col-md-3">
-            {acta.partido ? 
-              `${acta.partido.equipoLocalNombre} vs ${acta.partido.equipoVisitanteNombre}` : 
-              'Partido no encontrado'}
+        <div className="row border-bottom py-2" key={acta.id}>
+          <div className="col">
+            {`${acta.partido?.equipoLocal?.nombre || 'N/A'} vs ${acta.partido?.equipoVisitante?.nombre || 'N/A'}`}
           </div>
-          <div className="col-md-2">
-            {acta.jugadorNombre || 'Jugador no encontrado'}
+          <div className="col">
+            {`${acta.jugador?.nombre || 'N/A'} ${acta.jugador?.apellido1 || ''}`}
           </div>
-          <div className="col-md-2">
-            <span className={`badge ${
-              acta.incidencia === 'gol' ? 'bg-success' :
-              acta.incidencia === 'roja' ? 'bg-danger' :
-              acta.incidencia === 'amarilla' ? 'bg-warning text-dark' :
-              'bg-primary'
-            }`}>
-              {acta.incidencia || 'Sin incidencia'}
-            </span>
-          </div>
-          <div className="col-md-2">{acta.hora || '--:--'}</div>
-          <div className="col-md-3">
+          <div className="col">{acta.incidencia}</div>
+          <div className="col">{acta.hora}</div>
+          <div className="col">
             <button 
-              onClick={() => handleEditar(acta)} 
-              className="btn btn-dark btn-sm me-2"
+              onClick={() => {
+                setActaSeleccionada(acta);
+                setVista('editar');
+              }} 
+              className="btn btn-black btn-sm me-2"
               title="Editar"
             >
               <i className="fa fa-edit"></i>
             </button>
-            <button 
-              className="btn btn-dark btn-sm" 
+            <button
               onClick={() => handleDeleteActa(acta.id)}
+              className="btn btn-black btn-sm"
               title="Eliminar"
             >
               <i className="fa fa-trash"></i>
@@ -100,19 +71,19 @@ function Actas() {
     <div className="container mt-5">
       <h1 className="mb-4">Actas</h1>
 
-      {vista === "listado" && renderListado()}
-
-      {vista === "añadir" && (
+      {vista === 'listado' && renderListado()}
+      
+      {vista === 'crear' && (
         <AddActa 
           onSubmit={handleAddActa}
           onCancel={handleVolver}
         />
       )}
-
-      {vista === "editar" && actaSeleccionada && (
-        <EditActa
+      
+      {vista === 'editar' && actaSeleccionada && (
+        <EditActa 
           acta={actaSeleccionada}
-          onSubmit={(actaData) => handleUpdate(actaSeleccionada.id, actaData)}
+          onSubmit={(data) => handleUpdateActa(actaSeleccionada.id, data)}
           onCancel={handleVolver}
         />
       )}

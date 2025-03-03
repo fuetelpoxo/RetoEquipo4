@@ -22,11 +22,23 @@ class UpdateActaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'partido_id' => 'nullable|exists:partidos,id',  // Partido puede ser nulo, pero si está presente debe existir
-            'jugador_id' => 'nullable|exists:jugadores,id',  // Jugador puede ser nulo, pero si está presente debe existir
+            'partido_id' => 'nullable|integer|exists:partidos,id', // Partido opcional pero debe existir si se envía
+            'jugador_id' => 'nullable|integer|exists:jugadores,id', // Jugador opcional pero debe existir si se envía
             'incidencia' => 'nullable|in:amarilla,roja,lesion,cambio,gol,falta,penalti', // Solo permite estos valores
-            'hora' => 'nullable|regex:/^\d{1,2}:\d{2}$/',  // La hora es opcional, pero si está presente, debe cumplir con el formato HH:MM
-            'comentario' => 'nullable|string',  // Comentario es opcional, pero si está presente debe ser una cadena
+            'hora' => 'nullable|date_format:H:i', // Hora opcional pero si se envía debe estar en formato 'HH:MM'
+            'comentario' => 'nullable|string' // Comentario opcional pero debe ser string
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'partido_id.exists' => 'El partido seleccionado no existe.',
+            'partido_id.integer' => 'El id del partido debe ser un número entero.',
+            'jugador_id.exists' => 'El jugador seleccionado no existe.',
+            'jugador_id.id' => 'El id del jugador debe ser un número entero.',
+            'incidencia.in' => 'La incidencia debe ser una de las siguientes: amarilla, roja, lesión, cambio, gol, falta o penalti.',
+            'hora.date_format' => 'La hora debe estar en el formato correcto (HH:MM).',
+            'comentario.string' => 'El comentario debe ser una cadena de texto.',
         ];
     }
 }

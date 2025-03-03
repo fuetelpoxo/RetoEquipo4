@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useInscripciones } from '../../hooks/useInscripciones';
+import { useInscripciones } from '../../hook/useInscripciones';
 import Loading from '../../components/Loading';
 import AddInscripcion from '../../components/AddInscripcion';
 
@@ -34,12 +34,12 @@ function Inscripciones() {
       </div>
 
       {/* Cabecera */}
-      <div className="row bg-dark text-white py-3 mb-2 rounded">
-        <div className="col-md-2"><strong>Equipo</strong></div>
-        <div className="col-md-2"><strong>Estado</strong></div>
-        <div className="col-md-4"><strong>Comentarios</strong></div>
-        <div className="col-md-2"><strong>Fecha</strong></div>
-        <div className="col-md-2"><strong>Acciones</strong></div>
+      <div className="row bg-dark text-white py-2">
+        <div className="col-md-2">Equipo</div>
+        <div className="col-md-2">Estado</div>
+        <div className="col-md-4">Comentarios</div>
+        <div className="col-md-2">Fecha</div>
+        <div className="col-md-2">Acciones</div>
       </div>
 
       {/* Lista de inscripciones */}
@@ -65,7 +65,9 @@ function Inscripciones() {
                 className="btn btn-sm btn-dark"
                 onClick={() => handleUpdateInscripcion(inscripcion.id, {
                   ...inscripcion,
-                  estado: 'aprobada'
+                  comentarios: `Estado actualizado a aprobada - ${new Date().toLocaleString()}`,
+                  estado: 'aprobada',
+                  equipo_id: inscripcion.equipo_id // Asegurarnos de enviar el equipo_id
                 })}
                 disabled={inscripcion.estado === 'aprobada'}
               >
@@ -75,7 +77,9 @@ function Inscripciones() {
                 className="btn btn-sm btn-dark"
                 onClick={() => handleUpdateInscripcion(inscripcion.id, {
                   ...inscripcion,
-                  estado: 'rechazada'
+                  comentarios: `Estado actualizado a rechazada - ${new Date().toLocaleString()}`,
+                  estado: 'rechazada',
+                  equipo_id: inscripcion.equipo_id // Asegurarnos de enviar el equipo_id
                 })}
                 disabled={inscripcion.estado === 'rechazada'}
               >

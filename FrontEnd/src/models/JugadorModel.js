@@ -1,3 +1,4 @@
+
 // Cache para equipos
 let equiposCache = null;
 let lastFetchEquipos = 0;
@@ -139,37 +140,74 @@ export const getEquiposSelect = async () => {
 
 export const getEstudiosSelect = async () => {
   try {
-    // Obtener estudios
-    const responseEstudios = await fetch('/api/estudios');
-    if (!responseEstudios.ok) {
-      throw new Error('Error al obtener estudios');
-    }
-    const estudiosData = await responseEstudios.json();
-    const estudios = estudiosData.data;
+    // Get both estudios and ciclos data
+    const [estudiosResponse, ciclosResponse] = await Promise.all([
+      fetch('/api/estudios'),
+      fetch('/api/ciclos')
+    ]);
 
-    // Obtener ciclos
-    const responseCiclos = await fetch('/api/ciclos');
-    if (!responseCiclos.ok) {
-      throw new Error('Error al obtener ciclos');
+    if (!estudiosResponse.ok || !ciclosResponse.ok) {
+      throw new Error('Error al obtener los datos');
     }
-    const ciclosData = await responseCiclos.json();
-    const ciclos = ciclosData.data;
 
-    // Combinar la información
-    const estudiosConCiclo = estudios.map(estudio => {
-      const ciclo = ciclos.find(c => c.id === estudio.ciclo_id);
+    const estudiosData = await estudiosResponse.json();
+    const ciclosData = await ciclosResponse.json();
+
+    // Format estudios with ciclo name and curso
+    const estudiosFormateados = estudiosData.data.map(estudio => {
+      const ciclo = ciclosData.data.find(c => c.id === estudio.ciclo_id);
       return {
-        ...estudio,
-        ciclo: {
-          id: ciclo?.id || '',
-          nombre: ciclo?.nombre || 'Ciclo no encontrado'
-        }
+        id: estudio.id,
+        nombre: `${ciclo?.nombre || 'Sin ciclo'} ${estudio.curso}º`, // Example: "DAW 2º"
+        centro_id: estudio.centro_id,
+        ciclo_id: estudio.ciclo_id,
+        curso: estudio.curso
       };
     });
 
-    return estudiosConCiclo;
+    return estudiosFormateados;
+  } catch (error) {
+    console.error('Error al obtener estudios:', error);
+    throw error;
+  }
+};
+
+export const uploadImagenJugador = async (imageFile, jugadorId, nombreImagen) => {
+  try {
+    const formData = new FormData();
+    formData.append('imagen', imageFile);
+    formData.append('nombre', nombreImagen);
+    formData.append('jugador_id', jugadorId);
+
+    console.log('Enviando imagen:', {
+      fileName: imageFile.name,
+      fileSize: imageFile.size,
+      fileType: imageFile.type,
+      jugadorId: jugadorId,
+      nombreImagen: nombreImagen
+    });
+
+    const response = await fetch('/api/imagenes', {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!response.ok) {
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Error al subir la imagen');
+      } else {
+        const text = await response.text();
+        console.error('Respuesta no JSON:', text);
+        throw new Error('Error del servidor al subir la imagen');
+      }
+    }
+
+    const data = await response.json();
+    return data.data;
   } catch (err) {
-    console.error('Error en getEstudiosSelect:', err);
+    console.error('Error detallado:', err);
     throw err;
   }
 };

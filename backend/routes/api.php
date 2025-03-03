@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\DonacionController;
@@ -12,13 +11,14 @@ use App\Http\Controllers\Api\ActaController;
 use App\Http\Controllers\Api\ImagenController;
 use App\Http\Controllers\Api\PublicacionController;
 use App\Http\Controllers\Api\CicloController;
+use App\Http\Controllers\Api\EstudioController;
 use App\Http\Controllers\Api\OngController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::middleware('permission:UserController.*')->group(function () {
+    Route::apiResource('users', UserController::class);
+});
 
 Route::apiResource('users', UserController::class);
 
@@ -43,3 +43,6 @@ Route::apiResource('publicaciones', PublicacionController::class);
 Route::apiResource('ciclos', CicloController::class);
 
 Route::apiResource('ongs', OngController::class);
+
+Route::get('/estudios', [EstudioController::class, 'index']);  // Mostrar todos los estudios
+Route::get('/estudios/{id}', [EstudioController::class, 'show']); // Mostrar un estudio por ID

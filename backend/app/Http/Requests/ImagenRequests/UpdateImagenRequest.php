@@ -26,14 +26,14 @@ class UpdateImagenRequest extends FormRequest
             'url' => 'nullable|url', // La URL de la imagen puede ser nula, pero si se proporciona, debe ser válida
             'nombre' => 'nullable|string|max:255', // El nombre puede ser nulo, pero si se proporciona, debe ser una cadena de texto
             // Validaciones de claves foráneas
-            'equipo_id' => 'nullable|exists:equipos,id', // El equipo puede ser nulo, pero si se proporciona, debe existir
-            'jugador_id' => 'nullable|exists:jugadores,id', // El jugador puede ser nulo, pero si se proporciona, debe existir
-            'partido_id' => 'nullable|exists:partidos,id', // El partido puede ser nulo, pero si se proporciona, debe existir
-            'patrocinador_id' => 'nullable|exists:patrocinadores,id', // El patrocinador puede ser nulo, pero si se proporciona, debe existir
-            'reto_id' => 'nullable|exists:retos,id', // El reto puede ser nulo, pero si se proporciona, debe existir
-            'ong_id' => 'nullable|exists:ongs,id', // La ONG puede ser nula, pero si se proporciona, debe existir
-            'publicacion_id' => 'nullable|exists:publicaciones,id', // La publicación puede ser nula, pero si se proporciona, debe existir
-            'pabellon_id' => 'nullable|exists:pabellones,id', // El pabellón puede ser nulo, pero si se proporciona, debe existir
+            'equipo_id' => 'nullable|integer|exists:equipos,id', // El equipo debe existir en la tabla de equipos
+            'jugador_id' => 'nullable|integer|exists:jugadores,id', // El jugador debe existir en la tabla de jugadores
+            'partido_id' => 'nullable|integer|exists:partidos,id', // El partido debe existir en la tabla de partidos
+            'patrocinador_id' => 'nullable|integer|exists:patrocinadores,id', // El patrocinador debe existir en la tabla de patrocinadores
+            'reto_id' => 'nullable|integer|exists:retos,id', // El reto debe existir en la tabla de retos
+            'ong_id' => 'nullable|integer|exists:ongs,id', // La ONG debe existir en la tabla de ongs
+            'publicacion_id' => 'nullable|integer|exists:publicaciones,id', // La publicación debe existir en la tabla de publicaciones
+            'pabellon_id' => 'nullable|integer|exists:pabellones,id', // El pabellón debe existir en la tabla de pabellones
         ];
     }
 
@@ -46,13 +46,21 @@ class UpdateImagenRequest extends FormRequest
             'url.url' => 'La URL de la imagen debe ser válida.',
             'nombre.string' => 'El nombre de la imagen debe ser una cadena de texto.',
             'nombre.max' => 'El nombre de la imagen no puede exceder los 255 caracteres.',
+            'equipo_id.integer' => 'El campo equipo debe ser un número entero.',
             'equipo_id.exists' => 'El equipo seleccionado no existe.',
+            'jugador_id.integer' => 'El campo jugador debe ser un número entero.',
             'jugador_id.exists' => 'El jugador seleccionado no existe.',
+            'partido_id.integer' => 'El campo partido debe ser un número entero.',
             'partido_id.exists' => 'El partido seleccionado no existe.',
+            'patrocinador_id.integer' => 'El campo patrocinador debe ser un número entero.',
             'patrocinador_id.exists' => 'El patrocinador seleccionado no existe.',
+            'reto_id.integer' => 'El campo reto debe ser un número entero.',
             'reto_id.exists' => 'El reto seleccionado no existe.',
+            'ong_id.integer' => 'El campo ONG debe ser un número entero.',
             'ong_id.exists' => 'La ONG seleccionada no existe.',
+            'publicacion_id.integer' => 'El campo publicación debe ser un número entero.',
             'publicacion_id.exists' => 'La publicación seleccionada no existe.',
+            'pabellon_id.integer' => 'El campo pabellón debe ser un número entero.',
             'pabellon_id.exists' => 'El pabellón seleccionado no existe.',
         ];
     }

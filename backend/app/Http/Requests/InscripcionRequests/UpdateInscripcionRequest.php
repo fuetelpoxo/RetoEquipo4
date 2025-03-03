@@ -22,9 +22,21 @@ class UpdateInscripcionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'comentarios'=>'nullable|string|max:255',
-            'estado'=>'nullable|string|in:pendiente,aprobada,rechazada',
-            'equipo_id'=>'nullable|exists:equipos,id'
+            'comentarios' => 'nullable|string|min:5|max:300',
+            'estado' => 'nullable|string|in:pendiente,aprobada,rechazada',
+            'equipo_id' => 'nullable|integer|exists:equipos,id'
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'comentarios.min' => 'El comentario debe tener minimo 5 caracteres',
+            'comentarios.max' => 'El comentario debe tener como maximo 300 caracteres',
+            'comentarios.string' => 'El comentario debe ser una cadena de texto',
+            'estado.string' => 'El estado debe ser una cadena de texto',
+            'estado.in' => 'Opciones para estado: pendiente, aprobada, rechazada',
+            'equipo_id.integer' => 'El id del equipo debe ser un número entero',
+            'equipo_id.exists' => 'El id del equipo no existe'
         ];
     }
 }

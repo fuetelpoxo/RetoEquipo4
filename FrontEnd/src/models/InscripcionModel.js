@@ -36,7 +36,12 @@ export const createInscripcion = async (inscripcionData) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(inscripcionData)
+      body: JSON.stringify({
+        comentarios: inscripcionData.comentarios,
+        estado: 'pendiente',
+        nombre_equipo: inscripcionData.nombre_equipo,
+        jugadores: inscripcionData.jugadores
+      })
     });
 
     if (!response.ok) {
@@ -47,6 +52,9 @@ export const createInscripcion = async (inscripcionData) => {
     const data = await response.json();
     return data.data;
   } catch (err) {
+    if (err.message.includes('<!doctype')) {
+      throw new Error('Error de conexión con el servidor');
+    }
     throw new Error(`Error al crear la inscripción: ${err.message}`);
   }
 };

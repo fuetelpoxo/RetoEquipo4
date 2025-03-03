@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { getJugadores } from '../models/JugadorModel';
 import { getPartidos } from '../models/PartidoModel';
+import { useActas } from '../hook/UseActas';
 
-const AddActa = ({ onSubmit, onCancel }) => {
+const AddActa = ({ onCancel }) => {
+  const { handleAddActa } = useActas();
   const [form, setForm] = useState({
     partido_id: '',
     jugador_id: '',
@@ -27,29 +29,30 @@ const AddActa = ({ onSubmit, onCancel }) => {
     'penalti'
   ];
 
+  // Load initial data
   useEffect(() => {
-    const cargarDatos = async () => {
-      try {
-        const [partidosData, jugadoresData] = await Promise.all([
-          getPartidos(),
-          getJugadores()
-        ]);
-        setPartidos(partidosData);
-        setJugadores(jugadoresData);
-        setJugadoresFiltrados(jugadoresData);
-      } catch (error) {
-        console.error("Error al cargar datos:", error);
-      }
-    };
-    cargarDatos();
+    loadData();
   }, []);
 
-  // Filtrar jugadores basado en la búsqueda
+  const loadData = async () => {
+    try {
+      const [partidosData, jugadoresData] = await Promise.all([
+        getPartidos(),
+        getJugadores()
+      ]);
+      setPartidos(partidosData);
+      setJugadores(jugadoresData);
+      setJugadoresFiltrados(jugadoresData);
+    } catch (error) {
+      console.error("Error loading data:", error);
+    }
+  };
+
+  // Filter players based on search
   useEffect(() => {
     const filtered = jugadores.filter(jugador => {
-      const nombreCompleto = `${jugador.nombre} ${jugador.apellido1} ${jugador.apellido2}`.toLowerCase();
-      const busqueda = busquedaJugador.toLowerCase();
-      return nombreCompleto.includes(busqueda);
+      const fullName = `${jugador.nombre} ${jugador.apellido1} ${jugador.apellido2}`.toLowerCase();
+      return fullName.includes(busquedaJugador.toLowerCase());
     });
     setJugadoresFiltrados(filtered);
   }, [busquedaJugador, jugadores]);
@@ -73,9 +76,14 @@ const AddActa = ({ onSubmit, onCancel }) => {
     if (!validateForm()) return;
 
     try {
-      await onSubmit(form);
+      await handleAddActa(form);
+      onCancel();
     } catch (error) {
-      console.error('Error al guardar:', error);
+      console.error('Error saving acta:', error);
+      setErrors(prev => ({
+        ...prev,
+        submit: 'Error al guardar el acta'
+      }));
     }
   };
 
@@ -86,10 +94,7 @@ const AddActa = ({ onSubmit, onCancel }) => {
       [name]: value
     }));
     if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: null
-      }));
+      setErrors(prev => ({ ...prev, [name]: null }));
     }
   };
 
@@ -97,6 +102,10 @@ const AddActa = ({ onSubmit, onCancel }) => {
     <div className="container mt-3">
       <h2>Añadir Acta</h2>
       <form onSubmit={handleSubmit}>
+        {errors.submit && (
+          <div className="alert alert-danger">{errors.submit}</div>
+        )}
+
         <div className="mb-3">
           <label className="form-label">Partido</label>
           <select
@@ -112,7 +121,9 @@ const AddActa = ({ onSubmit, onCancel }) => {
               </option>
             ))}
           </select>
-          {errors.partido_id && <div className="invalid-feedback">{errors.partido_id}</div>}
+          {errors.partido_id && (
+            <div className="invalid-feedback">{errors.partido_id}</div>
+          )}
         </div>
 
         <div className="mb-3">
@@ -137,7 +148,9 @@ const AddActa = ({ onSubmit, onCancel }) => {
               </option>
             ))}
           </select>
-          {errors.jugador_id && <div className="invalid-feedback">{errors.jugador_id}</div>}
+          {errors.jugador_id && (
+            <div className="invalid-feedback">{errors.jugador_id}</div>
+          )}
         </div>
 
         <div className="mb-3">
@@ -153,7 +166,9 @@ const AddActa = ({ onSubmit, onCancel }) => {
               <option key={inc} value={inc}>{inc}</option>
             ))}
           </select>
-          {errors.incidencia && <div className="invalid-feedback">{errors.incidencia}</div>}
+          {errors.incidencia && (
+            <div className="invalid-feedback">{errors.incidencia}</div>
+          )}
         </div>
 
         <div className="mb-3">
@@ -181,8 +196,12 @@ const AddActa = ({ onSubmit, onCancel }) => {
         </div>
 
         <div className="mt-3">
-          <button type="submit" className="btn btn-primary me-2">Guardar</button>
-          <button type="button" className="btn btn-secondary" onClick={onCancel}>Cancelar</button>
+          <button type="submit" className="btn btn-primary me-2">
+            Guardar
+          </button>
+          <button type="button" className="btn btn-secondary" onClick={onCancel}>
+            Cancelar
+          </button>
         </div>
       </form>
     </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useEquipos } from '../hook/UseEquipos';
-
+import Loading from './Loading';
 const DetallesEquipo = ({ equipo, onCancel }) => {
   const { fetchJugadoresByEquipo } = useEquipos();
   const [jugadoresEquipo, setJugadoresEquipo] = useState([]);
@@ -45,17 +45,7 @@ const DetallesEquipo = ({ equipo, onCancel }) => {
   }, [equipo.id, fetchJugadoresByEquipo]);
 
   if (loading) {
-    return (
-      <div className="container mt-3">
-        <div className="card">
-          <div className="card-body text-center">
-            <div className="spinner-border text-primary" role="status">
-              <span className="visually-hidden">Cargando...</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (

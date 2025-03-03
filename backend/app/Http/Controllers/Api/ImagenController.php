@@ -7,7 +7,9 @@ use App\Http\Requests\ImagenRequests\StoreImagenRequest;
 use App\Http\Requests\ImagenRequests\UpdateImagenRequest;
 use App\Http\Resources\ImagenResource;
 use App\Models\Imagen;
+use Illuminate\Container\Attributes\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage as FacadesStorage;
 
 class ImagenController extends Controller
 {
@@ -30,7 +32,7 @@ class ImagenController extends Controller
      */
     public function index()
     {
-        $imagen = Imagen::all();
+        $imagen = Imagen::with('equipo', 'jugador', 'partido', 'patrocinador', 'reto', 'ong', 'publicacion', 'pabellon')->get();
         return ImagenResource::collection($imagen);
     }
 
@@ -49,8 +51,8 @@ class ImagenController extends Controller
      * description="Datos de la imagen",
      * @OA\JsonContent(
      * required={"url","nombre","equipo_id","jugador_id","partido_id","patrocinador_id","reto_id","ong_id","publicacion_id","pabellon_id"},
-     * @OA\Property(property="url", type="string", example="https://www.ejemplo.com/imagen.jpg"),
-     * @OA\Property(property="nombre", type="string", example="Imagen 1"),
+     * @OA\Property(property="url", type="string", example="https://example.com/imagen.jpg"),
+     * @OA\Property(property="nombre", type="string", example="Imagen Prueba"),
      * @OA\Property(property="equipo_id", type="integer", example="1"),
      * @OA\Property(property="jugador_id", type="integer", example="1"),
      * @OA\Property(property="partido_id", type="integer", example="1"),
@@ -71,17 +73,61 @@ class ImagenController extends Controller
      * description="Datos no válidos"
      * )
      * )
-     */
-    public function store(StoreImagenRequest $request)
-    {
-        $imagenes = Imagen::create($request->validated());
-        $imagenes->load('equipo', 'jugador', 'partido', 'patrocinador', 'reto','ong','publicacion','pabellon');
-        return response()->json([
-            'message' => 'Imagen creada con éxito',
-            'data' => new ImagenResource($imagenes)
-        ], 201);
-    }
 
+     */
+    public function store(Request $request)
+    {
+        try {
+            \Log::info('Recibiendo solicitud de imagen', $request->all());
+            
+            if (!$request->hasFile('imagen')) {
+                return response()->json([
+                    'message' => 'No se recibió ninguna imagen'
+                ], 400);
+            }
+
+            $file = $request->file('imagen');
+            $fileName = time() . '_' . $request->nombre . '.' . $file->getClientOriginalExtension();
+            
+            // Asegurar que el directorio existe
+            if (!Storage::disk('public')->exists('jugadores')) {
+                Storage::disk('public')->makeDirectory('jugadores');
+            }
+            
+            // Guardar archivo
+            $path = Storage::disk('public')->putFileAs(
+                'jugadores',
+                $file,
+                $fileName
+            );
+
+            // Crear registro en BD
+            $imagen = new Imagen();
+            $imagen->url = '/storage/' . $path;
+            $imagen->nombre = $request->nombre;
+            $imagen->jugador_id = $request->jugador_id;
+            $imagen->equipo_id = 0;
+            $imagen->partido_id = 0;
+            $imagen->patrocinador_id = 0;
+            $imagen->reto_id = 0;
+            $imagen->ong_id = 0;
+            $imagen->publicacion_id = 0;
+            $imagen->pabellon_id = 0;
+            $imagen->save();
+
+            return response()->json([
+                'message' => 'Imagen guardada correctamente',
+                'data' => $imagen
+            ], 201);
+
+        } catch (\Exception $e) {
+            \Log::error('Error al guardar imagen: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Error al guardar la imagen',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
     /**
      * Display the specified resource.
      */
@@ -114,9 +160,9 @@ class ImagenController extends Controller
      */
     public function show($id)
     {
-        $imagenes = Imagen::with(['equipo', 'jugador', 'partido', 'patrocinador', 'reto','ong','publicacion','pabellon'])->find($id);
-        if(!$imagenes){
-            return response()->json(['error'=>'Imagen no encontrada'],404);
+        $imagenes = Imagen::with(['equipo', 'jugador', 'partido', 'patrocinador', 'reto', 'ong', 'publicacion', 'pabellon'])->find($id);
+        if (!$imagenes) {
+            return response()->json(['error' => 'Imagen no encontrada'], 404);
         }
         return new ImagenResource($imagenes);
     }
@@ -125,101 +171,156 @@ class ImagenController extends Controller
      * Update the specified resource in storage.
      */
 
-     /**
-      * @OA\Put(
-      * path="/api/imagenes/{id}",
-      * summary="Actualizar una imagen",
-      * description="Actualizar una imagen por su id",
-      * operationId="updateImagen",
-      * tags={"imagenes"},
-      * @OA\Parameter(
-      *    name="id",
-      *    in="path",
-      *    description="ID de la imagen",
-      *    required=true,
-      *    @OA\Schema(
-      *       type="integer"
-      *    )
-      * ),
-      * @OA\RequestBody(
-      * required=true,
-      * description="Datos de la imagen",
-      * @OA\JsonContent(
-      * required={"url","nombre","equipo_id","jugador_id","partido_id","patrocinador_id","reto_id","ong_id","publicacion_id","pabellon_id"},
-      * @OA\Property(property="url", type="string", example="https://www.ejemplo.com/imagen.jpg"),
-      * @OA\Property(property="nombre", type="string", example="Imagen 1"),
-      * @OA\Property(property="equipo_id", type="integer", example="1"),
-      * @OA\Property(property="jugador_id", type="integer", example="1"),
-      * @OA\Property(property="partido_id", type="integer", example="1"),
-      * @OA\Property(property="patrocinador_id", type="integer", example="1"),
-      * @OA\Property(property="reto_id", type="integer", example="1"),
-      * @OA\Property(property="ong_id", type="integer", example="1"),
-      * @OA\Property(property="publicacion_id", type="integer", example="1"),
-      * @OA\Property(property="pabellon_id", type="integer", example="1")
-      * )
-      * ),
-      * @OA\Response(
-      * response=200,
-      * description="Imagen actualizada",
-      * @OA\JsonContent(ref="#/components/schemas/imagenes")
-      * ),
-      * @OA\Response(
-      * response=404,
-      * description="Imagen no encontrada"
-      * )
-      * )
-      */
+    /**
+     * @OA\Put(
+     * path="/api/imagenes/{id}",
+     * summary="Actualizar una imagen",
+     * description="Actualizar una imagen por su id",
+     * operationId="updateImagen",
+     * tags={"imagenes"},
+     * @OA\Parameter(
+     *    name="id",
+     *    in="path",
+     *    description="ID de la imagen",
+     *    required=true,
+     *    @OA\Schema(
+     *       type="integer"
+     *    )
+     * ),
+     * @OA\RequestBody(
+     * required=true,
+     * description="Datos de la imagen",
+     * @OA\JsonContent(
+     * required={"url","nombre","equipo_id","jugador_id","partido_id","patrocinador_id","reto_id","ong_id","publicacion_id","pabellon_id"},
+     * @OA\Property(property="url", type="string", example="https://www.ejemplo.com/imagen.jpg"),
+     * @OA\Property(property="nombre", type="string", example="Imagen 1"),
+     * @OA\Property(property="equipo_id", type="integer", example="1"),
+     * @OA\Property(property="jugador_id", type="integer", example="1"),
+     * @OA\Property(property="partido_id", type="integer", example="1"),
+     * @OA\Property(property="patrocinador_id", type="integer", example="1"),
+     * @OA\Property(property="reto_id", type="integer", example="1"),
+     * @OA\Property(property="ong_id", type="integer", example="1"),
+     * @OA\Property(property="publicacion_id", type="integer", example="1"),
+     * @OA\Property(property="pabellon_id", type="integer", example="1")
+     * )
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="Imagen actualizada",
+     * @OA\JsonContent(ref="#/components/schemas/imagenes")
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Imagen no encontrada"
+     * )
+     * )
+     */
+
     public function update(UpdateImagenRequest $request, $id)
     {
+        // Buscar la imagen por ID
         $imagenes = Imagen::find($id);
 
-        if(!$imagenes){
-            return response()->json(['error'=>'Imagen no encontrada'],404);
+        if (!$imagenes) {
+            return response()->json(['error' => 'Imagen no encontrada'], 404);
         }
+
+        // Verificar si se ha subido una nueva imagen
+        if ($request->hasFile('imagen')) {
+            // Eliminar la imagen anterior del sistema de archivos
+            if ($imagenes->url && FacadesStorage::disk('public')->exists($imagenes->url)) {
+                FacadesStorage::disk('public')->delete($imagenes->url);
+            }
+
+            // Guardar la nueva imagen en el directorio 'imagenes' del disco 'public'
+            $path = $request->file('imagen')->store('imagenes', 'public');
+
+            // Construir la URL completa para la nueva imagen
+            $urlCompleta = asset('storage/' . $path);
+
+            // Actualizar la ruta de la imagen en la base de datos
+            $imagenes->url = $urlCompleta;
+        }
+
+        // Actualizar otros campos validados
         $datos = $request->validated();
-        $imagenes->update($datos);
-        return response()->json(['message'=>'Imagen actualizada correctamente','data'=>$imagenes]);
+
+        // Actualizar solo los campos que han sido modificados
+        foreach ($datos as $key => $value) {
+            if ($imagenes->$key !== $value) { // Solo actualiza si el valor ha cambiado
+                $imagenes->$key = $value;
+            }
+        }
+
+        // Guardar los cambios en la base de datos
+        $imagenes->save();
+
+        // Cargar las relaciones
+        $imagenes->load('equipo', 'jugador', 'partido', 'patrocinador', 'reto', 'ong', 'publicacion', 'pabellon');
+
+        // Devolver la respuesta usando ImagenResource
+        return response()->json([
+            'message' => 'Imagen actualizada correctamente',
+            'data' => new ImagenResource($imagenes)
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
 
-     /**
-      * @OA\Delete(
-      * path="/api/imagenes/{id}",
-      * summary="Eliminar una imagen",
-      * description="Eliminar una imagen por su id",
-      * operationId="deleteImagen",
-      * tags={"imagenes"},
-      * @OA\Parameter(
-      *    name="id",
-      *    in="path",
-      *    description="ID de la imagen",
-      *    required=true,
-      *    @OA\Schema(
-      *       type="integer"
-      *    )
-      * ),
-      * @OA\Response(
-      * response=200,
-      * description="Imagen eliminada"
-      * ),
-      * @OA\Response(
-      * response=404,
-      * description="Imagen no encontrada"
-      * )
-      * )
-      */
+    /**
+     * @OA\Delete(
+     * path="/api/imagenes/{id}",
+     * summary="Eliminar una imagen",
+     * description="Eliminar una imagen por su id",
+     * operationId="deleteImagen",
+     * tags={"imagenes"},
+     * @OA\Parameter(
+     *    name="id",
+     *    in="path",
+     *    description="ID de la imagen",
+     *    required=true,
+     *    @OA\Schema(
+     *       type="integer"
+     *    )
+     * ),
+     * @OA\Response(
+     * response=200,
+     * description="Imagen eliminada"
+     * ),
+     * @OA\Response(
+     * response=404,
+     * description="Imagen no encontrada"
+     * )
+     * )
+     */
     public function destroy($id)
     {
+        // Buscar la imagen por ID
         $imagenes = Imagen::find($id);
+
         if (!$imagenes) {
             return response()->json(['error' => 'Imagen no encontrada'], 404);
         }
+
+        // Eliminar la imagen del sistema de archivos
+        if ($imagenes->url) {
+            // Extraer la ruta relativa de la URL completa
+            $rutaRelativa = str_replace(asset('storage/'), '', $imagenes->url);
+
+            if (FacadesStorage::disk('public')->exists($rutaRelativa)) {
+                FacadesStorage::disk('public')->delete($rutaRelativa);
+            }
+        }
+
+        // Eliminar la imagen de la base de datos
         $imagenes->delete();
+
+        // Devolver la respuesta
         return response()->json([
-            'message' => 'Imagen eliminada con éxito'
+            'message' => 'Imagen eliminada correctamente',
+            'data' => new ImagenResource($imagenes) // Opcional: Devuelve los datos de la imagen eliminada
         ]);
     }
 }

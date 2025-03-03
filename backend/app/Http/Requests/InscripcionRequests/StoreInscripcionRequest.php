@@ -22,9 +22,25 @@ class StoreInscripcionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'comentarios' => 'required|string',
+            'comentarios' => 'required|string|min:5|max:300',
             'estado' => 'required|string|in:pendiente,aprobada,rechazada',
-            'equipo_id' => 'required|exists:equipos,id',
+            'equipo_id' => 'required|integer|exists:equipos,id',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'comentarios.required'=>'El comentario es obligatorio',
+            'comentarios.min'=>'El comentario debe tener minimo 5 caracteres',
+            'comentarios.max'=>'El comentario debe tener como maximo 300 caracteres',
+            'comentarios.string'=>'El comentario debe ser una cadena de texto',
+            'estado.required'=>'El estado es obligatorio',
+            'estado.string'=>'El estado debe ser una cadena de texto',
+            'estado.in'=>'Opciones para estado: pendiente, aprobada, rechazada',
+            'equipo_id.required'=>'El id del equipo es obligatorio',
+            'equipo_id.integer'=>'El id del equipo debe ser un número entero',
+            'equipo_id.exists'=>'El id del equipo no existe'
         ];
     }
 }

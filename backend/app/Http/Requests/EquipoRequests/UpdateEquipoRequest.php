@@ -22,9 +22,19 @@ class UpdateEquipoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre'=> 'nullable|string|max:255',
-            'centro_id'=> 'nullable|integer|exists:centros,id',
-            'grupo'=> 'nullable|in:A,B'
+            'nombre' => 'nullable|string|max:100', // Ajustado a 100 según la migración
+            'centro_id' => 'nullable|integer|exists:centros,id', // Añadido integer
+            'grupo' => 'nullable|in:A,B',
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'nombre.string' => 'El campo nombre debe ser una cadena de texto.',
+            'nombre.max' => 'El campo nombre no debe exceder los 100 caracteres.',
+            'centro_id.integer' => 'El campo centro debe ser un número entero.',
+            'centro_id.exists' => 'El centro seleccionado no existe.',
+            'grupo.in' => 'El campo grupo debe ser A o B.',
         ];
     }
 }

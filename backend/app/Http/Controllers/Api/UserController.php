@@ -48,9 +48,9 @@ class UserController extends Controller
      * description="Datos del usuario",
      * @OA\JsonContent(
      * required={"name","email","password","activo","perfil"},
-     * @OA\Property(property="name", type="string", example="Usuario 1"),
-     * @OA\Property(property="email", type="string", example="user@example.com"),
-     * @OA\Property(property="password", type="string", example="12345678"),
+     * @OA\Property(property="name", type="string", example="Nestor"),
+     * @OA\Property(property="email", type="string", example="nestor@gmail.com"),
+     * @OA\Property(property="password", type="string", example="Segura@123"),
      * @OA\Property(property="activo", type="boolean", example="1"),
      * @OA\Property(property="perfil", type="string", example="administrador")
      * )
@@ -64,16 +64,16 @@ class UserController extends Controller
      *  response=422,
      *  description="Datos no válidos"
      * )
-     * )    
+     * )
      */
-    
+
     public function store(StoreUserRequest $request)
 {
     // Crear el nuevo usuario con los datos validados
     $user = User::create($request->validated());
     return response()->json([
         'message' => 'Usuario creado con éxito',
-        'data' => new UserResource($user)  
+        'data' => new UserResource($user)
     ], 201);
 }
 
@@ -130,9 +130,9 @@ class UserController extends Controller
      * description="Datos del usuario",
      * @OA\JsonContent(
      * required={"name","email","password","activo","perfil"},
-     * @OA\Property(property="name", type="string", example="Usuario1"),
-     * @OA\Property(property="email", type="string", example="user@example.com"),
-     * @OA\Property(property="password", type="string", example="12345678"),
+     * @OA\Property(property="name", type="string", example="Nestor"),
+     * @OA\Property(property="email", type="string", example="nestor@gmail.com"),
+     * @OA\Property(property="password", type="string", example="Segura@123"),
      * @OA\Property(property="activo", type="boolean", example="1"),
      * @OA\Property(property="perfil", type="string", example="administrador")
      * )
@@ -183,7 +183,7 @@ class UserController extends Controller
  *  )
  * )
  */
-   
+
     public function destroy($id)
     {
         $user = User::find($id);

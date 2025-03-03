@@ -35,7 +35,7 @@ class ActaController extends Controller
      * )
      * )
      */
-    
+
     public function index()
     {
         $actas = Acta::all();
@@ -61,8 +61,8 @@ class ActaController extends Controller
      * @OA\Property(property="partido_id", type="integer", example="1"),
      * @OA\Property(property="jugador_id", type="integer", example="1"),
      * @OA\Property(property="incidencia", type="string", example="gol"),
-     * @OA\Property(property="hora", type="string", example="12:00:00"),
-     * @OA\Property(property="comentario", type="string", example="comentario")
+     * @OA\Property(property="hora", type="string", example="12:00"),
+     * @OA\Property(property="comentario", type="string", example="Golazo desde fuera del área")
      * )
      * ),
      * @OA\Response(
@@ -76,7 +76,7 @@ class ActaController extends Controller
      * )
      * )
      */
-    
+
     public function store(StoreActaRequest $request)
     {
 
@@ -98,7 +98,7 @@ class ActaController extends Controller
      *  @OA\Parameter(
      *     name="id",
      *      in="path",
-     *      description="Id del producto",
+     *      description="Id del acta",
      *   required=true,
      *   @OA\Schema(type="integer",example="1")
      *  ),
@@ -146,8 +146,8 @@ class ActaController extends Controller
      *  @OA\Property(property="partido_id", type="integer", example="1"),
      * @OA\Property(property="jugador_id", type="integer", example="1"),
      * @OA\Property(property="incidencia", type="string", example="gol"),
-     * @OA\Property(property="hora", type="string", example="12:00:00"),
-     * @OA\Property(property="comentario", type="string", example="comentario")
+     * @OA\Property(property="hora", type="string", example="12:00"),
+     * @OA\Property(property="comentario", type="string", example="Golazo por la escuadra")
      * )
      * ),
      * @OA\Response(

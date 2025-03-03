@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { getEquiposSelect, getEstudiosSelect } from '../models/JugadorModel';
+import { getEquiposSelect, uploadImagenJugador } from '../models/JugadorModel';
+import { useEstudios } from '../hook/useEstudios';
+
+const calcularLetraDNI = (numeros) => {
+  const letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+  const indice = parseInt(numeros) % 23;
+  return letras.charAt(indice);
+};
 
 const AddJugador = ({ onSubmit, onCancel }) => {
+  const { estudios, loading: loadingEstudios } = useEstudios();
   const [form, setForm] = useState({
     nombre: '',
     apellido1: '',
@@ -9,30 +17,44 @@ const AddJugador = ({ onSubmit, onCancel }) => {
     dni: '',
     tipo: '',
     equipo_id: '',
-    estudio_id: '', // Añadido campo estudio_id
+    estudio_id: '',
     email: '',
     telefono: ''
   });
 
   const [errors, setErrors] = useState({});
   const [equipos, setEquipos] = useState([]);
-  const [estudios, setEstudios] = useState([]); // Nuevo estado para estudios
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null); // Añadimos estado para errores
 
   useEffect(() => {
     const cargarDatos = async () => {
       try {
-        const [equiposData, estudiosData] = await Promise.all([
-          getEquiposSelect(),
-          getEstudiosSelect()
-        ]);
+        setIsLoading(true);
+        const equiposData = await getEquiposSelect();
         setEquipos(equiposData);
-        setEstudios(estudiosData);
       } catch (error) {
-        console.error('Error al cargar datos:', error);
+        console.error('Error al cargar equipos:', error);
+        setError('Error al cargar los equipos'); // Guardamos el error en el estado
+      } finally {
+        setIsLoading(false);
       }
     };
     cargarDatos();
   }, []);
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
+
+  if (isLoading) return <div>Cargando datos...</div>;
+  if (error) return <div className="alert alert-danger">{error}</div>; // Usamos el estado error en lugar de loadError
 
   const validateForm = () => {
     const newErrors = {};
@@ -45,6 +67,23 @@ const AddJugador = ({ onSubmit, onCancel }) => {
     if (!form.equipo_id) newErrors.equipo_id = 'El equipo es requerido';
     if (!form.estudio_id) newErrors.estudio_id = 'El estudio es requerido'; // Nueva validación
     
+    // Validación mejorada del DNI
+    const dniRegex = /^(\d{8})([TRWAGMYFPDXBNJZSQVHLCKE])$/i;
+    if (!form.dni) {
+      newErrors.dni = 'El DNI es requerido';
+    } else {
+      const match = form.dni.toUpperCase().match(dniRegex);
+      if (!match) {
+        newErrors.dni = 'El DNI debe tener 8 números seguidos de una letra válida';
+      } else {
+        const [, numeros, letra] = match;
+        const letraCalculada = calcularLetraDNI(numeros);
+        if (letra.toUpperCase() !== letraCalculada) {
+          newErrors.dni = 'La letra del DNI no es válida para esos números';
+        }
+      }
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -54,7 +93,25 @@ const AddJugador = ({ onSubmit, onCancel }) => {
     if (!validateForm()) return;
 
     try {
-      await onSubmit(form);
+      // Primero crear el jugador
+      const jugadorCreado = await onSubmit(form);
+      console.log('Jugador creado:', jugadorCreado); // Para debuggear
+
+      // Si hay una imagen seleccionada, subirla
+      if (selectedImage && jugadorCreado && jugadorCreado.id) {
+        try {
+          const nombreImagen = `foto_${form.nombre}_${form.apellido1}_${Date.now()}`;
+          const resultadoImagen = await uploadImagenJugador(
+            selectedImage,
+            jugadorCreado.id,
+            nombreImagen
+          );
+          console.log('Imagen subida:', resultadoImagen); // Para debuggear
+        } catch (imageError) {
+          console.error('Error al subir la imagen:', imageError);
+          // Aquí podrías mostrar un mensaje al usuario
+        }
+      }
       onCancel();
     } catch (error) {
       console.error('Error al guardar:', error);
@@ -62,16 +119,18 @@ const AddJugador = ({ onSubmit, onCancel }) => {
   };
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    if (errors[e.target.name]) {
-      setErrors({ ...errors, [e.target.name]: null });
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: null }));
     }
   };
 
-  const handleEquipoSelect = (equipoId) => {
-    setForm(prev => ({ ...prev, equipo_id: equipoId }));
-    if (errors.equipo_id) {
-      setErrors({ ...errors, equipo_id: null });
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+      setPreviewUrl(URL.createObjectURL(file));
     }
   };
 
@@ -90,7 +149,6 @@ const AddJugador = ({ onSubmit, onCancel }) => {
           />
           {errors.nombre && <div className="invalid-feedback">{errors.nombre}</div>}
         </div>
-
         <div className="mb-3">
           <label className="form-label">Primer Apellido</label>
           <input
@@ -102,7 +160,6 @@ const AddJugador = ({ onSubmit, onCancel }) => {
           />
           {errors.apellido1 && <div className="invalid-feedback">{errors.apellido1}</div>}
         </div>
-
         <div className="mb-3">
           <label className="form-label">Segundo Apellido</label>
           <input
@@ -113,7 +170,6 @@ const AddJugador = ({ onSubmit, onCancel }) => {
             onChange={handleChange}
           />
         </div>
-
         <div className="mb-3">
           <label className="form-label">DNI</label>
           <input
@@ -121,7 +177,17 @@ const AddJugador = ({ onSubmit, onCancel }) => {
             className={`form-control ${errors.dni ? 'is-invalid' : ''}`}
             name="dni"
             value={form.dni}
-            onChange={handleChange}
+            onChange={(e) => {
+                const value = e.target.value.toUpperCase();
+                handleChange({
+                    target: {
+                        name: 'dni',
+                        value: value
+                    }
+                });
+            }}
+            maxLength={9}
+            placeholder="12345678A"
           />
           {errors.dni && <div className="invalid-feedback">{errors.dni}</div>}
         </div>
@@ -135,8 +201,8 @@ const AddJugador = ({ onSubmit, onCancel }) => {
             onChange={handleChange}
           >
             <option value="">Seleccione tipo</option>
-            <option value="jugador">Jugador</option>
             <option value="capitan">Capitán</option>
+            <option value="jugador">Jugador</option>
             <option value="entrenador">Entrenador</option>
           </select>
           {errors.tipo && <div className="invalid-feedback">{errors.tipo}</div>}
@@ -173,11 +239,12 @@ const AddJugador = ({ onSubmit, onCancel }) => {
             name="estudio_id"
             value={form.estudio_id}
             onChange={handleChange}
+            disabled={loadingEstudios}
           >
             <option value="">Seleccione un estudio</option>
             {estudios.map(estudio => (
               <option key={estudio.id} value={estudio.id}>
-                {`${estudio.ciclo?.nombre || 'Sin ciclo'} - ${estudio.curso}º curso`}
+                {estudio.nombre}
               </option>
             ))}
           </select>
@@ -202,9 +269,37 @@ const AddJugador = ({ onSubmit, onCancel }) => {
           {errors.equipo_id && <div className="invalid-feedback">{errors.equipo_id}</div>}
         </div>
 
+        <div className="mb-3">
+          <label className="form-label">Foto del Jugador</label>
+          <input
+            type="file"
+            className="form-control"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+          {previewUrl && (
+            <div className="mt-2">
+              <img
+                src={previewUrl}
+                alt="Vista previa"
+                className="img-thumbnail"
+                style={{ maxWidth: '200px' }}
+              />
+            </div>
+          )}
+        </div>
+
         <div className="mt-3">
-          <button type="submit" className="btn btn-primary me-2">Guardar</button>
-          <button type="button" className="btn btn-secondary" onClick={onCancel}>Cancelar</button>
+          <button type="submit" className="btn btn-primary me-2">
+            Guardar
+          </button>
+          <button 
+            type="button" 
+            className="btn btn-secondary" 
+            onClick={onCancel}
+          >
+            Cancelar
+          </button>
         </div>
       </form>
     </div>

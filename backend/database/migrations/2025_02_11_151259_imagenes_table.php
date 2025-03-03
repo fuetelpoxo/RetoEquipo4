@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('usuarioIdActualizacion')->nullable()->constrained('users'); // Relación con la tabla de usuarios
             $table->timestamp('fechaActualizacion')->nullable()->useCurrent();
             //Campos de la tabla
-            $table->text('url');
+            $table->text('url')->nullable();
             $table->text('nombre');
             //Claves foraneas
             $table->foreignId('equipo_id')->nullable()->constrained('equipos')->onDelete('cascade');
