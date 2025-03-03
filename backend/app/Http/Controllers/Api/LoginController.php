@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function login(LoginRequest $request)
+    public function index (LoginRequest $request)
     {
         $datosValidados = $request->validated();
 

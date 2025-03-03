@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\EstudioController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\OngController;
 use App\Http\Controllers\Api\RetoController;
+use App\Http\Requests\LoginRequests\LoginRequest;
 use Illuminate\Support\Facades\Route;
 
 
@@ -24,7 +25,8 @@ Route::middleware('permission:UserController.*')->group(function () {
 });
 
 Route::apiResource('users', UserController::class);
-Route::apiResource('login', [LoginController::class]);
+
+Route::get('/login',[LoginController::class,'index']);
 
 Route::apiResource('donaciones', DonacionController::class);
 
