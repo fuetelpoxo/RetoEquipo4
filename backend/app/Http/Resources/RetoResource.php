@@ -14,6 +14,12 @@ class RetoResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'titulo' => $this->titulo,
+            'texto' => $this->texto,
+            'estudio_id' => $this->estudio_id,
+            'estudio' => new EstudioResource($this->whenLoaded('estudio')),
+        ];
     }
 }

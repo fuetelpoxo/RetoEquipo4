@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Equipo;
+use App\Models\Jugador;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -21,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CicloSeeder::class);
         $this->call(RetoSeeder::class);
         $this->call(EstudioSeeder::class);
-
+        $this->call(EquipoSeeder::class);
+        $this->call(JugadorSeeder::class);
     }
 }

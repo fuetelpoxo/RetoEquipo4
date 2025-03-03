@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequests\LoginRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -9,11 +11,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use App\Http\Requests\UserRequests\StoreUserRequest;
 use App\Http\Requests\UserRequests\UpdateUserRequest;
-
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-   /**
+    /**
      * @OA\Get(
      *  path="/api/users",
      *  summary="Obtener todos los usuarios",
@@ -30,11 +32,12 @@ class UserController extends Controller
      * )
      * )
      */
+
+   
     public function index()
     {
         $users = User::all();
         return UserResource::collection(User::all());
-
     }
     /**
      * @OA\Post(
@@ -68,14 +71,14 @@ class UserController extends Controller
      */
 
     public function store(StoreUserRequest $request)
-{
-    // Crear el nuevo usuario con los datos validados
-    $user = User::create($request->validated());
-    return response()->json([
-        'message' => 'Usuario creado con éxito',
-        'data' => new UserResource($user)
-    ], 201);
-}
+    {
+        // Crear el nuevo usuario con los datos validados
+        $user = User::create($request->validated());
+        return response()->json([
+            'message' => 'Usuario creado con éxito',
+            'data' => new UserResource($user)
+        ], 201);
+    }
 
 
     /**
@@ -105,8 +108,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        if(!$user){
-            return response()->json(['error'=>'Usuario no encontrado'],404);
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
         }
         return new UserResource($user);
     }
@@ -149,48 +152,48 @@ class UserController extends Controller
      * )
      */
     public function update(UpdateUserRequest $request, $id)
-{
-    // Solo se actualizan los campos validados
-    $user = User::find($id);
-    if(!$user){
-        return response()->json(['error'=>'Usuario no encontrado'],404);
+    {
+        // Solo se actualizan los campos validados
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
+        $datos = $request->validated();
+        $user->update($datos);
+        return response()->json(['message' => 'Usuario actualizado correctamente', 'data' => $user]);
     }
-    $datos = $request->validated();
-    $user->update($datos);
-    return response()->json(['message'=>'Usuario actualizado correctamente','data'=>$user]);
-}
-/**
- * @OA\Delete(
- *  path="/api/users/{id}",
- *  summary="Eliminar un usuario",
- *  description="Eliminar un usuario por su id",
- *  operationId="deleteUser",
- *  tags={"users"},
- *  @OA\Parameter(
- *      name="id",
- *      in="path",
- *      description="Id del usuario",
- *   required=true,
- *   @OA\Schema(type="integer",example="1")
- *  ),
- *  @OA\Response(
- *  response=200,
- *  description="Usuario eliminado"
- * ),
- *  @OA\Response(
- *  response=404,
- *  description="Usuario no encontrado"
- *  )
- * )
- */
+    /**
+     * @OA\Delete(
+     *  path="/api/users/{id}",
+     *  summary="Eliminar un usuario",
+     *  description="Eliminar un usuario por su id",
+     *  operationId="deleteUser",
+     *  tags={"users"},
+     *  @OA\Parameter(
+     *      name="id",
+     *      in="path",
+     *      description="Id del usuario",
+     *   required=true,
+     *   @OA\Schema(type="integer",example="1")
+     *  ),
+     *  @OA\Response(
+     *  response=200,
+     *  description="Usuario eliminado"
+     * ),
+     *  @OA\Response(
+     *  response=404,
+     *  description="Usuario no encontrado"
+     *  )
+     * )
+     */
 
     public function destroy($id)
     {
         $user = User::find($id);
-        if(!$user){
-            return response()->json(['error'=>'Usuario no encontrado'],404);
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
         }
         $user->delete();
-        return response()->json(['message'=>'Usuario eliminado correctamente']);
+        return response()->json(['message' => 'Usuario eliminado correctamente']);
     }
 }

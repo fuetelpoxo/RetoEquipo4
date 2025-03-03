@@ -13,7 +13,9 @@ use App\Http\Controllers\Api\ImagenController;
 use App\Http\Controllers\Api\PublicacionController;
 use App\Http\Controllers\Api\CicloController;
 use App\Http\Controllers\Api\EstudioController;
+use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\OngController;
+use App\Http\Controllers\Api\RetoController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -22,6 +24,7 @@ Route::middleware('permission:UserController.*')->group(function () {
 });
 
 Route::apiResource('users', UserController::class);
+Route::apiResource('login', [LoginController::class]);
 
 Route::apiResource('donaciones', DonacionController::class);
 
@@ -47,3 +50,6 @@ Route::apiResource('ongs', OngController::class);
 
 Route::get('/estudios', [EstudioController::class, 'index']);  // Mostrar todos los estudios
 Route::get('/estudios/{id}', [EstudioController::class, 'show']); // Mostrar un estudio por ID
+
+Route::get('/retos', [RetoController::class, 'index']);  // Mostrar todos los estudios
+Route::get('/retos/{id}', [RetoController::class, 'show']); // Mostrar un estudio por ID
