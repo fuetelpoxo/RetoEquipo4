@@ -3,7 +3,7 @@ import { getEquipos } from './EquipoModel';
 export const getInscripciones = async () => {
   try {
     // Obtener inscripciones y equipos en paralelo para optimizar
-    const [inscripcionesResponse, equiposResponse] = await Promise.all([
+    const [inscripcionesResponse, equiposData] = await Promise.all([
       fetch("/api/inscripciones"),
       getEquipos()
     ]);
@@ -14,12 +14,12 @@ export const getInscripciones = async () => {
 
     const inscripcionesData = await inscripcionesResponse.json();
     
-    // Mapear las inscripciones con los nombres de equipo
+    // Map inscripciones with team names
     const inscripcionesConEquipo = inscripcionesData.data.map(inscripcion => {
-      const equipoEncontrado = equiposResponse.find(e => e.id === inscripcion.equipo_id);
+      const equipo = equiposData.find(e => e.id === inscripcion.equipo_id);
       return {
         ...inscripcion,
-        nombreEquipo: equipoEncontrado ? equipoEncontrado.nombre : 'Sin equipo'
+        nombreEquipo: equipo ? equipo.nombre : 'Sin equipo'
       };
     });
 
@@ -31,31 +31,48 @@ export const getInscripciones = async () => {
 
 export const createInscripcion = async (inscripcionData) => {
   try {
+    console.log('Datos a enviar:', inscripcionData);
+
+    if (!inscripcionData.centro_id) {
+      throw new Error('El id del centro es obligatorio');
+    }
+
     const response = await fetch("/api/inscripciones", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json'
       },
       body: JSON.stringify({
-        comentarios: inscripcionData.comentarios,
-        estado: 'pendiente',
         nombre_equipo: inscripcionData.nombre_equipo,
-        jugadores: inscripcionData.jugadores
+        centro_id: parseInt(inscripcionData.centro_id),
+        estado: 'pendiente',
+        comentarios: inscripcionData.comentarios || '',
+        jugadores: inscripcionData.jugadores.map(jugador => ({
+          nombre: jugador.nombre,
+          apellido1: jugador.apellido1,
+          apellido2: jugador.apellido2 || '',
+          dni: jugador.dni,
+          email: jugador.email,
+          telefono: jugador.telefono,
+          estudio_id: parseInt(jugador.estudio_id),
+          rol: jugador.rol || 'jugador'
+        }))
       })
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || 'Error al crear la inscripción');
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Error al crear la inscripción');
     }
 
     const data = await response.json();
-    return data.data;
+    console.log('Respuesta del servidor:', data);
+    return data;
+
   } catch (err) {
-    if (err.message.includes('<!doctype')) {
-      throw new Error('Error de conexión con el servidor');
-    }
-    throw new Error(`Error al crear la inscripción: ${err.message}`);
+    console.error('Error completo:', err);
+    throw err;
   }
 };
 
@@ -65,8 +82,12 @@ export const updateInscripcion = async (id, inscripcionData) => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json'
       },
-      body: JSON.stringify(inscripcionData)
+      body: JSON.stringify({
+        comentarios: inscripcionData.comentarios,
+        estado: inscripcionData.estado,
+      })
     });
 
     if (!response.ok) {

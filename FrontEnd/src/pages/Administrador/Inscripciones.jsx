@@ -4,7 +4,7 @@ import Loading from '../../components/Loading';
 import AddInscripcion from '../../components/AddInscripcion';
 
 function Inscripciones() {
-  const { inscripciones, loading, error, handleCreateInscripcion, handleUpdateInscripcion } = useInscripciones();
+  const { inscripciones = [], equipos = [], loading, error, handleCreateInscripcion, handleUpdateInscripcion } = useInscripciones();
   const [showForm, setShowForm] = useState(false);
 
   const getEstadoClass = (estado) => {
@@ -16,6 +16,23 @@ function Inscripciones() {
       default:
         return 'bg-warning text-dark';
     }
+  };
+
+  const getNombreEquipo = (equipo_id) => {
+    // Asegurarse de que equipo_id sea un número
+    const equipoIdNum = parseInt(equipo_id);
+    if (isNaN(equipoIdNum)) {
+      console.log('ID de equipo inválido:', equipo_id);
+      return 'Sin equipo';
+    }
+
+    console.log('Buscando equipo con id:', equipoIdNum);
+    console.log('Lista de equipos:', equipos);
+
+    const equipo = equipos.find(e => e.id === equipoIdNum);
+    console.log('Equipo encontrado:', equipo);
+    
+    return equipo ? equipo.nombre : 'Sin equipo';
   };
 
   if (loading) return <Loading />;
@@ -46,7 +63,7 @@ function Inscripciones() {
       {inscripciones.map(inscripcion => (
         <div key={inscripcion.id} className="row py-3 border-bottom align-items-center">
           <div className="col-md-2">
-            {inscripcion.nombreEquipo || 'Sin equipo'}  {/* Asegúrate de usar nombreEquipo */}
+            {getNombreEquipo(inscripcion.equipo_id)}
           </div>
           <div className="col-md-2">
             <span className={`badge ${getEstadoClass(inscripcion.estado)}`}>

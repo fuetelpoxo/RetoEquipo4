@@ -1,18 +1,43 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '../context/UserContext';
+import { getEquipos } from '../models/EquipoModel';
+import { getInscripciones, createInscripcion, updateInscripcion } from '../models/InscripcionModel';
 
 export const useInscripciones = () => {
   const [inscripciones, setInscripciones] = useState([]);
+  const [equipos, setEquipos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { loggedInUser } = useAuth();
 
-  const fetchInscripciones = async () => {
+  const fetchData = async () => {
     try {
-      const response = await fetch('/api/inscripciones');
-      if (!response.ok) throw new Error('Error al cargar inscripciones');
-      const data = await response.json();
-      setInscripciones(data.data);
+      setLoading(true);
+      const [inscripcionesResponse, equiposData] = await Promise.all([
+        fetch("/api/inscripciones"),
+        getEquipos()
+      ]);
+      
+      if (!inscripcionesResponse.ok) {
+        throw new Error("Error al obtener las inscripciones");
+      }
+
+      const inscripcionesData = await inscripcionesResponse.json();
+      
+      // Mapear las inscripciones con los nombres de equipo
+      const inscripcionesConEquipo = inscripcionesData.data.map(inscripcion => {
+        // Asegurar que el equipo_id sea un número
+        const equipoId = parseInt(inscripcion.id);
+        const equipo = equiposData.find(e => e.id === equipoId);
+        return {
+          ...inscripcion,
+          equipo_id: equipoId, // Guardar el ID como número
+          nombreEquipo: equipo ? equipo.nombre : 'Sin equipo'
+        };
+      });
+
+      console.log('Inscripciones procesadas:', inscripcionesConEquipo);
+      setInscripciones(inscripcionesConEquipo);
+      setEquipos(equiposData);
+      setError(null);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -21,109 +46,35 @@ export const useInscripciones = () => {
   };
 
   useEffect(() => {
-    fetchInscripciones();
+    fetchData();
   }, []);
 
   const handleCreateInscripcion = async (data) => {
     try {
-      console.log('Usuario logueado:', loggedInUser); // Ver el usuario actual
-      console.log('Token:', localStorage.getItem('token')); // Ver el token
+      await createInscripcion(data);
+      await fetchData();
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    }
+  };
 
-      // 1. Crear el equipo
-      const equipoBody = {
-        nombre: data.nombre_equipo,
-        centro_id: parseInt(data.centro_id),
-        grupo: 'A',
-        usuarioIdCreacion: loggedInUser.id
-      };
-      console.log('Enviando equipo:', equipoBody); // Ver datos que enviamos
-
-      const equipoResponse = await fetch('/api/equipos', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify(equipoBody)
-      });
-
-      // Log la respuesta completa
-      console.log('Respuesta equipo:', await equipoResponse.clone().json());
-
-      if (!equipoResponse.ok) {
-        const errorData = await equipoResponse.json();
-        throw new Error(`Error al crear equipo: ${errorData.message}`);
-      }
-
-      const equipoData = await equipoResponse.json();
-      const equipo_id = equipoData.data.id;
-
-      // 2. Crear la inscripción
-      const inscripcionResponse = await fetch('/api/inscripciones', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({
-          comentarios: data.comentarios || 'Inscripción pendiente de revisión',
-          estado: 'pendiente',
-          equipo_id: equipo_id,
-          usuarioIdCreacion: loggedInUser.id
-        })
-      });
-
-      if (!inscripcionResponse.ok) {
-        const errorData = await inscripcionResponse.json();
-        throw new Error(`Error al crear inscripción: ${errorData.message}`);
-      }
-
-      // 3. Crear los jugadores
-      const jugadoresPromises = data.jugadores.map(jugador => 
-        fetch('/api/jugadores', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          },
-          body: JSON.stringify({
-            equipo_id: equipo_id,
-            nombre: jugador.nombre,
-            apellido1: jugador.apellido1,
-            apellido2: jugador.apellido2 || '',
-            tipo: jugador.rol,
-            estudio_id: parseInt(jugador.estudio_id),
-            dni: jugador.dni.toUpperCase(),
-            email: jugador.email,
-            telefono: jugador.telefono,
-            usuarioIdCreacion: loggedInUser.id
-          })
-        })
-      );
-
-      const jugadoresResponses = await Promise.all(jugadoresPromises);
-      
-      for (const response of jugadoresResponses) {
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(`Error al crear jugador: ${errorData.message}`);
-        }
-      }
-
-      await fetchInscripciones();
-    } catch (error) {
-      console.error('Error detallado:', error);
-      throw error;
+  const handleUpdateInscripcion = async (id, data) => {
+    try {
+      await updateInscripcion(id, data);
+      await fetchData();
+    } catch (err) {
+      setError(err.message);
+      throw err;
     }
   };
 
   return {
     inscripciones,
+    equipos,
     loading,
     error,
-    handleCreateInscripcion
+    handleCreateInscripcion,
+    handleUpdateInscripcion
   };
 };

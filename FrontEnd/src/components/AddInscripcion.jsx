@@ -25,22 +25,52 @@ const AddInscripcion = ({ onSubmit, onCancel }) => {
 
     const validateForm = () => {
         const newErrors = {};
-        if (!form.nombre_equipo) newErrors.nombre_equipo = 'El nombre del equipo es requerido';
-        if (!form.centro_id) newErrors.centro_id = 'El centro es requerido';
         
+        // Validación básica del equipo
+        if (!form.nombre_equipo.trim()) {
+            newErrors.nombre_equipo = 'El nombre del equipo es requerido';
+        }
+        if (!form.centro_id) {
+            newErrors.centro_id = 'El centro es requerido';
+        }
+
+        // Validación del número de jugadores
         if (form.jugadores.length < 1) {
             newErrors.jugadores = 'Se requieren al menos 5 jugadores';
         }
+        if (form.jugadores.length > 12) {
+            newErrors.jugadores = 'No puede haber más de 12 jugadores';
+        }
 
-        // Validar cada jugador
+        // Validación de cada jugador
         form.jugadores.forEach((jugador, index) => {
-            if (!jugador.nombre) newErrors[`jugador${index}_nombre`] = 'El nombre es requerido';
-            if (!jugador.apellido1) newErrors[`jugador${index}_apellido1`] = 'El primer apellido es requerido';
-            if (!jugador.dni) newErrors[`jugador${index}_dni`] = 'El DNI es requerido';
-            if (!jugador.email) newErrors[`jugador${index}_email`] = 'El email es requerido';
-            if (!jugador.telefono) newErrors[`jugador${index}_telefono`] = 'El teléfono es requerido';
-            if (!jugador.estudio_id) newErrors[`jugador${index}_estudio_id`] = 'El estudio es requerido';
-            if (!jugador.rol) newErrors[`jugador${index}_rol`] = 'El rol es requerido';
+            if (!jugador.nombre.trim()) {
+                newErrors[`jugador${index}_nombre`] = 'El nombre es requerido';
+            }
+            if (!jugador.apellido1.trim()) {
+                newErrors[`jugador${index}_apellido1`] = 'El primer apellido es requerido';
+            }
+            if (!jugador.dni.trim()) {
+                newErrors[`jugador${index}_dni`] = 'El DNI es requerido';
+            } else if (!/^[0-9]{8}[A-Z]$/.test(jugador.dni)) {
+                newErrors[`jugador${index}_dni`] = 'DNI inválido (formato: 12345678A)';
+            }
+            if (!jugador.email.trim()) {
+                newErrors[`jugador${index}_email`] = 'El email es requerido';
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(jugador.email)) {
+                newErrors[`jugador${index}_email`] = 'Email inválido';
+            }
+            if (!jugador.telefono.trim()) {
+                newErrors[`jugador${index}_telefono`] = 'El teléfono es requerido';
+            } else if (!/^[0-9]{9}$/.test(jugador.telefono)) {
+                newErrors[`jugador${index}_telefono`] = 'Teléfono inválido (9 dígitos)';
+            }
+            if (!jugador.estudio_id) {
+                newErrors[`jugador${index}_estudio_id`] = 'El estudio es requerido';
+            }
+            if (!jugador.rol) {
+                newErrors[`jugador${index}_rol`] = 'El rol es requerido';
+            }
         });
 
         setErrors(newErrors);
@@ -88,12 +118,10 @@ const AddInscripcion = ({ onSubmit, onCancel }) => {
         if (!validateForm()) return;
 
         try {
-            // Transformar los datos del formulario al formato que espera el backend
             const inscripcionData = {
-                comentarios: form.comentarios,
-                estado: 'pendiente', // Estado inicial
                 nombre_equipo: form.nombre_equipo,
-                centro_id: form.centro_id,
+                centro_id: parseInt(form.centro_id),
+                comentarios: form.comentarios,
                 jugadores: form.jugadores.map(jugador => ({
                     ...jugador,
                     estudio_id: parseInt(jugador.estudio_id)
@@ -104,6 +132,11 @@ const AddInscripcion = ({ onSubmit, onCancel }) => {
             onCancel();
         } catch (error) {
             console.error('Error al guardar:', error);
+            // Mostrar el error al usuario
+            setErrors(prev => ({
+                ...prev,
+                submit: error.message
+            }));
         }
     };
 
