@@ -30,6 +30,7 @@ import { useAuth } from '../context/UserContext';
 import Jugadores from '../pages/Administrador/Jugadores';
 import Inscripciones from '../pages/Administrador/Inscripciones';
 
+
 function AppEnrutador() {
   const { loggedInUser } = useAuth();
 

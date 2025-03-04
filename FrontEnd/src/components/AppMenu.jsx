@@ -52,7 +52,7 @@ function AppMenu() {
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top p-3">
                 <div className="container-fluid position-relative">
                     {/* Logo en la parte izquierda */}
-                    <div className="navbar-brand position-absolute" style={{ left: '15px' }}>
+                    <div className="navbar-brand position-relative" style={{ left: '15px' }}>
                         <img 
                             src="/logo_sede_torrelavega.png" 
                             alt="Logo Sede Torrelavega" 
@@ -60,10 +60,21 @@ function AppMenu() {
                             className="d-inline-block align-top"
                         />
                     </div>
+                    <button 
+                        className="navbar-toggler" 
+                        type="button" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#navbarContent"
+                        aria-controls="navbarContent" 
+                        aria-expanded="false" 
+                        aria-label="Toggle navigation"
+                    >
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
 
                     {/* Resto del menú centrado */}
-                    <div className="w-100 d-flex justify-content-center align-items-center">
-                        <ul className="navbar-nav">
+                    <div className="collapse navbar-collapse" id="navbarContent">
+                        <ul className="navbar-nav mx-auto">
                             <li className="nav-item">
                                 <Link className="nav-link text-white custom-hover fs-5" to="/">Inicio</Link>
                             </li>
@@ -104,7 +115,7 @@ function AppMenu() {
                         </ul>
 
                         {/* Iconos de usuario a la derecha */}
-                        <div className="d-flex align-items-center position-absolute" style={{ right: '15px' }}>
+                        <div className="d-flex align-items-center ms-auto">
                             <li className="nav-item list-unstyled">
                                 <Link className="nav-link text-white icon-container" to="/login">
                                     <i className="fa fa-user fa-2x"></i>
