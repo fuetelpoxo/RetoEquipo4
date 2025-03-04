@@ -1,6 +1,12 @@
 /* Estilos base del navbar */
 .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
     padding: 0.5rem 1rem;
+    background-color: #212529; /* Asegúrate de que tenga color de fondo */
 }
 
 .navbar .container-fluid {

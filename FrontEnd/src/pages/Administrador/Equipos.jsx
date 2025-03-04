@@ -5,7 +5,7 @@ import EditEquipo from "../../components/EditEquipo";
 import DetallesEquipo from "../../components/DetallesEquipo";
 
 function Equipos() {
-  const { equipos, loading, error, handleDeleteEquipo, handleAddEquipo, handleUpdateEquipo } = useEquipos();
+  const { equipos, loading, error, handleDeleteEquipo, handleUpdateEquipo } = useEquipos();
   const [vista, setVista] = useState("listado");
   const [equipoSeleccionado, setEquipoSeleccionado] = useState(null);
 

@@ -9,11 +9,11 @@ export const validateUserForm = (form, user = null) => {
     }
 
     // Validación del email
-    const emailRegex = /^[a-zA-Z0-9._-]+@(gmail\.com|hotmail\.com|gmail\.es|outlook\.com|yahoo\.com|educantabria\.es|iesmiguelherrero\.com)$/;
+    const emailRegex = /^[a-zA-Z0-9._-]+@gmail\.com$/;
     if (!form.email.trim()) {
         errors.email = 'El email es requerido';
     } else if (!emailRegex.test(form.email)) {
-        errors.email = 'Debe ser una dirección de correo válida (Gmail, Hotmail, Outlook, Yahoo o correo educativo)';
+        errors.email = 'Debe ser una dirección de Gmail válida';
     }
 
     // Validación de la contraseña (solo para nuevos usuarios o si se intenta cambiar)
