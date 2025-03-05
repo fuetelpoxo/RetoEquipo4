@@ -85,12 +85,18 @@ class Equipo extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->usuarioIdCreacion = Auth::id()?? 1;
+            // Si no se proporciona un usuarioIdCreacion, usar el valor por defecto
+            if (!$model->usuarioIdCreacion) {
+                $model->usuarioIdCreacion = Auth::id() ?? 1;
+            }
             $model->fechaCreacion = now();
         });
 
         static::updating(function ($model) {
-            $model->usuarioIdActualizacion = Auth::id()?? 1;
+            // Si no se proporciona un usuarioIdActualizacion, usar el valor por defecto
+            if (!$model->usuarioIdActualizacion) {
+                $model->usuarioIdActualizacion = Auth::id() ?? 1;
+            }
             $model->fechaActualizacion = now();
         });
     }

@@ -37,18 +37,38 @@ export const createInscripcion = async (inscripcionData) => {
       throw new Error('El id del centro es obligatorio');
     }
 
-    const response = await fetch("/api/inscripciones", {
+    // Crear primero el equipo
+    const equipoResponse = await fetch("/api/equipos", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
       body: JSON.stringify({
-        nombre_equipo: inscripcionData.nombre_equipo,
+        nombre: inscripcionData.nombre_equipo.trim(),
         centro_id: parseInt(inscripcionData.centro_id),
-        estado: 'pendiente',
-        comentarios: inscripcionData.comentarios || '',
-        jugadores: inscripcionData.jugadores.map(jugador => ({
+        grupo: 'A',
+        usuarioIdCreacion: 4
+      })
+    });
+
+    if (!equipoResponse.ok) {
+      const errorData = await equipoResponse.json();
+      throw new Error(errorData.message || 'Error al crear el equipo');
+    }
+
+    const equipoData = await equipoResponse.json();
+    const equipo_id = equipoData.data.id;
+
+    // Crear jugadores con todos los campos requeridos
+    const jugadoresPromises = inscripcionData.jugadores.map(jugador => 
+      fetch("/api/jugadores", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
           nombre: jugador.nombre,
           apellido1: jugador.apellido1,
           apellido2: jugador.apellido2 || '',
@@ -56,8 +76,39 @@ export const createInscripcion = async (inscripcionData) => {
           email: jugador.email,
           telefono: jugador.telefono,
           estudio_id: parseInt(jugador.estudio_id),
-          rol: jugador.rol || 'jugador'
-        }))
+          equipo_id: equipo_id,
+          rol: jugador.rol || 'jugador',
+          fechaNacimiento: jugador.fechaNacimiento || null,
+          tipo:jugador.tipo || 'jugador',
+          usuarioIdCreacion: 4,
+          usuarioIdActualizacion: 4,
+          fechaCreacion: new Date().toISOString(),
+          fechaActualizacion: new Date().toISOString()
+        })
+      })
+    );
+
+    const jugadoresResponses = await Promise.all(jugadoresPromises);
+    
+    // Verificar si algún jugador falló al crearse
+    for (const response of jugadoresResponses) {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Error al crear jugador: ${errorData.message}`);
+      }
+    }
+
+    // Crear la inscripción
+    const response = await fetch("/api/inscripciones", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        equipo_id: equipo_id,
+        estado: 'pendiente',
+        comentarios: inscripcionData.comentarios || ''
       })
     });
 
@@ -67,9 +118,7 @@ export const createInscripcion = async (inscripcionData) => {
     }
 
     const data = await response.json();
-    console.log('Respuesta del servidor:', data);
     return data;
-
   } catch (err) {
     console.error('Error completo:', err);
     throw err;

@@ -2,13 +2,21 @@ import React, { useState } from 'react';
 import { useInscripciones } from '../../hook/useInscripciones';
 import Loading from '../../components/Loading';
 import AddInscripcion from '../../components/AddInscripcion';
+import EditEquipo from '../../components/EditEquipo';
 import MenuEntrenador from '../../components/MenuEntrenador';
 
 function Entrenador() {
   const { equipos = [], loading, error, handleCreateInscripcion } = useInscripciones();
   const [showForm, setShowForm] = useState(false);
+  const [editingEquipo, setEditingEquipo] = useState(null);
+  
+  const usuarioId = 1;
 
-  console.log('Equipos disponibles:', equipos); // Debug log
+  const equiposUsuario = equipos.filter(equipo => equipo.usuarioIdCreacion === usuarioId);
+
+  const handleEditEquipo = (equipo) => {
+    setEditingEquipo(equipo);
+  };
 
   if (loading) return <Loading />;
   if (error) return <div className="alert alert-danger">{error}</div>;
@@ -26,7 +34,23 @@ function Entrenador() {
             Nueva Inscripción
           </button>
         </div>
+        <div className="row">
+          {equiposUsuario.map(equipo => (
+            <div key={equipo.id} className="col-md-4 mb-3">
+              <div className="card" style={{ cursor: 'pointer' }} onClick={() => handleEditEquipo(equipo)}>
+                <div className="card-body">
+                  <h5 className="card-title">{equipo.nombre}</h5>
+                  <p className="card-text">
+                    Centro: {equipo.centro.nombre}<br/>
+                    Grupo: {equipo.grupo}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
 
+        {/* Modal de Nueva Inscripción */}
         {showForm && (
           <div className="modal fade show" style={{display: 'block', backgroundColor: 'rgba(0,0,0,0.5)'}}>
             <div className="modal-dialog modal-lg">
@@ -51,6 +75,23 @@ function Entrenador() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* Modal de Editar Equipo */}
+        {editingEquipo && (
+          <EditEquipo
+            equipo={editingEquipo}
+            onSubmit={async (data) => {
+              try {
+                // Aquí deberías implementar la lógica para actualizar el equipo
+                console.log('Datos actualizados:', data);
+                setEditingEquipo(null);
+              } catch (error) {
+                console.error('Error al actualizar equipo:', error);
+              }
+            }}
+            onCancel={() => setEditingEquipo(null)}
+          />
         )}
       </div>
     </>

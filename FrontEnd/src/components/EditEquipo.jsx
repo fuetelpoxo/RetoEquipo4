@@ -1,101 +1,136 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getJugadoresByEquipo } from '../models/EquipoModel';
 
 const EditEquipo = ({ equipo, onSubmit, onCancel }) => {
+  const [jugadores, setJugadores] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [form, setForm] = useState({
-    nombre: equipo?.nombre || '',
-    grupo: equipo?.grupo || '',
-    centro_id: equipo?.centro_id || ''
+    nombre: equipo.nombre || '',
+    grupo: equipo.grupo || '',
   });
 
-  const [errors, setErrors] = useState({});
+  useEffect(() => {
+    const cargarJugadores = async () => {
+      try {
+        setLoading(true);
+        const jugadoresData = await getJugadoresByEquipo(equipo.id);
+        setJugadores(jugadoresData);
+        setLoading(false);
+      } catch (err) {
+        setError('Error al cargar los jugadores: ' + err.message);
+        setLoading(false);
+      }
+    };
 
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!form.nombre.trim()) {
-      newErrors.nombre = 'El nombre es requerido';
-    }
-    if (!form.grupo.trim()) {
-      newErrors.grupo = 'El grupo es requerido';
-    }
-    if (!form.centro_id) {
-      newErrors.centro_id = 'El centro es requerido';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateForm()) return;
-
-    try {
-      const dataToSubmit = {
-        nombre: form.nombre,
-        grupo: form.grupo,
-        centro_id: parseInt(form.centro_id)
-      };
-      await onSubmit(dataToSubmit);
-      onCancel();
-    } catch (error) {
-      console.error('Error al guardar:', error);
-    }
-  };
-
+    cargarJugadores();
+  }, [equipo.id]);
+  
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    if (errors[e.target.name]) {
-      setErrors({ ...errors, [e.target.name]: null });
-    }
+    const { name, value } = e.target;
+    setForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
+
+  const handleEditJugador = (jugador) => {
+    console.log('Editar jugador:', jugador);
+  };
+
+  if (loading) return <div className="modal fade show" style={{display: 'block', backgroundColor: 'rgba(0,0,0,0.5)'}}>
+    <div className="modal-dialog modal-lg">
+      <div className="modal-content">
+        <div className="modal-body">
+          <div className="text-center">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Cargando...</span>
+            </div>
+            <p className="mt-2">Cargando jugadores...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>;
+
+  if (error) return <div className="alert alert-danger">{error}</div>;
 
   return (
-    <div className="container mt-3">
-      <h2>{equipo ? "Editar Equipo" : "Añadir Equipo"}</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label className="form-label">Nombre del Equipo</label>
-          <input
-            type="text"
-            className={`form-control ${errors.nombre ? 'is-invalid' : ''}`}
-            name="nombre"
-            value={form.nombre}
-            onChange={handleChange}
-          />
-          {errors.nombre && <div className="invalid-feedback">{errors.nombre}</div>}
-        </div>
+    <div className="modal fade show" style={{display: 'block', backgroundColor: 'rgba(0,0,0,0.5)'}}>
+      <div className="modal-dialog modal-lg">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">Editar Equipo: {equipo.nombre}</h5>
+            <button type="button" className="btn-close" onClick={onCancel}></button>
+          </div>
+          <div className="modal-body">
+            <form>
+              <div className="mb-3">
+                <label className="form-label">Nombre del Equipo</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="nombre"
+                  value={form.nombre}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Grupo</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="grupo"
+                  value={form.grupo}
+                  onChange={handleChange}
+                />
+              </div>
 
-        <div className="mb-3">
-          <label className="form-label">Grupo</label>
-          <input
-            type="text"
-            className={`form-control ${errors.grupo ? 'is-invalid' : ''}`}
-            name="grupo"
-            value={form.grupo}
-            onChange={handleChange}
-            maxLength="1"
-          />
-          {errors.grupo && <div className="invalid-feedback">{errors.grupo}</div>}
+              <h6 className="mt-4">Jugadores del Equipo</h6>
+              <div className="table-responsive">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Apellidos</th>
+                      <th>DNI</th>
+                      <th>Email</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {jugadores.map(jugador => (
+                      <tr key={jugador.id}>
+                        <td>{jugador.nombre}</td>
+                        <td>{`${jugador.apellido1} ${jugador.apellido2 || ''}`}</td>
+                        <td>{jugador.dni}</td>
+                        <td>{jugador.email}</td>
+                        <td>
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-primary"
+                            onClick={() => handleEditJugador(jugador)}
+                          >
+                            Editar
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </form>
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-primary" onClick={() => onSubmit(form)}>
+              Guardar Cambios
+            </button>
+            <button type="button" className="btn btn-secondary" onClick={onCancel}>
+              Cancelar
+            </button>
+          </div>
         </div>
-
-        <div className="mb-3">
-          <label className="form-label">Centro</label>
-          <input
-            type="number"
-            className={`form-control ${errors.centro_id ? 'is-invalid' : ''}`}
-            name="centro_id"
-            value={form.centro_id}
-            onChange={handleChange}
-          />
-          {errors.centro_id && <div className="invalid-feedback">{errors.centro_id}</div>}
-        </div>
-
-        <div className="mt-3">
-          <button type="submit" className="btn btn-primary me-2">Guardar</button>
-          <button type="button" className="btn btn-secondary" onClick={onCancel}>Cancelar</button>
-        </div>
-      </form>
+      </div>
     </div>
   );
 };
