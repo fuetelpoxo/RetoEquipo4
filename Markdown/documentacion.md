@@ -20,7 +20,6 @@
     - Cuentas de acceso
 6. [Software desarrollado](#software) 
 7. Tutorial del uso de aplicacion 
-8. [Manual de usuario]()  
 9. Mejoras del producto y lo que falta 
 10. Bibliografia y webgrafia 
 11. Herramientas utilizadas
