@@ -4,6 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+
+/**
+ * @OA\Schema(
+ *  schema="equipos",
+ *  type="object",
+ *  title="equipos",
+ * @OA\Property(property="nombre", type="string", example="Equipo 1"),
+ * @OA\Property(property="centro_id", type="integer", example="1"),
+ * @OA\Property(property="grupo", type="string", example="A"),
+ * @OA\Property(property="usuarioIdCreacion", type="integer", example="1"),
+ * @OA\Property(property="fechaCreacion", type="timestamp", example="2022-02-11 15:12:24"),
+ * @OA\Property(property="usuarioIdActualizacion", type="integer", example="1"),
+ * @OA\Property(property="fechaActualizacion", type="timestamp", example="2022-02-11 15:12:24")
+ *  )
+ */
 class Equipo extends Model
 {
     protected $table = 'equipos';
@@ -35,10 +50,16 @@ class Equipo extends Model
         return $this->hasMany(Jugador::class, 'equipo_id');
     }
 
-    // Relación con Partidos (un equipo tiene muchos partidos)
-    public function partidos()
+    // Relación con Partidos (un equipo tiene muchos partidos como local)
+    public function partidosLocal()
     {
-        return $this->hasMany(Partido::class, 'equipoL_id')->orWhere('equipoV_id', $this->id);
+        return $this->hasMany(Partido::class, 'equipoL_id');
+    }
+
+    // Relación con Partidos (un equipo tiene muchos partidos como visitante)
+    public function partidosVisitante()
+    {
+        return $this->hasMany(Partido::class, 'equipoV_id');
     }
 
     // Relación con Patrocinadores-Equipos (un equipo tiene muchos patrocinadores)
@@ -64,12 +85,12 @@ class Equipo extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->usuarioIdCreacion = Auth::id();
+            $model->usuarioIdCreacion = Auth::id()?? 1;
             $model->fechaCreacion = now();
         });
 
         static::updating(function ($model) {
-            $model->usuarioIdActualizacion = Auth::id();
+            $model->usuarioIdActualizacion = Auth::id()?? 1;
             $model->fechaActualizacion = now();
         });
     }

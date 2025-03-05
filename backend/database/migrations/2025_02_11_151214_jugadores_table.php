@@ -15,17 +15,17 @@ return new class extends Migration
             $table->id();
             $table->foreignId('equipo_id')->constrained('equipos');
             $table->string('nombre');
-            $table->string('apellido1');
-            $table->string('apellido2');
-            $table->string('tipo');
-            $table->foreignId('estudio_id')->constrained('estudios');
-            $table->string('dni');
-            $table->string('email');
-            $table->string('telefono');
-            $table->foreignId('usuarioIdCreacion')->constrained('users'); // Si tienes tabla de usuarios
-            $table->timestamp('fechaCreacion');
-            $table->foreignId('usuarioIdActualizacion')->constrained('users'); // Si tienes tabla de usuarios
-            $table->timestamp('fechaActualizacion');
+            $table->string('apellido1')->nullable();
+            $table->string('apellido2')->nullable();
+            $table->enum('tipo', ['jugador', 'entrenador', 'capitan'])->nullable();
+            $table->foreignId('estudio_id')->nullable()->constrained('estudios')->onDelete('cascade');
+            $table->string('dni')->nullable();
+            $table->string('email')->nullable();
+            $table->string('telefono')->nullable();
+            $table->foreignId('usuarioIdCreacion')->nullable()->constrained('users'); // Relación con la tabla de usuarios
+            $table->timestamp('fechaCreacion')->nullable()->useCurrent();
+            $table->foreignId('usuarioIdActualizacion')->nullable()->constrained('users'); // Relación con la tabla de usuarios
+            $table->timestamp('fechaActualizacion')->nullable()->useCurrent();
             $table->timestamps();
         });
     }

@@ -3,7 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+/**
+ * @OA\Schema(
+ *  schema="ciclos",
+ *  type="object",
+ *  title="Ciclos",
+ *  @OA\Property(property="nombre", type="string", example="Desarrollo de aplicaciones multiplataforma"),
+ *  @OA\Property(property="familia_id", type="integer", example="1")
+ *  )
+ */
 class Ciclo extends Model
 {
     protected $table = 'ciclos';
@@ -12,8 +20,8 @@ class Ciclo extends Model
         'familia_id'
     ];
 
-    public function familias()
+    public function familia()
     {
-        return $this->belongsTo(Familia::class);
+        return $this->belongsTo(Familia::class, 'familia_id');
     }
 }

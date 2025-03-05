@@ -5,6 +5,28 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * 
+ * @OA\Schema(
+ * schema="imagenes",
+ * type="object",
+ * title="imagenes",
+ * @OA\Property(property="url", type="string", example="https://www.google.com"),
+ * @OA\Property(property="nombre", type="string", example="Imagen 1"),
+ * @OA\Property(property="equipo_id", type="integer", example="1"),
+ * @OA\Property(property="jugador_id", type="integer", example="1"),
+ * @OA\Property(property="partido_id", type="integer", example="1"),
+ * @OA\Property(property="patrocinador_id", type="integer", example="1"),
+ * @OA\Property(property="reto_id", type="integer", example="1"),
+ * @OA\Property(property="ong_id", type="integer", example="1"),
+ * @OA\Property(property="publicacion_id", type="integer", example="1"),
+ * @OA\Property(property="pabellon_id", type="integer", example="1"),
+ * @OA\Property(property="usuarioIdCreacion", type="integer", example="1"),
+ * @OA\Property(property="fechaCreacion", type="timestamp", example="2022-02-11 15:12:24"),
+ * @OA\Property(property="usuarioIdActualizacion", type="integer", example="1"),
+ * @OA\Property(property="fechaActualizacion", type="timestamp", example="2022-02-11 15:12:24")
+ * )
+ */
 class Imagen extends Model
 {
     protected $table = 'imagenes';
@@ -70,12 +92,12 @@ class Imagen extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->usuarioIdCreacion = Auth::id();
+            $model->usuarioIdCreacion = Auth::id()?? 1;
             $model->fechaCreacion = now();
         });
 
         static::updating(function ($model) {
-            $model->usuarioIdActualizacion = Auth::id();
+            $model->usuarioIdActualizacion = Auth::id()?? 1;
             $model->fechaActualizacion = now();
         });
     }

@@ -4,24 +4,28 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+/**
+ * @OA\Schema(
+ * schema="estudios",
+ * type="object",
+ * title="estudios",
+ * @OA\Property(property="centro_id", type="integer", example="1"),
+ * @OA\Property(property="ciclo_id", type="integer", example="1"),
+ * @OA\Property(property="curso", type="string", example="2022-2023"),
+ * @OA\Property(property="usuarioIdCreacion", type="integer", example="1"),
+ * @OA\Property(property="fechaCreacion", type="timestamp", example="2022-02-11 15:12:24"),
+ * @OA\Property(property="usuarioIdActualizacion", type="integer", example="1"),
+ * @OA\Property(property="fechaActualizacion", type="timestamp", example="2022-02-11 15:12:24")
+ * )
+ */
 class Estudio extends Model
 {
     protected $table = 'estudios';
     protected $fillable = [
         'centro_id',
         'ciclo_id',
-        'curso',
-        'usuarioIdCreacion',
-        'fechaCreacion',
-        'usuarioIdActualizacion',
-        'fechaActualizacion'
+        'curso'
     ];
-
-    // Relación con Ciclo (un estudio pertenece a un ciclo)
-    public function ciclo()
-    {
-        return $this->belongsTo(Ciclo::class, 'ciclo_id');
-    }
 
     // Relación con Retos (un estudio tiene muchos retos)
     public function retos()
@@ -40,18 +44,11 @@ class Estudio extends Model
     {
         return $this->hasMany(Jugador::class, 'estudio_id');
     }
-    protected static function boot()
+
+    // Relación con Ciclo (un estudio pertenece a un ciclo)
+    public function ciclo()
     {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->usuarioIdCreacion = Auth::id();
-            $model->fechaCreacion = now();
-        });
-
-        static::updating(function ($model) {
-            $model->usuarioIdActualizacion = Auth::id();
-            $model->fechaActualizacion = now();
-        });
+        return $this->belongsTo(Ciclo::class, 'ciclo_id');
     }
+
 }

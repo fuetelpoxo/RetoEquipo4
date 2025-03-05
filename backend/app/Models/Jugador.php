@@ -4,9 +4,35 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+/**
+ * @OA\Schema(
+ * schema="jugadores",
+ * type="object",
+ * title="jugadores",
+ * @OA\Property(property="equipo_id", type="integer", example="1"),
+ * @OA\Property(property="nombre", type="string", example="Juan"),
+ * @OA\Property(property="apellido1", type="string", example="Perez"),
+ * @OA\Property(property="apellido2", type="string", example="Gomez"),
+ * @OA\Property(property="tipo", type="string", example="jugador"),
+ * @OA\Property(property="estudio_id", type="integer", example="1"),
+ * @OA\Property(property="dni", type="string", example="12345678A"),
+ * @OA\Property(property="email", type="string", example="juan@example.com"),
+ * @OA\Property(property="telefono", type="string", example="123456789"),
+ * @OA\Property(property="usuarioIdCreacion", type="integer", example="1"),
+ * @OA\Property(property="fechaCreacion", type="timestamp", example="2022-02-11 15:12:24"),
+ * @OA\Property(property="usuarioIdActualizacion", type="integer", example="1"),
+ * @OA\Property(property="fechaActualizacion", type="timestamp", example="2022-02-11 15:12:24")
+ * )
+ */
 class Jugador extends Model
 {
     protected $table = 'jugadores';
+
+    public const TIPOS = [
+        'JUGADOR' => 'jugador',
+        'ENTRENADOR' => 'entrenador',
+        'CAPITAN' => 'capitan',
+    ];
     protected $fillable = [
         'equipo_id',
         'nombre',
@@ -57,12 +83,12 @@ class Jugador extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->usuarioIdCreacion = Auth::id();
+            $model->usuarioIdCreacion = Auth::id()?? 1;
             $model->fechaCreacion = now();
         });
 
         static::updating(function ($model) {
-            $model->usuarioIdActualizacion = Auth::id();
+            $model->usuarioIdActualizacion = Auth::id()?? 1;
             $model->fechaActualizacion = now();
         });
     }
