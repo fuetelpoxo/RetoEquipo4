@@ -33,8 +33,7 @@ Liga solidaria
 3. Nestor Serna 
 4. Ruben Frechoso 
 5. Elsa Ferreira 
-6. Alberto Gonzalez
-7. Marcos Cuevas 
+6. Marcos Cuevas 
 
 ## Que ofrecemos 📌 <a name="ofrecer"></a>
 Con nuestra pagina web pretendemos que el usuario pueda ver e informarse de lo que trata el torneo solidario de una forma clara, por otra parte 
