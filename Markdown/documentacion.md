@@ -123,14 +123,6 @@ En la página principal se encuentra un menu en el que se mostraran los apartado
 ### Estructura del proyecto 
 ![alt text](img/estructura.png)
 
-### Documentacion del código
-
-``` java
-AppMenu
-
-
- 
-```
 ### 🌐 API
 
 
