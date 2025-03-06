@@ -23,6 +23,7 @@
 9. Mejoras del producto y lo que falta 
 10. Bibliografia y webgrafia 
 11. Herramientas utilizadas
+12. [Guia despliegue](https://github.com/fuetelpoxo/RetoEquipo4/blob/main/MD%20Despliegues/Despliegue.md) 
 
 ## Nombre del reto <a name="reto"></a> 📌
 Liga solidaria 
