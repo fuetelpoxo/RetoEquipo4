@@ -220,6 +220,8 @@ Y esta sería la salida, es decir, el contenido antes mostrado, reflejado en el 
 
 El siguiente paso que vamos a seguir es la instalacion de ufw (Uncomplicated Firewall), es decir, vamos a instalar un firewall en nuestra EC2 a través del siguiente comando. Esto nos permitirá mejorar la seguridad de nuestro servidor, permitiendo solo el tráfico necesario y bloqueando el resto.
 
+SUDO UFW ENABLE para iniciar el ufw
+
 ![Configuracion-Servidor](img/image-31.png)
 
 Con el siguiente comando podemos gestionar las reglas de firewall sin necesidad de explicar manualmente los puertos. En este caso solo mostramos una lista de los servicios que pueden ser gestionados fácilmente con UFW.
