@@ -235,6 +235,7 @@ En las dos siguientes imágenes mostramos los comandos `sudo ufw allow apache` y
 ![Configuracion-Servidor](img/image-33.png)
 
 Mostramos la lista de reglas activas.
+sudo a2dissite 000-default.conf
 
 ![Configuracion-Servidor](img/image-55.png)
 
