@@ -199,6 +199,7 @@ Cambiamos los permisos de propiedad del directorio y nos aseguramos de que se ha
 ![Configuracion-Servidor](img/image-23.png)
 
 Utilizamos el comando `sudo a2ensite Equipo4.conf` para habilitar nuestro sitio web. Y luego reiniciamos el servidor para que los cambios realizados se guarden.
+sudo a2dissite 000-default.conf para quitar la por defecto 
 
 ![Configuración-Servidor](img/image-24.png)
 
